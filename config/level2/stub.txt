@@ -2,7 +2,7 @@ read botPerPlayer:int
 gameloop
 read allyBotAlive:int
 read entityCount:int
-loop allyBotAlive loop entityCount read entId:int entType:word(256) health:int healthRank:int shield:int shieldRank:int distMe:int distMeRank:int distEn:int distEnRank:int borderDist:int borderDistRank:int shieldComp:int healthComp:int totComp:int action:word(256) target:int
+loop allyBotAlive loop entityCount read entId:int entType:word(256) health:int shield:int distMe:int distMeRank:int distEn:int borderDist:int shieldComp:int healthComp:int totComp:int action:word(256) target:int
 loop allyBotAlive write join("0", "MOVE", "4")
 
 STATEMENT

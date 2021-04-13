@@ -1,0 +1,29 @@
+read botPerPlayer:int
+gameloop
+read allyBotAlive:int
+read entityCount:int
+loop allyBotAlive loop entityCount read entId:int entType:word(256) health:int shield:int distMe:int distMeRank:int action:word(256) target:int
+loop allyBotAlive write join("0", "MOVE", "4")
+
+STATEMENT
+Control your bots in order to destroy the enemy team !
+
+INPUT
+botPerPlayer: the amount of bot you control
+allyBotAlive: the amount of your bot which are still alive
+entId: the unique entity id, stay the same for the whole game
+entType: the entity type in a string. It can be SELF | ALLY | ENEMY
+health: the approximative entity health. Can be 0 | 25 | 50 | 75 | 100, 25 meaning that your life is >= 25 and < 50% of your max life
+shield : the approximative entity shield, same possible value than health
+distMe : approximative distance between the target and the current bot. Can be 0 to 4 for short, medium, long and out of range
+distMeRank : entity are sorted by ascending order based on their distance to the current bot
+shieldRank: entity are sorted in ascendant order based on their amount of shield
+healthRank: entity are sorted in ascendant order based on their amount of health, this is the rank of the current entity in the sorted list
+shieldComp: -1 if the entity has more shield than the current bot, 0 if it's equal, 1 if your bot as more shield
+healthComp: same as shieldComp but for the health
+totComp: same as shieldComp but based on the sum of health+shield
+action: action executed by the entity last turn
+target: target of the entity last turn
+
+OUTPUT
+yourBotId ATTACK | MOVE | FLEE targetId
