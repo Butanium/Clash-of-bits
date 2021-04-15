@@ -14,6 +14,9 @@ public class CircularHitBox extends Point {
         super(x, y);
         this.hitBoxSize = size;
     }
+    public double getSize() {
+        return hitBoxSize;
+    }
 
     private final double hitBoxSize;
 

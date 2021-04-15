@@ -84,31 +84,31 @@ public class Robot extends Entity {
     }
 
     /**
-     * @param entity
+     * @param entities : entities the bot has to flee from
      */
-    public void move(ArrayList<Point> entity) {
-        // TODO implement here
+    public void flee(Set<Point> entities) {
+        Point target = getAveragePoint(entities);
+        updatePos(getDirection(target).multiply(-1));
     }
 
     /**
-     * @param entity
+     * @param entities : entities the bot has to move to
      */
-    public void flee(Set<Point> entity) {
-        double x = 0;
-        double y = 0;
-        for (Point p : entity) {
-            x += p.getX();
-            y += p.getY();
-        }
-        Point target = new Point(x, y);
-        if(!(getDist(target) < Constants.MOVE_PRECISION)) {
-
+    public void move(Set<Point> entities) {
+        Point target = getAveragePoint(entities);
+        if (getDist(target) >= Constants.MOVE_PRECISION) {
+            updatePos(getDirection(target));
         }
     }
 
     private void updatePos(Point direction) {
+        Point s = new Point(getSize());
+        setXY(addPoint(direction.multiply(Constants.DELTA_TIME * speed)).
+                clamp(s, Constants.MAP_SIZE.addPoint(s.multiply(-1))));
+
 
     }
+
     /**
      * @param robot
      */
@@ -122,11 +122,10 @@ public class Robot extends Entity {
     public void takeDamage(double amount) {
         if (amount < shieldHealth) {
             shieldHealth -= amount;
-        }
-        else {
+        } else {
             health -= amount - shieldHealth;
             shieldHealth = 0;
-            if (health <= 0){
+            if (health <= 0) {
                 setActive(false);
             }
         }
