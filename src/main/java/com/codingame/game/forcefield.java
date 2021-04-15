@@ -1,5 +1,4 @@
-
-import java.util.*;
+package com.codingame.game;
 
 /**
  * 

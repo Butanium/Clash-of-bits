@@ -48,7 +48,7 @@ try {
 ## Loading assets
 Assets are expected to be placed in the `src/main/resources/view/assets` folder of your game's project.
 
-You can then use the images in the texture cache with the Entity Module:
+You can then use the images in the texture cache with the com.codingame.game.Entity Module:
 ```java
 entityManager.createSprite.setImage("background.jpg");
 ```

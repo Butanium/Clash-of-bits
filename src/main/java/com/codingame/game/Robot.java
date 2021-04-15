@@ -1,66 +1,39 @@
+package com.codingame.game;
 
 import java.util.*;
 
-/**
- * 
- */
+
 public class Robot extends Entity {
 
-    /**
-     * Default constructor
-     */
+
     public Robot() {
     }
 
-    /**
-     * 
-     */
-    private float health;
 
-    /**
-     * 
-     */
-    private float shieldHealth;
+    private double health;
 
-    /**
-     * 
-     */
-    private void shotManager;
+    private double shieldHealth;
 
-    /**
-     * 
-     */
-    private float maxHealth;
+    private double maxHealth;
 
-    /**
-     * 
-     */
-    private float maxShieldHealth;
+    private double maxShieldHealth;
 
     /**
      * number of frame to aim
      */
     private int aimTime;
 
-    /**
-     * 
-     */
-    private float speed;
 
-    /**
-     * 
-     */
+    private double speed;
+
+
     private Robot attackTarget;
 
-    /**
-     * 
-     */
+
     private int shotState;
 
-    /**
-     * 
-     */
-    private float[] shotRangeProb;
+
+    private double[] shotRangeProb;
 
     /**
      * number of bullet fired per frame
@@ -72,35 +45,25 @@ public class Robot extends Entity {
      */
     private int shotTime;
 
-    /**
-     * 
-     */
-    private float damagePerBullet;
 
-    /**
-     * 
-     */
-    private float shieldRegenPerFrame;
+    private double damagePerBullet;
 
-    /**
-     * 
-     */
+
+    private double shieldRegenPerFrame;
+
+
     private int shieldRegenCooldown;
 
-    /**
-     * 
-     */
+
     private int shieldState;
 
-    /**
-     * 
-     */
+
     private int teamId;
 
     /**
      * @return
      */
-    public float getHealth() {
+    public double getHealth() {
         // TODO implement here
         return 0.0f;
     }
@@ -108,7 +71,7 @@ public class Robot extends Entity {
     /**
      * @return
      */
-    public float getShield() {
+    public double getShield() {
         // TODO implement here
         return 0.0f;
     }
@@ -130,10 +93,22 @@ public class Robot extends Entity {
     /**
      * @param entity
      */
-    public void flee(ArrayList<Point> entity) {
-        // TODO implement here
+    public void flee(Set<Point> entity) {
+        double x = 0;
+        double y = 0;
+        for (Point p : entity) {
+            x += p.getX();
+            y += p.getY();
+        }
+        Point target = new Point(x, y);
+        if(!(getDist(target) < Constants.MOVE_PRECISION)) {
+
+        }
     }
 
+    private void updatePos(Point direction) {
+
+    }
     /**
      * @param robot
      */
@@ -142,18 +117,23 @@ public class Robot extends Entity {
     }
 
     /**
-     * @param amount
+     * @param amount : amount of damage taken
      */
-    public void takeDamge(float amount) {
-        // TODO implement here
+    public void takeDamage(double amount) {
+        if (amount < shieldHealth) {
+            shieldHealth -= amount;
+        }
+        else {
+            health -= amount - shieldHealth;
+            shieldHealth = 0;
+            if (health <= 0){
+                setActive(false);
+            }
+        }
     }
 
-    /**
-     * @return
-     */
     public int getTeam() {
-        // TODO implement here
-        return 0;
+        return teamId;
     }
 
 }

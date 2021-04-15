@@ -1,5 +1,6 @@
 package com.codingame.game;
 import java.util.List;
+import java.util.Set;
 
 import com.codingame.gameengine.core.AbstractPlayer.TimeoutException;
 import com.codingame.gameengine.core.AbstractReferee;
@@ -33,4 +34,34 @@ public class Referee extends AbstractReferee {
             }
         }        
     }
+
+    public Robot getRobot(int id) {
+        // TODO implement here
+        return null;
+    }
+
+    /**
+     * @param id
+     * @return
+     */
+    public Entity getEntity(int id) {
+        // TODO implement here
+        return null;
+    }
+    public Set<Robot> robots;
+
+    /**
+     *
+     */
+    public Set<Bullet> bullets;
+
+    /**
+     *
+     */
+    public Set<forcefield> forceFields;
+
+    /**
+     *
+     */
+    public Set<healthPack> healthPacks;
 }

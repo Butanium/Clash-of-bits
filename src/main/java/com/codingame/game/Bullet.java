@@ -1,5 +1,4 @@
-
-import java.util.*;
+package com.codingame.game;
 
 /**
  * 
@@ -10,39 +9,30 @@ public class Bullet extends Point {
      * Default constructor
      */
     public Bullet() {
+
     }
 
-    /**
-     * 
-     */
+
     private Robot targetPos;
 
-    /**
-     * 
-     */
-    private float speed;
 
-    /**
-     * 
-     */
-    private bool willHit;
+    private double speed;
 
-    /**
-     * 
-     */
-    private float damage;
+
+    private boolean willHit;
+
+
+    private double damage;
 
     /**
      * @return
      */
-    public bool updatePos() {
+    public boolean updatePos() {
         // TODO implement here
-        return null;
+        return false;
     }
 
-    /**
-     * 
-     */
+
     private void sendHit() {
         // TODO implement here
     }

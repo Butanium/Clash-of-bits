@@ -11,4 +11,27 @@ public class Player extends AbstractMultiplayerPlayer {
         // TODO: Replace the returned value with a valid number. Most of the time the value is 1. 
         return 1;
     }
+    private int id;
+
+    /**
+     *
+     */
+
+
+    /**
+     *
+     */
+    public Referee referee;
+
+    /**
+     *
+     */
+    public void getId() {
+        // TODO implement here
+    }
+
+    /**
+     *
+     */
+
 }
