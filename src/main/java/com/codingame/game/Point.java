@@ -17,6 +17,12 @@ public class Point {
         x = y = v;
     }
 
+    public Point(Point point){
+        x = point.x;
+        y = point.y;
+    }
+
+
     private double x;
     private double y;
 
@@ -67,6 +73,8 @@ public class Point {
         return new Point(Math.min(Math.max(inf.x, x), sup.x), Math.min(Math.max(inf.y, y), sup.y));
     }
 
+
+
     public Point multiply (double u){
         return new Point(x*u, y*u);
     }
@@ -83,5 +91,50 @@ public class Point {
         }
         return new Point(x, y).multiply(1. / points.size());
 
+    }
+    public double magnitude() {
+        return getDist(new Point());
+    }
+
+    public Point normalize(){
+        if (isZero()) {
+            throw new ZeroDivisionException("cannot normalize zero vector");
+        }
+        return multiply(1/magnitude());
+    }
+
+    public double scalar(Point pt){
+        return x*pt.x + y*pt.y;
+    }
+
+    public double pointCos(Point pt){
+        double m1 = magnitude();
+        double m2 = pt.magnitude();
+        if (m1 == 0 || m2 == 0){
+            throw new ZeroDivisionException("cannot get cos with zero vector");
+        }
+        return scalar(pt)/(m1*m2);
+    }
+
+    public double angle(Point pt){
+        double m1 = magnitude();
+        double m2 = pt.magnitude();
+        if (m1 == 0 || m2 == 0){
+            throw new ZeroDivisionException("cannot get angle with zero vector");
+        }
+        return Math.acos(pointCos(pt));
+    }
+
+    public boolean equals(Point pt){
+        return x == pt.x && y == pt.y;
+    }
+
+    public boolean isZero(){
+        return x == 0 && y == 0;
+    }
+
+    @SuppressWarnings("SuspiciousNameCombination")
+    public Point orthogonal(){
+        return new Point(y, -x);
     }
 }

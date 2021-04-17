@@ -21,6 +21,10 @@ public class Entity extends CircularHitBox {
         super(x, y, size);
         id = Constants.GLOBAL_ID++;
     }
+    public Entity(double x, double y, double size, double speed) {
+        super(x, y, size,speed);
+        id = Constants.GLOBAL_ID++;
+    }
 
     private final int id;
 
@@ -38,4 +42,21 @@ public class Entity extends CircularHitBox {
         this.isActive = a;
     }
 
+    public boolean equals(Entity entity){
+        return id == entity.getId();
+    }
+
+    public int getRange(Point point){
+        double d = getDist(point);
+        if (d < Constants.SHORT_RANGE){
+            return 0;
+        } else if (d < Constants.MEDIUM_RANGE){
+            return 1;
+        } else if (d <= Constants.LONG_RANGE) {
+            return 2;
+        } else {
+            return 3;
+        }
+
+    }
 }

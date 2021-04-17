@@ -1,8 +1,8 @@
 package com.codingame.game;
 import com.codingame.gameengine.core.AbstractMultiplayerPlayer;
 
-// Uncomment the line below and comment the line under it to create a Solo Game
-// public class Player extends AbstractSoloPlayer {
+import java.util.*;
+
 public class Player extends AbstractMultiplayerPlayer {
     @Override
     public int getExpectedOutputLines() {
@@ -11,18 +11,15 @@ public class Player extends AbstractMultiplayerPlayer {
         // TODO: Replace the returned value with a valid number. Most of the time the value is 1. 
         return 1;
     }
-    private int id;
-
-    /**
-     *
-     */
-
+    public Player(long seed){
+        rng = new Random(seed);
+    }
 
     /**
      *
      */
     public Referee referee;
-
+    private final Random rng;
     /**
      *
      */
@@ -30,8 +27,9 @@ public class Player extends AbstractMultiplayerPlayer {
         // TODO implement here
     }
 
-    /**
-     *
-     */
+    public Random getRNG() {
+        return rng;
+    }
+
 
 }
