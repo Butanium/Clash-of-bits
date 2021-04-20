@@ -10,4 +10,6 @@ public class Constants {
     public static double SHORT_RANGE = 3;
     public static double MEDIUM_RANGE = 8;
     public static double LONG_RANGE = 15;
+    public static int BOT_PER_PLAYER = 5;
+    public static double MIN_SPAWN_DIST = 1;
 }

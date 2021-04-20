@@ -1,10 +1,38 @@
 package com.codingame.game;
 
+import org.apache.commons.lang3.NotImplementedException;
+
 import java.util.*;
 
 
 public class Robot extends Entity {
 
+
+    /**
+     * robot class parameters
+     */
+    private final double maxHealth;
+    private final double maxShieldHealth;
+    private final double[] shotRangeProb;
+    private final int bulletPerShot;  // number of bullet fired per frame
+    private final int aimTime;  // number of frame to aim
+    private final int shotTime;  // number of frame during the shot
+    private final double damagePerBullet;
+    private final int shieldRegenCooldown;
+    private final int shieldRegenDuration;
+    private final double shieldRegenPerFrame;
+    private final Player owner;
+    /**
+     * current state variables
+     */
+    private double health;
+    private double shieldHealth;
+    private Robot attackTarget = null;
+    private int shotState = 0;
+    private int shieldCooldownState = 0;
+    private Point currentSpeed;
+    private String lastAction = "IDLE";
+    private Set<Entity> lastTargets = new HashSet<>(Collections.singletonList(this));
 
     public Robot(double x, double y, RobotType type, Player owner) {
         super(x, y, type.getSize(), type.getSpeed());
@@ -23,32 +51,28 @@ public class Robot extends Entity {
         health = maxHealth;
         shieldHealth = maxShieldHealth;
         currentSpeed = new Point();
+        setType(EntityType.ROBOT);
     }
 
-    /**
-     * current state variables
-     */
-    private double health;
-    private double shieldHealth;
-    private Robot attackTarget = null;
-    private int shotState = 0;
-    private int shieldCooldownState = 0;
-    private Point currentSpeed;
-    /**
-     * robot class parameters
-     */
-    private final double maxHealth;
-    private final double maxShieldHealth;
-    private final double[] shotRangeProb;
-    private final int bulletPerShot;  // number of bullet fired per frame
-    private final int aimTime;  // number of frame to aim
-    private final int shotTime;  // number of frame during the shot
-    private final double damagePerBullet;
-    private final int shieldRegenCooldown;
-    private final int shieldRegenDuration;
+    public Robot(Point pos, RobotType type, Player owner) {
+        super(pos, type.getSize(), type.getSpeed());
+        this.owner = owner;
+        maxHealth = type.getHealth();
+        maxShieldHealth = type.getShield();
+        shotRangeProb = type.getShotRangeProb();
+        bulletPerShot = type.getBulletPerShot();
+        aimTime = type.getAimTime();
+        shotTime = type.getShotTime();
+        damagePerBullet = type.getDamagePerBullet();
+        shieldRegenCooldown = type.getShieldRegenCooldown();
+        shieldRegenDuration = type.getShieldRegenDuration();
 
-    private final double shieldRegenPerFrame;
-    private final Player owner;
+        shieldRegenPerFrame = maxShieldHealth / shieldRegenDuration;
+        health = maxHealth;
+        shieldHealth = maxShieldHealth;
+        currentSpeed = new Point();
+        setType(EntityType.ROBOT);
+    }
 
     public double getHealth() {
         return health;
@@ -62,12 +86,12 @@ public class Robot extends Entity {
      * @param target : robot you shot at
      */
     public void ATTACK(Robot target) {
-        // TODO implement here
-        if (target != this.attackTarget || shotState == 0){
-            shotState = aimTime + shotTime -1;
+        lastAction = "ATTACK";
+        if (target != this.attackTarget || shotState == 0) {
+            shotState = aimTime + shotTime - 1;
         } else {
-            if (shotState <= aimTime){
-                for (int i = 0; i < bulletPerShot; i++){
+            if (shotState <= aimTime) {
+                for (int i = 0; i < bulletPerShot; i++) {
                     Bullet bullet = new Bullet(this, target,
                             owner.getRNG().nextDouble() < shotRangeProb[getRange(target)], damagePerBullet);
                     Bullet.bulletSet.add(bullet);
@@ -79,24 +103,25 @@ public class Robot extends Entity {
     /**
      * @param entities : entities the bot has to flee from
      */
-    public void FLEE(Set<Point> entities) {
-        Point target = getAveragePoint(entities);
-        updatePos(getDirection(target).multiply(-1), getSpeed()*Constants.DELTA_TIME);
+    public void FLEE(Set<Entity> entities) {
+        lastAction = "FLEE";
+        lastTargets = entities;
+        Set<Point> points = new HashSet<>(entities);
+        Point target = getAveragePoint(points);
+        updatePos(getDirection(target).multiply(-1), getSpeed() * Constants.DELTA_TIME);
         restAttack();
-
     }
 
-    private void restAttack(){
-        shotState = aimTime + shotTime;
-        attackTarget = null;
-    }
     /**
      * @param entities : entities the bot has to move to
      */
-    public void MOVE(Set<Point> entities) {
+    public void MOVE(Set<Entity> entities) {
+        lastAction = "MOVE";
+        lastTargets = entities;
+        Set<Point> points = new HashSet<>(entities);
         shotState = aimTime + shotTime;
-        Point target = getAveragePoint(entities);
-        double frameDist = Constants.DELTA_TIME*getSpeed();
+        Point target = getAveragePoint(points);
+        double frameDist = Constants.DELTA_TIME * getSpeed();
         if (getDist(target) >= frameDist) {
             Point dir = getDirection(target);
             updatePos(dir, frameDist);
@@ -105,7 +130,19 @@ public class Robot extends Entity {
         }
     }
 
+    public void IDLE() {
+        restAttack();
+        currentSpeed = new Point();
+        lastAction = "IDLE";
+        lastTargets.clear();
+        lastTargets.add(this);
+    }
 
+
+    private void restAttack() {
+        shotState = aimTime + shotTime;
+        attackTarget = null;
+    }
 
     public void updatePos(Point direction, double amount) {
         setXY(clampToMap(addPoint(direction.multiply(amount))));
@@ -121,7 +158,7 @@ public class Robot extends Entity {
             } else if (currentSpeed.isZero()) {
                 robot.updatePos(dir, getSize() + robot.getSize() - getDist(robot));
             } else if (robot.currentSpeed.isZero()) {
-                updatePos(dir, getDist(robot) -getSize() - robot.getSize());
+                updatePos(dir, getDist(robot) - getSize() - robot.getSize());
             }
             return true;
         } else {
@@ -159,4 +196,147 @@ public class Robot extends Entity {
         }
     }
 
+    public double getHealthRatio() {
+        return health / maxHealth;
+    }
+
+    public double getShieldRatio() {
+        return shieldHealth / maxShieldHealth;
+    }
+
+    @Override
+    public String giveInfo(int league, Robot asker, int distRank, Set<Robot> enemies) {
+        if (asker.equals(this)){
+            return getSelfSelfInfo(league);
+        }
+        String shieldComp, healthComp, totComp;
+        shieldComp = healthComp = totComp = "";
+        String id = getId() + "";
+        String type = asker.getTeam() == getTeam() ? "ALLY" : "ENEMY";
+        String distToAsker = getRange(asker) + "";
+        String distAskerRank = distRank + "";
+        if (league > 1) {
+            shieldComp = asker.compareShield(this) + "";
+            healthComp = asker.compareHealth(this) + "";
+            totComp = asker.compareTotal(this) + "";
+        }
+        return String.join(" ", id, type, distToAsker, distAskerRank,
+                shieldComp, healthComp, totComp);
+    }
+    @Override
+    public String getSelfInfo(int league, Set<Robot> enemies, int playerId) {
+        String healthRank, shieldRank, distEn, distEnRank, totalRank; //ok
+        String borderDist, borderDistRank;
+        healthRank = shieldRank = distEn = distEnRank = totalRank = "";
+        borderDist = borderDistRank ="";
+        String id = getId() + "";
+        String type = playerId == getTeam() ? "ALLY" : "ENEMY";
+        String appHealth = getApproximateHealth() + "";
+        String appShield = getApproximateShield() + "";
+        String actionWithTarg = getLastActionWithTarget();
+        if (league > 1) {
+            int acc = 3;
+            for (Robot enemy : enemies) {
+                acc = Math.min(acc, getRange(enemy));
+            }
+            distEn = "" + acc;
+            borderDist = getRange(getBoarderDist()) + "";
+        }
+        if (league > 2) {
+            healthRank = shieldRank = totalRank = borderDistRank = distEnRank = "%d";
+        }
+        return String.join(" ", id, type, appHealth, appShield, actionWithTarg,
+                distEn, borderDist,borderDistRank,distEnRank, healthRank, shieldRank, totalRank);
+    }
+
+    public String getSelfSelfInfo(int league) {
+        String shieldComp, healthComp, totComp;
+        shieldComp = healthComp = totComp = "";
+        String id = getId() + "";
+        String type = "SELF";
+        String distMe = "0";
+        String distMeRank = "1";
+        if (league > 1) {
+            shieldComp = healthComp = totComp = "0";
+        }
+        return String.join(" ", id, type, distMe, distMeRank,
+                shieldComp, healthComp, totComp);
+    }
+
+    public int getApproximateHealth() {
+        double hr = getHealthRatio();
+        if (hr < .25) {
+            return 0;
+        }
+        if (hr < .5) {
+            return 25;
+        }
+        if (hr < .75) {
+            return 50;
+        }
+        if (hr < 1) {
+            return 75;
+        }
+        return 100;
+    }
+
+    public int getApproximateShield() {
+        double sr = getShieldRatio();
+        if (sr < .01) {
+            return 0;
+        }
+        if (sr < .25) {
+            return 1;
+        }
+        if (sr < .5) {
+            return 25;
+        }
+        if (sr < .75) {
+            return 50;
+        }
+        if (sr < 1) {
+            return 75;
+        }
+        return 100;
+    }
+
+    public String getLastActionWithTarget() {
+        List<String> targets = new ArrayList<>();
+        for (Entity entity : lastTargets) {
+            targets.add(entity.getId() + "");
+        }
+        return lastAction + " " + String.join(";", targets);
+    }
+
+    public int compareHealth(Robot target){
+        if (target.health > this.health) {
+            return -1;
+        } else if (target.health == this.health){
+            return 0;
+        }
+        return 1;
+    }
+    public int compareShield(Robot target){
+        if (target.shieldHealth > this.shieldHealth) {
+            return -1;
+        } else if (target.shieldHealth == this.shieldHealth){
+            return 0;
+        }
+        return 1;
+    }
+    public int compareTotal(Robot target){
+        if (target.health + target.shieldHealth > this.health + this.shieldHealth) {
+            return -1;
+        } else if (target.health + target.shieldHealth == this.health + this.shieldHealth){
+            return 0;
+        }
+        return 1;
+    }
+
+    public Entity getClosestEntity (Set<Entity> entities) {
+        Set<Entity> entitySet = new HashSet<>(entities);
+        entitySet.remove(this);
+        Optional<Entity> res = entitySet.stream().min(Comparator.comparingDouble(this::getDist));
+        return res.orElse(null);
+    }
 }
