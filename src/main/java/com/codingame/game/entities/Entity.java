@@ -1,4 +1,8 @@
-package com.codingame.game;
+package com.codingame.game.entities;
+
+import com.codingame.game.CircularHitBox;
+import com.codingame.game.Constants;
+import com.codingame.game.Point;
 
 import java.util.Set;
 
@@ -46,6 +50,8 @@ public abstract class Entity extends CircularHitBox {
         id = Constants.GLOBAL_ID++;
     }
 
+
+
     private final int id;
     private EntityType type;
     private boolean isActive = true;
@@ -88,9 +94,9 @@ public abstract class Entity extends CircularHitBox {
         return Math.min(minX, minY);
     }
 
-    abstract String giveInfo(int league, Robot asker, int distRank, Set<Robot> enemies);
+    public abstract String giveInfo(int league, Robot asker, int distRank, Set<Robot> enemies);
 
-    abstract String getSelfInfo(int league, Set<Robot> enemies, int playerId);
+    public abstract String getSelfInfo(int league, Set<Robot> enemies, int playerId);
 
     public EntityType getType() { return type; }
 

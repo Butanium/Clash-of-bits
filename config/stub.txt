@@ -11,7 +11,7 @@ read entId:int entType:word(10) health:int shield:int action:word(20) targets:wo
 loop allyBotAlive
 loop totalEntities
 read entId:int entType:word(256) distMe:int distMeRank:int shieldComp:int healthComp:int totComp:int
-loop allyBotAlive write join("0", "MOVE", "4")
+write 0 MOVE 6;1 MOVE 5,6,7;2 IDLE;3 ATTACK 6
 
 STATEMENT
 Control your bots in order to destroy the enemy team !
@@ -34,7 +34,7 @@ borderDistRank : entity are sorted in ascending order based on their distance to
 shieldRank: entities are sorted in ascendant order based on their amount of shield
 healthRank: entities are sorted in ascendant order based on their amount of health, this is the rank of the current entity in the sorted list
 totalRank: entities are sorted in ascendant order based on their amount of health + shield
-distMe : approximate distance between the target and the current bot. Can be 0 to 4 for short, medium, long and out of range
+distMe : approximate distance between the target and the current bot. Can be 0 to 3 for short, medium, long and out of range
 distMeRank : entities are sorted by ascending order based on their distance to the current bot
 shieldComp: -1 if the entity has more shield than the current bot, 0 if it's equal, 1 if your bot as more shield
 healthComp: same as shieldComp but for the health

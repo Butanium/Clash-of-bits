@@ -1,4 +1,7 @@
-package com.codingame.game;
+package com.codingame.game.action;
+import com.codingame.game.entities.Entity;
+import com.codingame.game.entities.Robot;
+
 import java.util.*;
 
 public class Move extends Action{

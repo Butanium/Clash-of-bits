@@ -1,15 +1,18 @@
 package com.codingame.game;
 
+import com.codingame.game.entities.Robot;
+
 import java.util.*;
 
 /**
  * 
  */
 public class Bullet extends CircularHitBox {
-
+    private boolean hasExplode;
     public static Set<Bullet> bulletSet = new HashSet<>();
 
-    public Bullet(Point shooter, Robot target, boolean willHit, double damage) {
+
+    public Bullet(Robot shooter, Robot target, boolean willHit, double damage) {
         super(shooter, 0, Constants.BULLET_SPEED);
         this.target = target;
         if (willHit) {
@@ -20,8 +23,10 @@ public class Bullet extends CircularHitBox {
 
         this.willHit = willHit;
         this.damage = damage;
+        owner = shooter.getOwner();
     }
 
+    private final Player owner;
     private final Point end;
     private final Robot target;
     private static final Random random = new Random();
@@ -41,32 +46,34 @@ public class Bullet extends CircularHitBox {
 
     private final double damage;
 
-    /**
-     * @return false if the bullet reached his end position, else true
-     */
-    public boolean updatePos() {
+
+    public void updatePos() {
         if (willHit) {
             if (getDist(end) < Constants.DELTA_TIME * Constants.BULLET_SPEED + target.getSize()) {
-                target.takeDamage(damage);
-                return false;
+                target.takeDamage(damage,owner);
+                hasExplode = true;
             } else {
                 setXY(end.addPoint(this.multiply(-1)).normalize().
                         multiply(Constants.DELTA_TIME * Constants.BULLET_SPEED));
-                return true;
             }
         } else {
             move((end).multiply(Constants.DELTA_TIME * Constants.BULLET_SPEED));
-            if (isInsideMap()){
-                return true;
-            } else {
+            if (!isInsideMap()) {
                 setXY(clampToMap(this));
-                return false;
+                hasExplode = true;
             }
         }
 
+
+
+    }
+    public boolean isActive() {
+        return hasExplode;
     }
 
-
+    public Player getOwner() {
+        return owner;
+    }
 
 
 }

@@ -35,6 +35,7 @@ public class Point {
         return this.y;
     }
 
+    public double getMaxCoord() {return Math.max(x,y);}
     public void setX(double x) {
         this.x = x;
     }

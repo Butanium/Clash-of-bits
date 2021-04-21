@@ -15,7 +15,7 @@ while True:
         # health: the approximate entity health. Can be 0 | 25 | 50 | 75 | 100, 25 meaning that your life is >= 25% and < 50% of your max life
         # shield: the approximate entity shield. Can be 0 | 1 | 25 | 50 | 75 | 100, 1 meaning that your shield is >= 1% and < 25% of your max shield and 0 that you have no more shield left
         # action: action executed by the entity last turn
-        # targets: list of the targets id targeted by the robot last turn ("id1;id2;id3...") if the entity is a robot not idling, else -1
+        # targets: list of the targets id targeted by the robot last turn ("id1;id2;id3...") if the entity is a robot, else -1 (the target for IDLE is the robot itself)
         # border_dist: approximate distance between the entity and the closest border
         # border_dist_rank: entity are sorted in ascending order based on their distance to the closest border
         # dist_en_rank: entities are sorted by ascending order based on their distance to the closest enemy

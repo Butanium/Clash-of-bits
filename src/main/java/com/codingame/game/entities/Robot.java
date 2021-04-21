@@ -1,6 +1,6 @@
-package com.codingame.game;
+package com.codingame.game.entities;
 
-import org.apache.commons.lang3.NotImplementedException;
+import com.codingame.game.*;
 
 import java.util.*;
 
@@ -11,6 +11,7 @@ public class Robot extends Entity {
     /**
      * robot class parameters
      */
+    private final double spriteSize;
     private final double maxHealth;
     private final double maxShieldHealth;
     private final double[] shotRangeProb;
@@ -33,10 +34,12 @@ public class Robot extends Entity {
     private Point currentSpeed;
     private String lastAction = "IDLE";
     private Set<Entity> lastTargets = new HashSet<>(Collections.singletonList(this));
+    private String robotType;
 
     public Robot(double x, double y, RobotType type, Player owner) {
         super(x, y, type.getSize(), type.getSpeed());
         this.owner = owner;
+        spriteSize = type.getSpriteSize();
         maxHealth = type.getHealth();
         maxShieldHealth = type.getShield();
         shotRangeProb = type.getShotRangeProb();
@@ -46,17 +49,18 @@ public class Robot extends Entity {
         damagePerBullet = type.getDamagePerBullet();
         shieldRegenCooldown = type.getShieldRegenCooldown();
         shieldRegenDuration = type.getShieldRegenDuration();
-
         shieldRegenPerFrame = maxShieldHealth / shieldRegenDuration;
         health = maxHealth;
         shieldHealth = maxShieldHealth;
         currentSpeed = new Point();
         setType(EntityType.ROBOT);
+        robotType = type.toString();
     }
 
     public Robot(Point pos, RobotType type, Player owner) {
         super(pos, type.getSize(), type.getSpeed());
         this.owner = owner;
+        spriteSize = type.getSpriteSize();
         maxHealth = type.getHealth();
         maxShieldHealth = type.getShield();
         shotRangeProb = type.getShotRangeProb();
@@ -72,6 +76,8 @@ public class Robot extends Entity {
         shieldHealth = maxShieldHealth;
         currentSpeed = new Point();
         setType(EntityType.ROBOT);
+        robotType = type.toString();
+
     }
 
     public double getHealth() {
@@ -169,7 +175,10 @@ public class Robot extends Entity {
     /**
      * @param amount : amount of damage taken
      */
-    public void takeDamage(double amount) {
+    public void takeDamage(double amount, Player attacker) {
+        if (health <= 0) {
+            return;
+        }
         shieldCooldownState = shieldRegenCooldown;
         if (amount < shieldHealth) {
             shieldHealth -= amount;
@@ -178,6 +187,7 @@ public class Robot extends Entity {
             shieldHealth = 0;
             if (health <= 0) {
                 setActive(false);
+                attacker.setScore(attacker.getScore()+1);
             }
         }
     }
@@ -338,5 +348,17 @@ public class Robot extends Entity {
         entitySet.remove(this);
         Optional<Entity> res = entitySet.stream().min(Comparator.comparingDouble(this::getDist));
         return res.orElse(null);
+    }
+
+    public String getRobotType () {
+        return robotType;
+    }
+
+    public Player getOwner() {
+        return owner;
+    }
+
+    public double getSpriteSize() {
+        return spriteSize;
     }
 }

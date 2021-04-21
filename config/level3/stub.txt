@@ -11,7 +11,7 @@ read entId:int entType:word(10) health:int shield:int action:word(20) targets:wo
 loop allyBotAlive
 loop totalEntities
 read entId:int entType:word(256) distMe:int distMeRank:int shieldComp:int healthComp:int totComp:int
-loop allyBotAlive write join("0", "MOVE", "4")
+write "0 MOVE 5;1 MOVE 6;2 IDLE;3 ATTACK 6"
 
 STATEMENT
 Control your bots in order to destroy the enemy team !

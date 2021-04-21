@@ -5,14 +5,16 @@ import java.math.*;
 /**
  * Control your bots in order to destroy the enemy team !
  **/
+@SuppressWarnings("InfiniteLoopStatement")
 class Agent1 {
 
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
         int botPerPlayer = in.nextInt(); // the amount of bot you control
 
         // game loop
         while (true) {
+            StringBuilder result = new StringBuilder();
             int allyBotAlive = in.nextInt(); // the amount of your bot which are still alive
             int totalEntities = in.nextInt(); // the amount of entities in the arena
             System.err.printf("%d allybots, %d entities", allyBotAlive, totalEntities);
@@ -32,28 +34,34 @@ class Agent1 {
                 int totalRank = in.nextInt(); // entities are sorted in ascendant order based on their amount of health + shield
             }
             for (int i = 0; i < allyBotAlive; i++) {
+                int accRank = totalEntities;
+                int accId = 0;
+                int accDist = 0;
+                int selfId = 0;
                 for (int j = 0; j < totalEntities; j++) {
                     int entId = in.nextInt(); // the unique entity id
                     String entType = in.next(); // the entity type in a string. It can be SELF | ALLY | ENEMY
-                    int distMe = in.nextInt(); // approximate distance between the target and the current bot. Can be 0 to 4 for short, medium, long and out of range
+                    int distMe = in.nextInt(); // approximate distance between the target and the current bot. Can be 0 to 3 for short, medium, long and out of range
                     int distMeRank = in.nextInt(); // entities are sorted by ascending order based on their distance to the current bot
                     int shieldComp = in.nextInt(); // -1 if the entity has more shield than the current bot, 0 if it's equal, 1 if your bot as more shield
                     int healthComp = in.nextInt(); // same as shieldComp but for the health
                     int totComp = in.nextInt(); // same as shieldComp but based on the sum of health+shield
-                    if (i != 0) {continue;}
-                    String[] ranges = new String[]{"SHORT", "MEDIUM", "LONG", "OOR"};
-                    System.err.printf("id : %d, type : %s, distMe : %s, allComp 0 ? : %b%n",
-                            entId, entType, ranges[distMe],totComp == healthComp && healthComp == shieldComp && shieldComp == 0);
+                    if(entType.equals("ENEMY") && distMeRank<accRank) {
+                        accId = entId;
+                        accRank = distMeRank;
+                        accDist = distMe;
+                    }
+                    if (entType.equals("SELF")) {
+                        selfId = entId;
+                    }
+                }
+                if (accDist < 3) {
+                    result.append(selfId).append(" ATTACK ").append(accId).append(";");
+                }else {
+                    result.append(selfId).append(" MOVE ").append(accId).append(";");
                 }
             }
-//            for (int i = 0; i < allyBotAlive; i++) {
-//
-//                // Write an answer using System.out.println()
-//                // To debug: System.err.println("Debug messages...");
-//
-//                System.out.println("0 MOVE 4");
-//            }
-            System.out.println("0 MOVE 4");
+            System.out.println(result);
         }
     }
 }

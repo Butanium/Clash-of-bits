@@ -1,13 +1,14 @@
-package com.codingame.game;
+package com.codingame.game.entities;
 
 public enum RobotType {
-    ASSAULT(500, 300, 1.2,0.5, new double[]{0.95, 0.55, 0.15, 0}, 6, 4, 1
+    ASSAULT(500, 300, 1.2,0.5,2, new double[]{0.95, 0.55, 0.15, 0}, 6, 4, 1
             , 300, 12, 12);
 
     private final int maxHealth;
     private final int maxShield;
     private final double speed;
     private final double size;
+    private final double spriteSize;
     private final double[] shotRangeProb;
     private final int bulletPerShot;  // number of bullet fired per frame
     private final int aimTime;  // number of frame to aim
@@ -16,12 +17,14 @@ public enum RobotType {
     private final int shieldRegenCooldown;
     private final int shieldRegenDuration;
 
-    RobotType(int health, int shield, double speed, double size, double[] shotRangeProb, int bulletPerShot, int aimTime,
+
+    RobotType(int health, int shield, double speed, double size, double spriteSize,double[] shotRangeProb, int bulletPerShot, int aimTime,
               int shotTime, double damagePerBullet, int shieldRegenCooldown, int shieldRegenDuration) {
         this.maxHealth = health;
         this.maxShield = shield;
         this.speed = speed;
         this.size = size;
+        this.spriteSize = spriteSize;
         this.shotRangeProb = shotRangeProb;
         this.bulletPerShot = bulletPerShot;
         this.aimTime = aimTime;
@@ -73,5 +76,18 @@ public enum RobotType {
 
     public double getSize() {
         return size;
+    }
+
+    @Override
+    public String toString() {
+        switch (this){
+            case ASSAULT:
+                return "ASSAULT";
+        }
+        return "OTHER";
+    }
+
+    public double getSpriteSize() {
+        return spriteSize;
     }
 }
