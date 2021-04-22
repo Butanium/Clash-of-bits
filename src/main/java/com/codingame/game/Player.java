@@ -19,7 +19,7 @@ public class Player extends AbstractMultiplayerPlayer {
      */
     public Referee referee;
     private Random rng;
-    private Set<Robot> myRobots;
+
     /**
      *
      */

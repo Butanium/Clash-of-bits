@@ -1,5 +1,7 @@
 package com.codingame.game.entities;
 
+import java.util.Arrays;
+
 public enum RobotType {
     ASSAULT(5000, 3000, 1.2,0.5,2, new double[]{0.95, 0.55, 0.15, 0}, 3, 4, 2
             , 300, 12, 12);
@@ -86,6 +88,22 @@ public enum RobotType {
         }
         return "OTHER";
     }
+
+    public String infosToString() {
+        return "RobotType{" +
+                "maxHealth=" + maxHealth +
+                ", maxShield=" + maxShield +
+                ", speed=" + speed +
+                ", shotRangeProb=" + Arrays.toString(shotRangeProb) +
+                ", bulletPerShot=" + bulletPerShot +
+                ", aimTime=" + aimTime +
+                ", shotTime=" + shotTime +
+                ", damagePerBullet=" + damagePerBullet +
+                ", shieldRegenCooldown=" + shieldRegenCooldown +
+                ", shieldRegenDuration=" + shieldRegenDuration +
+                '}';
+    }
+
 
     public double getSpriteSize() {
         return spriteSize;

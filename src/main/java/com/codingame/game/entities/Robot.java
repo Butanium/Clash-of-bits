@@ -193,12 +193,17 @@ public class Robot extends InGameEntity {
                 setActive(false);
                 attacker.setScore(attacker.getScore() + 1);
                 Referee.debug(String.format("%d robot got destroyed", getId()));
+
             }
         }
     }
 
     public int getTeam() {
         return owner.getIndex();
+    }
+
+    public Player getPlayer () {
+        return owner;
     }
 
     public void updateShield() {

@@ -19,16 +19,15 @@ public class Referee extends AbstractReferee {
     private final Set<Robot> robotSet = new HashSet<>();
     private final Set<Bullet> bullets = new HashSet<>();
     private final Map<Integer, Set<Robot>> playersTeam = new HashMap<>();
+
     public Set<forcefield> forceFields = new HashSet<>();
     public Set<healthPack> healthPacks = new HashSet<>();
-
+    @Inject
+    ViewportModule viewportModule;
     @Inject
     private MultiplayerGameManager<Player> gameManager;
     @Inject
     private GraphicEntityModule graphicEntityModule;
-    @Inject
-    ViewportModule viewportModule;
-
     private int botCount;
     private ViewManager viewManager;
 
@@ -36,6 +35,7 @@ public class Referee extends AbstractReferee {
         System.out.println(message);
     }
 
+    // public void addToGameSummary(String message) {gameManager.addToGameSummary(message);}
     @Override
     public void init() {
         long seed = gameManager.getSeed();
@@ -55,14 +55,16 @@ public class Referee extends AbstractReferee {
         viewManager = new ViewManager(graphicEntityModule, viewportGroup);
         viewManager.init(robotSet);
         viewportModule.createViewport(viewportGroup);
-        gameManager.setFrameDuration((int) (Constants.DELTA_TIME * 1000 /2));
+        gameManager.setFrameDuration((int) (Constants.DELTA_TIME * 1000 / 2));
         gameManager.setMaxTurns(30000 / 50 / 2);
         gameManager.setTurnMaxTime(50);
-        gameManager.setFirstTurnMaxTime(50);
+        gameManager.setFirstTurnMaxTime(1000);
     }
 
     @Override
     public void gameTurn(int turn) {
+        System.out.printf("p1 : %d, p2 : %d\n", gameManager.getPlayers().get(0).getScore(),
+                gameManager.getPlayers().get(1).getScore());
         destroyBots();
         boolean isFinish = false;
         for (int key : playersTeam.keySet()) {
@@ -88,7 +90,12 @@ public class Referee extends AbstractReferee {
                 List<String> outputs = player.getOutputs();
                 String output = outputs.get(0);
                 String[] orders = output.split(";");
+                if (output.equals("")) {
+                    continue;
+                }
+                Set<Integer> executingRobots = new HashSet<>();
                 for (String order : orders) {
+
                     String[] splitedOrder = order.split(" ");
                     if (splitedOrder.length < 2) {
                         player.deactivate(String.format("%s is not a proper action !", order));
@@ -196,19 +203,24 @@ public class Referee extends AbstractReferee {
                 player.setScore(-1);
             }
         }
-        actionList.sort(Comparator.comparingInt(Action::getPriority));
+        actionList.sort(Comparator.comparingInt(Action::getPriority).thenComparingInt(a -> a.getExecutor().getId()));
         Collections.reverse(actionList);
         Set<Robot> updatedBots = new HashSet<>();
         for (Action action : actionList) {
-            action.performAction();
-            updatedBots.add(action.getExecutor());
+            if (updatedBots.add(action.getExecutor())) {
+                action.performAction();
+            } else {
+                Player player = action.getExecutor().getPlayer();
+                player.deactivate(String.format("$%d tried to perform 2 action in the same turn for robot %d",
+                                player.getIndex(), action.getExecutor().getId()));
+            }
         }
         for (Robot robot : robotSet) {
             if (!updatedBots.contains(robot)) {
                 robot.IDLE();
             }
         }
-       // System.out.printf("%d bullets on the map", Bullet.bulletSet.size());
+        // System.out.printf("%d bullets on the map", Bullet.bulletSet.size());
         Bullet.bulletSet.removeIf(bullet -> bullet.updatePos(viewManager));
         for (Robot robot : robotSet) {
             robot.updateShield();

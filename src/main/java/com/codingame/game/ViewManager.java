@@ -108,7 +108,7 @@ public class ViewManager {
                     .setWidth(Constants.HEALTH_BAR_WIDTH).setHeight(Constants.HEALTH_BAR_HEIGHT);
             Group group = graphicEntityModule.createGroup(graphicEntityModule.createRectangle().setFillColor(0x777777).setAlpha(.5)
                     .setWidth(Constants.HEALTH_BAR_WIDTH).setHeight(Constants.HEALTH_BAR_HEIGHT), bar);
-            for (int i = 0; i < 4; i++) {
+            for (int i = 0; i < 5; i++) {
                 group.add(graphicEntityModule.createRectangle().setHeight(Constants.HEALTH_BAR_HEIGHT).setWidth(2)
                         .setX(group.getX() + i * Constants.HEALTH_BAR_WIDTH / 4).setFillColor(0).setAlpha(0.5));
             }
