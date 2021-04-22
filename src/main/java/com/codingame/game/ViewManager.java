@@ -44,7 +44,7 @@ public class ViewManager {
                 .setHeight(coordToScreen(Constants.MAP_SIZE.getX()), Curve.IMMEDIATE)
                 .setWidth(coordToScreen(Constants.MAP_SIZE.getY()), Curve.IMMEDIATE)
                 .setX(0).setY(0).setLineWidth(coordToScreen(0.5))
-                .setLineColor(0x00FF00).setFillAlpha(1).setFillColor(0x9B9B9B));
+                .setLineColor(Constants.WALL_COLOR).setFillAlpha(1).setFillColor(Constants.BACKGROUND_COLOR));
         for (Robot robot : robots) {
             viewParts.add(new RobotSprite(robot));
         }

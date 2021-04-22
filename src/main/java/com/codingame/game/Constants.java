@@ -15,7 +15,8 @@ public class Constants {
     public static final double BULLET_SIZE = 0.1;
     public static final int HEALTH_BAR_WIDTH = 20;
     public static final int HEALTH_BAR_HEIGHT = 5;
-    public static final int BACKGROUND_COLOR = 0x444444;
+    public static final int BACKGROUND_COLOR = 0x9B9B9B;
     public static final int NEON_SHIFT = 30;
+    public static final int WALL_COLOR = 0x030056;
 
 }

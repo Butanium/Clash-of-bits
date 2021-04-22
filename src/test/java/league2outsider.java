@@ -5,7 +5,7 @@ import java.math.*;
 /**
  * Control your bots in order to destroy the enemy team !
  **/
-class Player {
+class league2outsider {
 
     public static void main(String args[]) {
         Scanner in = new Scanner(System.in);
@@ -13,8 +13,6 @@ class Player {
 
         // game loop
         while (true) {
-            Map<Integer, Set<Integer>> attackersMap = new HashMap<>();
-
             Map<Integer, Integer> shieldMap = new HashMap<>();
             StringBuilder result = new StringBuilder();
             int allyBotAlive = in.nextInt(); // the amount of your bot which are still alive
@@ -29,18 +27,12 @@ class Player {
                 int distEn = in.nextInt();
                 int borderDist = in.nextInt(); // approximate distance between the gameEntity and the closest border
                 shieldMap.put(entId, shield);
-                if (action.equals("ATTACK")) {
-                    Set<Integer> r = attackersMap.getOrDefault(Integer.parseInt(targets), new HashSet<>());
-                    r.add(entId);
-                    attackersMap.put(Integer.parseInt(targets), r);
-                }
             }
             for (int i = 0; i < allyBotAlive; i++) {
                 int accRank = totalEntities;
                 int accId = 0;
                 int accDist = 0;
                 int selfId = 0;
-                int accPrio = -1;
                 for (int j = 0; j < totalEntities; j++) {
                     int entId = in.nextInt(); // the unique gameEntity id
                     String entType = in.next(); // the gameEntity type in a string. It can be SELF | ALLY | ENEMY
@@ -49,7 +41,6 @@ class Player {
                     int shieldComp = in.nextInt(); // -1 if the gameEntity has more shield than the current bot, 0 if it's equal, 1 if your bot as more shield
                     int healthComp = in.nextInt(); // same as shieldComp but for the health
                     int totComp = in.nextInt(); // same as shieldComp but based on the sum of health+shield
-
                     if (entType.equals("ENEMY") && distMeRank < accRank) {
                         accId = entId;
                         accRank = distMeRank;
@@ -58,20 +49,12 @@ class Player {
                     if (entType.equals("SELF")) {
                         selfId = entId;
                     }
-                    if (totComp == 1) {
-                        Set<Integer> s = attackersMap.getOrDefault(selfId, new HashSet<>());
-                        s.remove(entId);
-                        attackersMap.put(selfId, s);
-                    }
-                    if (shieldMap.get(entId) < 25 && distMe < 3 && entType.equals("ENEMY")) {
-                        accPrio = entId;
-                    }
                 }
-                if (shieldMap.get(selfId) <= 25 && attackersMap.getOrDefault(selfId, new HashSet<>()).size() > 0){
+                if (shieldMap.get(selfId) == 0){
                     result.append(selfId).append(" FLEE ").append(accId).append(";");
                 }
-                else if (accDist < 2 || shieldMap.get(selfId) <= 50 || accPrio >= 0) {
-                    result.append(selfId).append(" ATTACK ").append(accPrio >= 0 ? accPrio : accId).append(";");
+                else if (accDist < 3) {
+                    result.append(selfId).append(" ATTACK ").append(accId).append(";");
                 } else {
                     result.append(selfId).append(" MOVE ").append(accId).append(";");
                 }

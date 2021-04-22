@@ -5,7 +5,7 @@ import java.math.*;
 /**
  * Control your bots in order to destroy the enemy team !
  **/
-class Player {
+class boss2 {
 
     public static void main(String args[]) {
         Scanner in = new Scanner(System.in);
@@ -64,7 +64,7 @@ class Player {
                         attackersMap.put(selfId, s);
                     }
                     if (shieldMap.get(entId) < 25 && distMe < 3 && entType.equals("ENEMY")) {
-                        accPrio = entId;
+                       accPrio = entId;
                     }
                 }
                 if (shieldMap.get(selfId) <= 25 && attackersMap.getOrDefault(selfId, new HashSet<>()).size() > 0){
