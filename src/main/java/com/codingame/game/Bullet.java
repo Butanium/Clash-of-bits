@@ -10,7 +10,7 @@ import java.util.*;
 public class Bullet extends CircularHitBox {
     private boolean hasExplode;
     public static Set<Bullet> bulletSet = new HashSet<>();
-
+    private boolean isInstanced = false;
 
     public Bullet(Robot shooter, Robot target, boolean willHit, double damage) {
         super(shooter, 0, Constants.BULLET_SPEED);
@@ -47,33 +47,41 @@ public class Bullet extends CircularHitBox {
     private final double damage;
 
 
-    public void updatePos() {
+    public boolean updatePos(ViewManager viewManager) {
+        //Referee.debug(String.format("bullet fired at %f, %f ",getX(),getY()));
+        if (!isInstanced) {
+            viewManager.instantiateBullet(this);
+            isInstanced = true;
+        }
         if (willHit) {
             if (getDist(end) < Constants.DELTA_TIME * Constants.BULLET_SPEED + target.getSize()) {
                 target.takeDamage(damage,owner);
                 hasExplode = true;
+                setXY(target);
+                return true;
             } else {
-                setXY(end.addPoint(this.multiply(-1)).normalize().
-                        multiply(Constants.DELTA_TIME * Constants.BULLET_SPEED));
+                setXY(this.addPoint(end.addPoint(this.multiply(-1)).normalize().
+                        multiply(Constants.DELTA_TIME * Constants.BULLET_SPEED)));
             }
         } else {
             move((end).multiply(Constants.DELTA_TIME * Constants.BULLET_SPEED));
             if (!isInsideMap()) {
                 setXY(clampToMap(this));
                 hasExplode = true;
+                return true;
+                //Referee.debug(String.format("ball hit at : %f, %f", getX(), getY()));
             }
         }
-
-
-
+        return false;
     }
     public boolean isActive() {
-        return hasExplode;
+        return !hasExplode;
     }
 
     public Player getOwner() {
         return owner;
     }
+
 
 
 }

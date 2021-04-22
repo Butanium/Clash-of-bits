@@ -1,7 +1,7 @@
 package com.codingame.game.entities;
 
 public enum RobotType {
-    ASSAULT(500, 300, 1.2,0.5,2, new double[]{0.95, 0.55, 0.15, 0}, 6, 4, 1
+    ASSAULT(5000, 3000, 1.2,0.5,2, new double[]{0.95, 0.55, 0.15, 0}, 3, 4, 2
             , 300, 12, 12);
 
     private final int maxHealth;

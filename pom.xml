@@ -29,6 +29,12 @@
             <groupId>com.codingame.gameengine</groupId>
             <artifactId>runner</artifactId>
             <version>${gamengine.version}</version>
+
+        </dependency>
+        <dependency>
+            <groupId>com.codingame.gameengine</groupId>
+            <artifactId>module-viewport</artifactId>
+            <version>${gamengine.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jetbrains</groupId>

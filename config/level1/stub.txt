@@ -10,7 +10,7 @@ read entId:int entType:word(10) health:int shield:int action:word(20) targets:wo
 loop allyBotAlive
 loop totalEntities
 read entId:int entType:word(256) distMe:int distMeRank:int
-loop allyBotAlive write join("0", "MOVE", "4")
+write 0 MOVE 5;1 MOVE 6;2 IDLE;3 ATTACK 6
 
 STATEMENT
 Control your bots in order to destroy the enemy team !
@@ -19,23 +19,23 @@ INPUT
 botPerPlayer: the amount of bot you control
 allyBotAlive: the amount of your bot which are still alive
 totalEntities : the amount of entities in the arena
-entId: the unique entity id, stay the same for the whole game
-entId: the unique entity id
-entType: the entity type in a string. It can be ALLY | ENEMY
-entType: the entity type in a string. It can be SELF | ALLY | ENEMY
-health: the approximate entity health. Can be 0 | 25 | 50 | 75 | 100, 25 meaning that your life is >= 25% and < 50% of your max life
-shield : the approximate entity shield. Can be 0 | 1 | 25 | 50 | 75 | 100, 1 meaning that your shield is >= 1% and < 25% of your max shield and 0 that you have no more shield left
-action: action executed by the entity last turn
-targets: list of the targets id targeted by the robot last turn ("id1;id2;id3...") if the entity is a robot, else -1 (the target for IDLE is the robot itself)
+entId: the unique gameEntity id, stay the same for the whole game
+entId: the unique gameEntity id
+entType: the gameEntity type in a string. It can be ALLY | ENEMY
+entType: the gameEntity type in a string. It can be SELF | ALLY | ENEMY
+health: the approximate gameEntity health. Can be 0 | 25 | 50 | 75 | 100, 25 meaning that your life is >= 25% and < 50% of your max life
+shield : the approximate gameEntity shield. Can be 0 | 1 | 25 | 50 | 75 | 100, 1 meaning that your shield is >= 1% and < 25% of your max shield and 0 that you have no more shield left
+action: action executed by the gameEntity last turn
+targets: list of the targets id targeted by the robot last turn ("id1;id2;id3...") if the gameEntity is a robot, else -1 (the target for IDLE is the robot itself)
 distEnRank : entities are sorted by ascending order based on their distance to the closest enemy
-borderDist : approximate distance between the entity and the closest border
-borderDistRank : entity are sorted in ascending order based on their distance to the closest border
+borderDist : approximate distance between the gameEntity and the closest border
+borderDistRank : gameEntity are sorted in ascending order based on their distance to the closest border
 shieldRank: entities are sorted in ascendant order based on their amount of shield
-healthRank: entities are sorted in ascendant order based on their amount of health, this is the rank of the current entity in the sorted list
+healthRank: entities are sorted in ascendant order based on their amount of health, this is the rank of the current gameEntity in the sorted list
 totalRank: entities are sorted in ascendant order based on their amount of health + shield
 distMe : approximate distance between the target and the current bot. Can be 0 to 4 for short, medium, long and out of range
 distMeRank : entities are sorted by ascending order based on their distance to the current bot
-shieldComp: -1 if the entity has more shield than the current bot, 0 if it's equal, 1 if your bot as more shield
+shieldComp: -1 if the gameEntity has more shield than the current bot, 0 if it's equal, 1 if your bot as more shield
 healthComp: same as shieldComp but for the health
 totComp: same as shieldComp but based on the sum of health+shield
 OUTPUT

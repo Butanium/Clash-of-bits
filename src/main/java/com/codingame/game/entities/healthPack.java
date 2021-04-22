@@ -1,14 +1,11 @@
 package com.codingame.game.entities;
 
-import com.codingame.game.entities.Entity;
-import com.codingame.game.entities.Robot;
-
 import java.util.Set;
 
 /**
  * 
  */
-public class healthPack extends Entity {
+public class healthPack extends InGameEntity {
 
     /**
      * Default constructor

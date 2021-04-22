@@ -69,7 +69,7 @@
 											"top": 1527,
 											"width": 176.26171875,
 											"height": 13,
-											"text": "com.codingame.game.entities.Entity"
+											"text": "com.codingame.game.entities.GameEntity"
 										},
 										{
 											"_type": "LabelView",
@@ -863,7 +863,7 @@
 											"top": 1339,
 											"width": 313.94873046875,
 											"height": 13,
-											"text": "+move(entity: ArrayList<com.codingame.game.Point>)",
+											"text": "+move(gameEntity: ArrayList<com.codingame.game.Point>)",
 											"horizontalAlignment": 0
 										},
 										{
@@ -883,7 +883,7 @@
 											"top": 1354,
 											"width": 313.94873046875,
 											"height": 13,
-											"text": "+flee(entity: ArrayList<com.codingame.game.Point>)",
+											"text": "+flee(gameEntity: ArrayList<com.codingame.game.Point>)",
 											"horizontalAlignment": 0
 										},
 										{
@@ -2606,7 +2606,7 @@
 											"top": 830,
 											"width": 273.5078125,
 											"height": 13,
-											"text": "+getEntity(id: int): com.codingame.game.entities.Entity",
+											"text": "+getEntity(id: int): com.codingame.game.entities.GameEntity",
 											"horizontalAlignment": 0
 										}
 									],
@@ -5328,7 +5328,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "com.codingame.game.entities.Entity",
+					"name": "com.codingame.game.entities.GameEntity",
 					"ownedElements": [
 						{
 							"_type": "UMLGeneralization",
@@ -5716,7 +5716,7 @@
 									"_parent": {
 										"$ref": "AAAAAAF40pkXQf5Rk6E="
 									},
-									"name": "entity",
+									"name": "gameEntity",
 									"type": "ArrayList<com.codingame.game.Point>"
 								}
 							]
@@ -5735,7 +5735,7 @@
 									"_parent": {
 										"$ref": "AAAAAAF40poFUf6e1EQ="
 									},
-									"name": "entity",
+									"name": "gameEntity",
 									"type": "ArrayList<com.codingame.game.Point>"
 								}
 							]

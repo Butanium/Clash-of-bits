@@ -141,4 +141,8 @@ public class Point {
     public Point orthogonal(){
         return new Point(y, -x);
     }
+
+    public double getRotation() {
+        return Math.atan2(y, x);
+    }
 }

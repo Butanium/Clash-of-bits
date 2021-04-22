@@ -1,14 +1,11 @@
 package com.codingame.game.entities;
 
-import com.codingame.game.entities.Entity;
-import com.codingame.game.entities.Robot;
-
 import java.util.Set;
 
 /**
  * 
  */
-public class forcefield extends Entity {
+public class forcefield extends InGameEntity {
 
     /**
      * Default constructor

@@ -9,43 +9,43 @@ import java.util.Set;
 /**
  *
  */
-public abstract class Entity extends CircularHitBox {
+public abstract class InGameEntity extends CircularHitBox {
 
     /**
      * Default constructor
      */
-    public Entity(double x, double y) {
+    public InGameEntity(double x, double y) {
         super(x, y);
         this.id = Constants.GLOBAL_ID;
         Constants.GLOBAL_ID++;
     }
 
-    public Entity() {
+    public InGameEntity() {
         this.id = Constants.GLOBAL_ID;
         Constants.GLOBAL_ID++;
     }
 
-    public Entity(double x, double y, double size) {
+    public InGameEntity(double x, double y, double size) {
         super(x, y, size);
         id = Constants.GLOBAL_ID++;
     }
 
-    public Entity(double x, double y, double size, double speed) {
+    public InGameEntity(double x, double y, double size, double speed) {
         super(x, y, size, speed);
         id = Constants.GLOBAL_ID++;
     }
 
-    public Entity(Point pt) {
+    public InGameEntity(Point pt) {
         super(pt);
         id = Constants.GLOBAL_ID++;
     }
 
-    public Entity(Point pt, double size) {
+    public InGameEntity(Point pt, double size) {
         super(pt, size);
         id = Constants.GLOBAL_ID++;
     }
 
-    public Entity(Point pt, double size, double speed) {
+    public InGameEntity(Point pt, double size, double speed) {
         super(pt, size, speed);
         id = Constants.GLOBAL_ID++;
     }
@@ -68,8 +68,8 @@ public abstract class Entity extends CircularHitBox {
         this.isActive = a;
     }
 
-    public boolean equals(Entity entity) {
-        return id == entity.getId();
+    public boolean equals(InGameEntity gameEntity) {
+        return id == gameEntity.getId();
     }
 
     public int getRange(Point point) {

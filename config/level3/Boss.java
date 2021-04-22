@@ -1,12 +1,11 @@
 import java.util.*;
-import java.io.*;
-import java.math.*;
+import java.util.stream.Collectors;
 
 /**
  * Control your bots in order to destroy the enemy team !
  **/
 @SuppressWarnings("InfiniteLoopStatement")
-class Agent2 {
+class Boss {
 
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
@@ -19,7 +18,8 @@ class Agent2 {
             int totalEntities = in.nextInt(); // the amount of entities in the arena
             System.err.printf("%d allybots, %d entities", allyBotAlive, totalEntities);
             Map<Integer, Integer> shieldMap = new HashMap<>();
-            Map<Integer, Integer> attackMap = new HashMap<>();
+            Map<Integer, Integer> shieldRankings = new HashMap<>();
+            Map<Integer, Set<Integer>> attackersMap = new HashMap<>();
             for (int i = 0; i < totalEntities; i++) {
                 int entId = in.nextInt(); // the unique entity id, stay the same for the whole game
                 String entType = in.next(); // the entity type in a string. It can be ALLY | ENEMY
@@ -35,14 +35,21 @@ class Agent2 {
                 int shieldRank = in.nextInt(); // entities are sorted in ascendant order based on their amount of shield
                 int totalRank = in.nextInt(); // entities are sorted in ascendant order based on their amount of health + shield
                 shieldMap.put(entId, shield);
-                attackMap.put(entId, attackMap.getOrDefault(entId, 0) + 1);
+                shieldRankings.put(entId, shieldRank);
+                if (action.equals("ATTACK")) {
+                    Set<Integer> r = attackersMap.getOrDefault(Integer.parseInt(targets), new HashSet<>());
+                    r.add(entId);
+                    attackersMap.put(Integer.parseInt(targets), r);
+                }
+
 
             }
             for (int i = 0; i < allyBotAlive; i++) {
                 int accRank = totalEntities;
                 int accId = 0;
-                int accDist = 0;
+                int accDist = 3;
                 int selfId = 0;
+                int accShieldRank = totalEntities;
                 for (int j = 0; j < totalEntities; j++) {
                     int entId = in.nextInt(); // the unique entity id
                     String entType = in.next(); // the entity type in a string. It can be SELF | ALLY | ENEMY
@@ -51,19 +58,22 @@ class Agent2 {
                     int shieldComp = in.nextInt(); // -1 if the entity has more shield than the current bot, 0 if it's equal, 1 if your bot as more shield
                     int healthComp = in.nextInt(); // same as shieldComp but for the health
                     int totComp = in.nextInt(); // same as shieldComp but based on the sum of health+shield
-                    if (entType.equals("ENEMY") && distMeRank < accRank) {
-                        accId = entId;
-                        accRank = distMeRank;
-                        accDist = distMe;
+                    if (entType.equals("ENEMY") && shieldRankings.get(entId) <= accShieldRank) {
+                        if (accDist >= distMe) {
+                            accId = entId;
+                            accShieldRank = shieldRankings.get(entId);
+                            accDist = distMe;
+                        }
                     }
                     if (entType.equals("SELF")) {
-                        selfId = entId;
+                            selfId = entId;
                     }
                 }
-                if (shieldMap.get(selfId) <= 25 && accDist < 3 && attackMap.getOrDefault(selfId, 0) > 0) {
-                    result.append(selfId).append(" FLEE ").append(accId).append(";");
+                if (shieldMap.get(selfId) <= 1 && accDist < 3 && attackersMap.getOrDefault(selfId, new HashSet<>()).size() > 0) {
+                    result.append(selfId).append(" FLEE ").append(String.join(",", attackersMap.get(selfId).stream()
+                            .map(String::valueOf).collect(Collectors.toSet()))).append(";");
                 } else if (accDist < 2 || accDist < 3 &&
-                        (attackMap.getOrDefault(selfId, 0) > 0 || shieldMap.get(selfId) <= 50)) {
+                        (attackersMap.getOrDefault(selfId, new HashSet<>()).size() > 0 || shieldMap.get(selfId) <= 50)) {
                     result.append(selfId).append(" ATTACK ").append(accId).append(";");
                 } else {
                     result.append(selfId).append(" MOVE ").append(accId).append(";");

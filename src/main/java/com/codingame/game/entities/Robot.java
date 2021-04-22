@@ -5,7 +5,7 @@ import com.codingame.game.*;
 import java.util.*;
 
 
-public class Robot extends Entity {
+public class Robot extends InGameEntity {
 
 
     /**
@@ -33,8 +33,8 @@ public class Robot extends Entity {
     private int shieldCooldownState = 0;
     private Point currentSpeed;
     private String lastAction = "IDLE";
-    private Set<Entity> lastTargets = new HashSet<>(Collections.singletonList(this));
-    private String robotType;
+    private Set<InGameEntity> lastTargets = new HashSet<>(Collections.singletonList(this));
+    private final String robotType;
 
     public Robot(double x, double y, RobotType type, Player owner) {
         super(x, y, type.getSize(), type.getSpeed());
@@ -94,9 +94,9 @@ public class Robot extends Entity {
     public void ATTACK(Robot target) {
         lastAction = "ATTACK";
         if (target != this.attackTarget || shotState == 0) {
-            shotState = aimTime + shotTime - 1;
+            shotState = aimTime + shotTime;
         } else {
-            if (shotState <= aimTime) {
+            if (shotState <= shotTime) {
                 for (int i = 0; i < bulletPerShot; i++) {
                     Bullet bullet = new Bullet(this, target,
                             owner.getRNG().nextDouble() < shotRangeProb[getRange(target)], damagePerBullet);
@@ -104,12 +104,16 @@ public class Robot extends Entity {
                 }
             }
         }
+        attackTarget = target;
+        lastTargets.clear();
+        lastTargets.add(target);
+        shotState = shotState > 0 ? shotState - 1 : aimTime + shotTime;
     }
 
     /**
      * @param entities : entities the bot has to flee from
      */
-    public void FLEE(Set<Entity> entities) {
+    public void FLEE(Set<InGameEntity> entities) {
         lastAction = "FLEE";
         lastTargets = entities;
         Set<Point> points = new HashSet<>(entities);
@@ -121,7 +125,7 @@ public class Robot extends Entity {
     /**
      * @param entities : entities the bot has to move to
      */
-    public void MOVE(Set<Entity> entities) {
+    public void MOVE(Set<InGameEntity> entities) {
         lastAction = "MOVE";
         lastTargets = entities;
         Set<Point> points = new HashSet<>(entities);
@@ -187,7 +191,8 @@ public class Robot extends Entity {
             shieldHealth = 0;
             if (health <= 0) {
                 setActive(false);
-                attacker.setScore(attacker.getScore()+1);
+                attacker.setScore(attacker.getScore() + 1);
+                Referee.debug(String.format("%d robot got destroyed", getId()));
             }
         }
     }
@@ -216,7 +221,7 @@ public class Robot extends Entity {
 
     @Override
     public String giveInfo(int league, Robot asker, int distRank, Set<Robot> enemies) {
-        if (asker.equals(this)){
+        if (asker.equals(this)) {
             return getSelfSelfInfo(league);
         }
         String shieldComp, healthComp, totComp;
@@ -233,12 +238,13 @@ public class Robot extends Entity {
         return String.join(" ", id, type, distToAsker, distAskerRank,
                 shieldComp, healthComp, totComp);
     }
+
     @Override
     public String getSelfInfo(int league, Set<Robot> enemies, int playerId) {
         String healthRank, shieldRank, distEn, distEnRank, totalRank; //ok
         String borderDist, borderDistRank;
         healthRank = shieldRank = distEn = distEnRank = totalRank = "";
-        borderDist = borderDistRank ="";
+        borderDist = borderDistRank = "";
         String id = getId() + "";
         String type = playerId == getTeam() ? "ALLY" : "ENEMY";
         String appHealth = getApproximateHealth() + "";
@@ -256,7 +262,7 @@ public class Robot extends Entity {
             healthRank = shieldRank = totalRank = borderDistRank = distEnRank = "%d";
         }
         return String.join(" ", id, type, appHealth, appShield, actionWithTarg,
-                distEn, borderDist,borderDistRank,distEnRank, healthRank, shieldRank, totalRank);
+                distEn, borderDist, borderDistRank, distEnRank, healthRank, shieldRank, totalRank);
     }
 
     public String getSelfSelfInfo(int league) {
@@ -312,45 +318,47 @@ public class Robot extends Entity {
 
     public String getLastActionWithTarget() {
         List<String> targets = new ArrayList<>();
-        for (Entity entity : lastTargets) {
-            targets.add(entity.getId() + "");
+        for (InGameEntity InGameEntity : lastTargets) {
+            targets.add(InGameEntity.getId() + "");
         }
         return lastAction + " " + String.join(";", targets);
     }
 
-    public int compareHealth(Robot target){
+    public int compareHealth(Robot target) {
         if (target.health > this.health) {
             return -1;
-        } else if (target.health == this.health){
-            return 0;
-        }
-        return 1;
-    }
-    public int compareShield(Robot target){
-        if (target.shieldHealth > this.shieldHealth) {
-            return -1;
-        } else if (target.shieldHealth == this.shieldHealth){
-            return 0;
-        }
-        return 1;
-    }
-    public int compareTotal(Robot target){
-        if (target.health + target.shieldHealth > this.health + this.shieldHealth) {
-            return -1;
-        } else if (target.health + target.shieldHealth == this.health + this.shieldHealth){
+        } else if (target.health == this.health) {
             return 0;
         }
         return 1;
     }
 
-    public Entity getClosestEntity (Set<Entity> entities) {
-        Set<Entity> entitySet = new HashSet<>(entities);
-        entitySet.remove(this);
-        Optional<Entity> res = entitySet.stream().min(Comparator.comparingDouble(this::getDist));
+    public int compareShield(Robot target) {
+        if (target.shieldHealth > this.shieldHealth) {
+            return -1;
+        } else if (target.shieldHealth == this.shieldHealth) {
+            return 0;
+        }
+        return 1;
+    }
+
+    public int compareTotal(Robot target) {
+        if (target.health + target.shieldHealth > this.health + this.shieldHealth) {
+            return -1;
+        } else if (target.health + target.shieldHealth == this.health + this.shieldHealth) {
+            return 0;
+        }
+        return 1;
+    }
+
+    public InGameEntity getClosestEntity(Set<InGameEntity> entities) {
+        Set<InGameEntity> InGameEntitySet = new HashSet<>(entities);
+        InGameEntitySet.remove(this);
+        Optional<InGameEntity> res = InGameEntitySet.stream().min(Comparator.comparingDouble(this::getDist));
         return res.orElse(null);
     }
 
-    public String getRobotType () {
+    public String getRobotType() {
         return robotType;
     }
 
@@ -360,5 +368,9 @@ public class Robot extends Entity {
 
     public double getSpriteSize() {
         return spriteSize;
+    }
+
+    public Set<Point> getTargets() {
+        return new HashSet<>(lastTargets);
     }
 }
