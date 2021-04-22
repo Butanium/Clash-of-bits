@@ -30,16 +30,16 @@
             <div class="statement-rules-content">You begin the game with certain amount of bots<br>
                 A lot of information are distance between entities. The game use 4 different <b>range</b> :
                 <ul>
-                    <li>Short range (dist <= 3)</li>
+                    <li>Short range (dist <= <const>3 m</const>)</li>
                 </ul>
                 <ul>
-                    <li>Medium range (3 < dist <= 8)</li>
+                    <li>Medium range (<const>3 m</const>  < dist <= <const>8 m</const>)</li>
                 </ul>
                 <ul>
-                    <li>Long range (8 < dist <= 15)</li>
+                    <li>Long range (<const>8 m</const> < dist <= <const>15 m</const>)</li>
                 </ul>
                 <ul>
-                    <li>Out of range or "OOR" (dist > 15)</li>
+                    <li>Out of range or "OOR" (dist > <const>15 m</const>)</li>
                 </ul>
 
                 <br>
@@ -258,7 +258,7 @@
                     <li><const> "SELF"</const> for the robot <strong> on air </strong></li>
 
                 </ul>
-                <var>distMe</var> for the range at which the robot is from your <strong> on air </strong> robot
+                <var>distMe</var> for the range at which the robot is from your <strong> on air </strong> robot. <const>0</const> for <const>SHORT RANGE</const>, <const>1</const> for <const>MEDIUM RANGE</const>, <const>2</const> for <const>LONG RANGE</const>, <const>3</const> for <const>OUT OF RANGE</const>
                 <br>
                 <var>distMeRank</var> the rank of the entity in a ranking based on the exact distance between the entities and the <strong> on air </strong> robot
                 <br>
