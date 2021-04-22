@@ -56,8 +56,8 @@ public class Referee extends AbstractReferee {
         viewManager.init(robotSet);
         viewportModule.createViewport(viewportGroup);
         gameManager.setFrameDuration((int) (Constants.DELTA_TIME * 1000 / 2));
-        gameManager.setMaxTurns(30000 / 50 / 2);
         gameManager.setTurnMaxTime(50);
+        gameManager.setMaxTurns(30000 / gameManager.getTurnMaxTime() / 2);
         gameManager.setFirstTurnMaxTime(1000);
     }
 
@@ -257,11 +257,9 @@ public class Referee extends AbstractReferee {
 
     private Point[] getSpawns(long seed, int playerId, int botCount) {
         Point[] spawns = new Point[botCount];
-        double y;
-        if (playerId == 0) {
-            y = 2 * Constants.MIN_SPAWN_DIST;
-        } else {
-            y = Constants.MAP_SIZE.getY() - 2 * Constants.MIN_SPAWN_DIST;
+        double y = (Constants.MAP_SIZE.getY()-Constants.LONG_RANGE)/2-1;
+        if (playerId != 0) {
+            y = Constants.MAP_SIZE.getY() - y;
         }
         for (int i = 0; i < botCount; i++) {
             int shift = botCount % 2 == 0 && i > botCount / 2 ? 1 + i : i;

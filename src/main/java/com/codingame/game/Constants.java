@@ -4,7 +4,7 @@ public class Constants {
     public static int GLOBAL_ID = 0;
     public static final double MOVE_PRECISION = 0.0001;
     public static final double DELTA_TIME = 0.25;
-    public static final Point MAP_SIZE = new Point(50,50);
+    public static final Point MAP_SIZE = new Point(40,40);
     public static final double BULLET_SPEED = 20;
     public static final double MAX_BULLET_DEVIATION = 1;
     public static final double SHORT_RANGE = 3;
