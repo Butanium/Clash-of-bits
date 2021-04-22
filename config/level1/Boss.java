@@ -5,7 +5,7 @@ import java.math.*;
 /**
  * Control your bots in order to destroy the enemy team !
  **/
-class Boss {
+class Player {
 
     public static void main(String args[]) {
         Scanner in = new Scanner(System.in);
