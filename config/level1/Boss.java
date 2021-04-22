@@ -10,9 +10,9 @@ class Boss {
     public static void main(String args[]) {
         Scanner in = new Scanner(System.in);
         int botPerPlayer = in.nextInt(); // the amount of bot you control
+        Map<Integer, Integer> shieldMap = new HashMap<>();
         // game loop
         while (true) {
-            Map<Integer, Integer> shieldMap = new HashMap<>();
             StringBuilder result = new StringBuilder();
             int allyBotAlive = in.nextInt(); // the amount of your bot which are still alive
             int totalEntities = in.nextInt(); // the amount of entities in the arena
