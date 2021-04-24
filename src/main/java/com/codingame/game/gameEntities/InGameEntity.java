@@ -1,4 +1,4 @@
-package com.codingame.game.entities;
+package com.codingame.game.gameEntities;
 
 import com.codingame.game.CircularHitBox;
 import com.codingame.game.Constants;

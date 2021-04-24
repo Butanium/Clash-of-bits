@@ -55,7 +55,7 @@ class Agent1 {
                         selfId = entId;
                     }
                 }
-                if (accDist < 3) {
+                if (accDist < 2) {
                     result.append(selfId).append(" ATTACK ").append(accId).append(";");
                 }else {
                     result.append(selfId).append(" MOVE ").append(accId).append(";");

@@ -1,12 +1,14 @@
 package com.codingame.game;
 
-import com.codingame.game.entities.Robot;
+import com.codingame.game.gameEntities.Robot;
 import com.codingame.gameengine.module.entities.*;
+import com.codingame.gameengine.module.tooltip.TooltipModule;
 
 import java.util.*;
 
 
 public class ViewManager {
+    private final TooltipModule tooltips;
     public static double sizeRatio;
     public static int X0;
     public static int Y0;
@@ -17,7 +19,7 @@ public class ViewManager {
     private int backGroundColor = 0x00FF00;
     private final Group gameGroup;
 
-    public ViewManager(GraphicEntityModule graphicEntityModule, Group gameGroup) {
+    public ViewManager(GraphicEntityModule graphicEntityModule, Group gameGroup, TooltipModule tooltipModule) {
         this.graphicEntityModule = graphicEntityModule;
         double xRatio = 1920 / Constants.MAP_SIZE.getX();
         double yRatio = 1080 / Constants.MAP_SIZE.getY();
@@ -32,6 +34,7 @@ public class ViewManager {
         }
         sizeRatio = Math.min(xRatio, yRatio);
         this.gameGroup = gameGroup;
+        this.tooltips = tooltipModule;
 
     }
 
@@ -145,6 +148,7 @@ public class ViewManager {
         private final ProgressBar healthBar;
 
         public RobotSprite(Robot robot) {
+
             this.model = robot;
 
             int size = (int) (robot.getSpriteSize() * sizeRatio);
@@ -173,8 +177,14 @@ public class ViewManager {
                     .setY((int) (shieldBar.getBarGroup().getY() + Constants.HEALTH_BAR_HEIGHT*1.5));
             //shieldBar.getBarGroup().setY(shieldBar.getBarGroup().getY()+10);
             robotGroup.setRotation(Math.PI * (1 - robot.getTeam()));
+            tooltips.setTooltipText(robotGroup, getTooltip());
 
+        }
 
+        private String getTooltip() {
+            return String.format("health : %d/%d, \n shield : %d/%d \n action : %s", (int) model.getHealth(),
+                    (int) model.getMaxHealth(), (int) model.getShield(), (int) model.getMaxShieldHealth(),
+                    model.getLastActionWithTarget());
         }
 
         @Override
@@ -186,6 +196,9 @@ public class ViewManager {
             robotGroup.setY(coordToScreen(model.getY()), Curve.LINEAR);
             shieldBar.setBar(Math.max(0, model.getShieldRatio()));
             healthBar.setBar(Math.max(0, model.getHealthRatio()));
+            tooltips.removeTooltipText(robotGroup);
+            tooltips.setTooltipText(robotGroup, getTooltip());
+
         }
 
         @Override
@@ -197,6 +210,8 @@ public class ViewManager {
         public void onRemove() {
 
         }
+
+
 
         @Override
         public Group getSprite() {

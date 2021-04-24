@@ -1,5 +1,4 @@
 package com.codingame.game;
-import com.codingame.game.entities.Robot;
 import com.codingame.gameengine.core.AbstractMultiplayerPlayer;
 
 import java.util.*;

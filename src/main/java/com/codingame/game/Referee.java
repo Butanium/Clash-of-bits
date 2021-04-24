@@ -1,18 +1,20 @@
 package com.codingame.game;
 
-import java.util.*;
-
 import com.codingame.game.action.*;
-import com.codingame.game.entities.*;
+import com.codingame.game.gameEntities.*;
+import com.codingame.gameengine.core.AbstractMultiplayerPlayer;
 import com.codingame.gameengine.core.AbstractPlayer.TimeoutException;
 import com.codingame.gameengine.core.AbstractReferee;
 import com.codingame.gameengine.core.MultiplayerGameManager;
+import com.codingame.gameengine.module.endscreen.EndScreenModule;
 import com.codingame.gameengine.module.entities.GraphicEntityModule;
-
 import com.codingame.gameengine.module.entities.Group;
+import com.codingame.gameengine.module.tooltip.TooltipModule;
 import com.codingame.gameengine.module.viewport.ViewportModule;
 import com.google.common.base.Function;
 import com.google.inject.Inject;
+
+import java.util.*;
 
 public class Referee extends AbstractReferee {
     private final Set<InGameEntity> gameEntitySet = new HashSet<>();
@@ -28,11 +30,21 @@ public class Referee extends AbstractReferee {
     private MultiplayerGameManager<Player> gameManager;
     @Inject
     private GraphicEntityModule graphicEntityModule;
+    @Inject
+    TooltipModule tooltips;
+    @Inject
+    EndScreenModule endScreenModule;
+
     private int botCount;
     private ViewManager viewManager;
 
     public static void debug(String message) {
         System.out.println(message);
+    }
+
+    @Override
+    public void onEnd() {
+        endScreenModule.setScores(gameManager.getPlayers().stream().mapToInt(AbstractMultiplayerPlayer::getScore).toArray());
     }
 
     // public void addToGameSummary(String message) {gameManager.addToGameSummary(message);}
@@ -52,8 +64,9 @@ public class Referee extends AbstractReferee {
             playersTeam.put(player.getIndex(), team);
         }
         Group viewportGroup = graphicEntityModule.createGroup();
-        viewManager = new ViewManager(graphicEntityModule, viewportGroup);
+        viewManager = new ViewManager(graphicEntityModule, viewportGroup, tooltips);
         viewManager.init(robotSet);
+
         viewportModule.createViewport(viewportGroup);
         gameManager.setFrameDuration((int) (Constants.DELTA_TIME * 1000 / 2));
         gameManager.setTurnMaxTime(50);
@@ -481,6 +494,7 @@ public class Referee extends AbstractReferee {
             }
         }
     }
+
 
 
 }

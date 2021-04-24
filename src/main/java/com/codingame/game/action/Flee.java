@@ -1,7 +1,7 @@
 package com.codingame.game.action;
 
-import com.codingame.game.entities.InGameEntity;
-import com.codingame.game.entities.Robot;
+import com.codingame.game.gameEntities.InGameEntity;
+import com.codingame.game.gameEntities.Robot;
 
 import java.util.Set;
 

@@ -1,6 +1,6 @@
 package com.codingame.game.action;
 
-import com.codingame.game.entities.Robot;
+import com.codingame.game.gameEntities.Robot;
 
 public class Action {
 

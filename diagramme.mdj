@@ -69,7 +69,7 @@
 											"top": 1527,
 											"width": 176.26171875,
 											"height": 13,
-											"text": "com.codingame.game.entities.GameEntity"
+											"text": "com.codingame.game.gameEntities.GameEntity"
 										},
 										{
 											"_type": "LabelView",
@@ -379,7 +379,7 @@
 											"top": 1023,
 											"width": 313.94873046875,
 											"height": 13,
-											"text": "com.codingame.game.entities.Robot"
+											"text": "com.codingame.game.gameEntities.Robot"
 										},
 										{
 											"_type": "LabelView",
@@ -583,7 +583,7 @@
 											"top": 1136,
 											"width": 313.94873046875,
 											"height": 13,
-											"text": "-attackTarget: com.codingame.game.entities.Robot",
+											"text": "-attackTarget: com.codingame.game.gameEntities.Robot",
 											"horizontalAlignment": 0
 										},
 										{
@@ -843,7 +843,7 @@
 											"top": 1324,
 											"width": 313.94873046875,
 											"height": 13,
-											"text": "+attack(targ: com.codingame.game.entities.Robot)",
+											"text": "+attack(targ: com.codingame.game.gameEntities.Robot)",
 											"horizontalAlignment": 0
 										},
 										{
@@ -903,7 +903,7 @@
 											"top": 1369,
 											"width": 313.94873046875,
 											"height": 13,
-											"text": "+checkCollision(robot: com.codingame.game.entities.Robot)",
+											"text": "+checkCollision(robot: com.codingame.game.gameEntities.Robot)",
 											"horizontalAlignment": 0
 										},
 										{
@@ -1248,7 +1248,7 @@
 											"top": 1038,
 											"width": 233.39697265625,
 											"height": 13,
-											"text": "-targetPos: com.codingame.game.entities.Robot",
+											"text": "-targetPos: com.codingame.game.gameEntities.Robot",
 											"horizontalAlignment": 0
 										},
 										{
@@ -2586,7 +2586,7 @@
 											"top": 815,
 											"width": 273.5078125,
 											"height": 13,
-											"text": "+getRobot(id: int): com.codingame.game.entities.Robot",
+											"text": "+getRobot(id: int): com.codingame.game.gameEntities.Robot",
 											"horizontalAlignment": 0
 										},
 										{
@@ -2606,7 +2606,7 @@
 											"top": 830,
 											"width": 273.5078125,
 											"height": 13,
-											"text": "+getEntity(id: int): com.codingame.game.entities.GameEntity",
+											"text": "+getEntity(id: int): com.codingame.game.gameEntities.GameEntity",
 											"horizontalAlignment": 0
 										}
 									],
@@ -3662,7 +3662,7 @@
 											"top": 1335,
 											"width": 208.79345703125,
 											"height": 13,
-											"text": "com.codingame.game.entities.healthPack"
+											"text": "com.codingame.game.gameEntities.healthPack"
 										},
 										{
 											"_type": "LabelView",
@@ -4283,7 +4283,7 @@
 											"top": 1351,
 											"width": 198.66259765625,
 											"height": 13,
-											"text": "com.codingame.game.entities.forcefield"
+											"text": "com.codingame.game.gameEntities.forcefield"
 										},
 										{
 											"_type": "LabelView",
@@ -5328,7 +5328,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "com.codingame.game.entities.GameEntity",
+					"name": "com.codingame.game.gameEntities.GameEntity",
 					"ownedElements": [
 						{
 							"_type": "UMLGeneralization",
@@ -5432,7 +5432,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "com.codingame.game.entities.Robot",
+					"name": "com.codingame.game.gameEntities.Robot",
 					"ownedElements": [
 						{
 							"_type": "UMLGeneralization",
@@ -6238,7 +6238,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "com.codingame.game.entities.healthPack",
+					"name": "com.codingame.game.gameEntities.healthPack",
 					"ownedElements": [
 						{
 							"_type": "UMLGeneralization",
@@ -6261,7 +6261,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "com.codingame.game.entities.forcefield",
+					"name": "com.codingame.game.gameEntities.forcefield",
 					"ownedElements": [
 						{
 							"_type": "UMLGeneralization",

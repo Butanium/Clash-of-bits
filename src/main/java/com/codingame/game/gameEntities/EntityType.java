@@ -1,4 +1,4 @@
-package com.codingame.game.entities;
+package com.codingame.game.gameEntities;
 
 public enum EntityType {
     ROBOT,HEALTHPACK,FORCEFIELD;

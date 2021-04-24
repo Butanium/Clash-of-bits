@@ -1,4 +1,4 @@
-package com.codingame.game.entities;
+package com.codingame.game.gameEntities;
 
 import com.codingame.game.*;
 
@@ -377,5 +377,12 @@ public class Robot extends InGameEntity {
 
     public Set<Point> getTargets() {
         return new HashSet<>(lastTargets);
+    }
+
+    public double getMaxHealth() {
+        return maxHealth;
+    }
+    public double getMaxShieldHealth() {
+        return maxShieldHealth;
     }
 }

@@ -1,4 +1,4 @@
-package com.codingame.game.entities;
+package com.codingame.game.gameEntities;
 
 import java.util.Set;
 

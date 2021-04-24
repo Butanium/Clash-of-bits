@@ -30,16 +30,32 @@
             <div class="statement-rules-content">You begin the game with certain amount of bots<br>
                 A lot of information are distance between entities. The game use 4 different <b>range</b> :
                 <ul>
-                    <li>Short range (dist <= <const>3 m</const>)</li>
+                    <li>Short range (dist <=
+                        <const>3 m</const>
+                        )
+                    </li>
                 </ul>
                 <ul>
-                    <li>Medium range (<const>3 m</const>  < dist <= <const>8 m</const>)</li>
+                    <li>Medium range (
+                        <const>3 m</const>
+                        < dist <=
+                        <const>8 m</const>
+                        )
+                    </li>
                 </ul>
                 <ul>
-                    <li>Long range (<const>8 m</const> < dist <= <const>15 m</const>)</li>
+                    <li>Long range (
+                        <const>8 m</const>
+                        < dist <=
+                        <const>15 m</const>
+                        )
+                    </li>
                 </ul>
                 <ul>
-                    <li>Out of range or "OOR" (dist > <const>15 m</const>)</li>
+                    <li>Out of range or "OOR" (dist >
+                        <const>15 m</const>
+                        )
+                    </li>
                 </ul>
 
                 <br>
@@ -65,25 +81,66 @@
                 Your bots are not smart enough to give you the exact shield and health value of robots on the map.
                 So they use an approximation :
                 <ul>
-                    <li>For the health they give you <const>0</const> | <const>25</const> | <const>50</const> | <const>75</const> | <const>100</const>, <const>25</const> meaning that your life is <const>= 25%</const> but <const>< 50%</const> of your max life
+                    <li>For the health they give you
+                        <const>0</const>
+                        |
+                        <const>25</const>
+                        |
+                        <const>50</const>
+                        |
+                        <const>75</const>
+                        |
+                        <const>100</const>
+                        ,
+                        <const>25</const>
+                        meaning that your life is
+                        <const>= 25%</const>
+                        but
+                        <const>< 50%</const>
+                        of your max life
                     </li>
-                    <li>For the shield they give you Can be <const>0</const> | <const>1</const> | <const>25</const> | <const>50</const> | <const>75</const> | <const>100</const>, <const>1</const> meaning that your shield is <const> >= 1% </const>and <const>< 25% </const> of your max shield and <const>0 </const>that you have no more shield left</li>
+                    <li>For the shield they give you Can be
+                        <const>0</const>
+                        |
+                        <const>1</const>
+                        |
+                        <const>25</const>
+                        |
+                        <const>50</const>
+                        |
+                        <const>75</const>
+                        |
+                        <const>100</const>
+                        ,
+                        <const>1</const>
+                        meaning that your shield is
+                        <const> >= 1%</const>
+                        and
+                        <const>< 25%</const>
+                        of your max shield and
+                        <const>0</const>
+                        that you have no more shield left
+                    </li>
                 </ul>
                 Your bots can perform 3 different actions :
                 <ul>
-                    <li><b>ATTACK</b> one enemy bot. Your damage are done depending on the <b>range</b> your enemy is at (short
+                    <li><b>ATTACK</b> one enemy bot. Your damage are done depending on the <b>range</b> your enemy is at
+                        (short
                         medium long or close). The closer it is the more
                         damage you'll do. If you're attacking an enemy OOR, you won't deal any damage. For more details,
                         see expert rules.
                     </li>
 
-                    <li><b>MOVE </b>to a group of bots, which makes you moving forward to the average position of the group
-                    </li>
-
-                    <li><b>FLEE </b> from a group of bots, which makes you moving backward from the average position of the
+                    <li><b>MOVE </b>to a group of bots, which makes you moving forward to the average position of the
                         group
                     </li>
-                    <li><b>IDLE </b> The bot wait for this frame and start thinking about the meaning of life. It's the default action if you don't send an order for a bot.
+
+                    <li><b>FLEE </b> from a group of bots, which makes you moving backward from the average position of
+                        the
+                        group
+                    </li>
+                    <li><b>IDLE </b> The bot wait for this frame and start thinking about the meaning of life. It's the
+                        default action if you don't send an order for a bot.
                     </li>
                 </ul>
                 <br>
@@ -124,8 +181,9 @@
 
             </ul>
             You can see all bot properties per class in this table
-            <style type="text/css">
+            <style type="text/css" ;>
                 table.tableizer-table {
+
                     font-size: 12px;
                     border: 1px solid #CCC;
                     font-family: Arial, Helvetica, sans-serif;
@@ -143,9 +201,10 @@
                     font-weight: bold;
                 }
             </style>
-            <table class="tableizer-table">
+            <table class="tableizer-table" ;
+            >
                 <thead>
-                <tr class="tableizer-firstrow">
+                <tr class="tableizer-firstrow" ;>
                     <th>Bot class</th>
                     <th>Damage per bullet</th>
                     <th>Bullet per shot</th>
@@ -160,7 +219,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
+                <tr align="center" ;>
                     <td>Assault</td>
                     <td>300</td>
                     <td>3</td>
@@ -177,7 +236,7 @@
             </table>
         </div>
     </div>
-    
+
     <!-- WARNING -->
     <div class="statement-section statement-warning">
         <h1>
@@ -190,7 +249,6 @@
         </div>
 
 
-        
     </div>
     <!-- STORY -->
     <div class="statement-story-background">
@@ -198,8 +256,11 @@
              style="background-size: cover; background-color: grey">
             <div class="statement-story">
                 <h1>Where does this idea come from ?</h1>
-                <div class="story-text"><strong> This challenge is highly inspired by the game "GLADIABOTS".<br> It's almost a copy actually, but I made it with the GFX47 (the gladiabots dev) permission. So if you enjoy this challenge or need some inspiration don't hesitate to <a href="https://gladiabots.com/">give it a look</a></strong>
-                <br> <br>
+                <div class="story-text"><strong> This challenge is highly inspired by the game "GLADIABOTS".<br> It's
+                    almost a copy actually, but I made it with the GFX47 (the gladiabots dev) permission. So if you
+                    enjoy this challenge or need some inspiration don't hesitate to <a href="https://gladiabots.com/">give
+                        it a look</a></strong>
+                    <br> <br>
                 </div>
             </div>
         </div>
@@ -214,8 +275,9 @@
         <div class="blk">
             <div class="title">Initialization input</div>
             <div class="text">
-                <span class="statement-lineno">Line 1</span>: one integer <var>botPerPlayer</var>,
+                <span class="statement-lineno"> Line 1: </span> one integer <var>botPerPlayer</var>,
                 the amount of bot controlled by each players at the beginning of the game
+                <br>
             </div>
         </div>
 
@@ -223,44 +285,97 @@
         <div class="blk">
             <div class="title">Input for one game turn</div>
             <div class="text">
-                <span class="statement-lineno">First line: </span>an integer <var>allyBotAlive</var>, the amount of your bot which are still alive.
+                <span class="statement-lineno">First line: </span>an integer <var>allyBotAlive</var>, the amount of your
+                bot which are still alive.
                 <br>
-                <span class="statement-lineno">Next line</span>: an integer <var>totalEntities</var>, the amount of entities in the arena<br>
+                <span class="statement-lineno">Next line</span>: an integer <var>totalEntities</var>, the amount of
+                entities in the arena<br>
                 <br>
-                <br> For each entity your bots give <const>6</const> information : <var>entId</var>, <var>entType</var>, <var>health</var>, <var>shield</var>, <var>action</var>, <var>targets</var>.
+                <br> For each entity your bots give
+                <const>6</const>
+                information : <var>entId</var>, <var>entType</var>, <var>health</var>, <var>shield</var>,
+                <var>action</var>, <var>targets</var>.
                 <br>
                 <br><var>entId</var> is the unique gameEntity id, stay the same for the whole game.
                 <br>
                 <var>entType</var> indicates the type of entity. The value can be:
                 <ul style="padding-bottom: 0;">
                     <li>
-                        <const>"ALLY"</const> for one of your Robots</li>
+                        <const>"ALLY"</const>
+                        for one of your Robots
+                    </li>
                     <li>
-                        <const>"ENEMY"</const> for an enemy Robot</li>
+                        <const>"ENEMY"</const>
+                        for an enemy Robot
+                    </li>
 
                 </ul>
                 <var>health</var>, <var>shield</var> for the approximate entity's health and shield.
                 <br>
                 <br>
-                <var>action</var> indicates the action executed by the robot last turn. (<const>none</const> if the entity is not a robot) The value can be <const>"ATTACK"</const>, <const>"MOVE"</const>, <const>"FLEE"</const>, <const>"IDLE"</const>
-                <br>                <var>targets</var> is the list of the entities id targeted by the robot last turn separated with <const>";"</const> : <const>"id1;id2;id3..."</const> if the gameEntity is a robot(the target for IDLE is the robot itself). Else <const>-1</const>.
+                <var>action</var> indicates the action executed by the robot last turn. (
+                <const>none</const>
+                if the entity is not a robot) The value can be
+                <const>"ATTACK"</const>
+                ,
+                <const>"MOVE"</const>
+                ,
+                <const>"FLEE"</const>
+                ,
+                <const>"IDLE"</const>
+                <br> <var>targets</var> is the list of the entities id targeted by the robot last turn separated with
+                <const>";"</const>
+                :
+                <const>"id1;id2;id3..."</const>
+                if the gameEntity is a robot(the target for IDLE is the robot itself). Else
+                <const>-1</const>
+                .
 
-                <br><br><br> Then all of your ally become one after the other <strong>on air</strong>. An <strong>on air </strong> ally give for each entity <const>4</const> information from <strong><u>its perspective :</u></strong> <var>entId</var>, <var>entType</var>, <var>distMe</var>, <var>distMeRank</var>. For the first iteration, it sends its own information so <var>entType</var> is <const> "SELF"</const> <i>so that you can get the <strong> on air</strong> ally id</i>. Then it sends information about other allies then enemies.
+                <br><br><br> Then all of your ally become one after the other <strong>on air</strong>. An <strong>on
+                air </strong> ally give for each entity
+                <const>4</const>
+                information from <strong><u>its perspective :</u></strong> <var>entId</var>, <var>entType</var>, <var>distMe</var>,
+                <var>distMeRank</var>. For the first iteration, it sends its own information so <var>entType</var> is
+                <const> "SELF"</const>
+                <i>so that you can get the <strong> on air</strong> ally id</i>. Then it sends information about other
+                allies then enemies.
                 <br>
                 <br><var>entId</var> is the unique gameEntity id.
                 <br> <var>entType</var>
                 indicates the type of entity. The value can be:
                 <ul style="padding-bottom: 0;">
                     <li>
-                        <const>"ALLY"</const> for one of your Robots</li>
+                        <const>"ALLY"</const>
+                        for one of your Robots
+                    </li>
                     <li>
-                        <const>"ENEMY"</const> for an enemy Robot</li>
-                    <li><const> "SELF"</const> for the robot <strong> on air </strong></li>
+                        <const>"ENEMY"</const>
+                        for an enemy Robot
+                    </li>
+                    <li>
+                        <const> "SELF"</const>
+                        for the robot <strong> on air </strong></li>
 
                 </ul>
-                <var>distMe</var> for the range at which the robot is from your <strong> on air </strong> robot. <const>0</const> for <const>SHORT RANGE</const>, <const>1</const> for <const>MEDIUM RANGE</const>, <const>2</const> for <const>LONG RANGE</const>, <const>3</const> for <const>OUT OF RANGE</const>
+                <var>distMe</var> for the range at which the robot is from your <strong> on air </strong> robot.
+                <const>0</const>
+                for
+                <const>SHORT RANGE</const>
+                ,
+                <const>1</const>
+                for
+                <const>MEDIUM RANGE</const>
+                ,
+                <const>2</const>
+                for
+                <const>LONG RANGE</const>
+                ,
+                <const>3</const>
+                for
+                <const>OUT OF RANGE</const>
                 <br>
-                <var>distMeRank</var> the rank of the entity in a ranking based on the exact distance between the entities and the <strong> on air </strong> robot
+                <var>distMeRank</var> the rank of the entity in a ranking based on the exact distance between the
+                entities and the <strong> on air </strong> robot
                 <br>
 
                 <br>
@@ -270,10 +385,10 @@
             <!-- Protocol block -->
             <div class="blk">
                 <div class="title">Output for one game turn</div>
-                <div class="text"><span> class="statement-lineno">One line containing all your orders separated by <const>";"</const> like this <const> "order1;order2;order3;..." </const>
+                <div class="text"> <span class="statement-lineno"> One line containing all your orders separated by <const>";"</const> like this <const> "order1;order2;order3;..." </const>
                 <br> An order has to follow the following synthax : <action>yourBotID [ACTION] [TARGETS]</action>
                 <br><action>ACTION</action> has to be a valid action : <action>ATTACK</action>, <action>MOVE</action>, <action>FLEE</action>, <action>IDLE</action>
-                <br>
+
 <action> TARGETS </action> has to use this synthax : <action>targetID1,targetID2,targetID3</action>
 <br>
 It has also to follow specifics rules depending on the action you try to perform :
@@ -286,20 +401,26 @@ It has also to follow specifics rules depending on the action you try to perform
                 </span>
                 </div>
 
-            <!-- Protocol block -->
-        <div class="blk">
-            <div class="title">Constraints</div>
-            <div class="text"><var>The mapsize</var> is a square of size between <const>20</const> and <const>60</const> meters (for now it's <const>40</const>)<br>
-                <br>Allotted response time to output
-                is <=
-                <const>50</const>
-                ms.
-                <br>Allotted response time to output for the first turn
-                is <=
-                <const>1000</const>
-                ms.
-            </div>
-        </div>
+                <!-- Protocol block -->
+                <div class="blk">
+                    <div class="title">Constraints</div>
+                    <div class="text"><var>The mapsize</var> is a square of size between
+                        <const>20</const>
+                        and
+                        <const>60</const>
+                        meters (for now it's
+                        <const>40</const>
+                        )<br>
+                        <br>Allotted response time to output
+                        is <=
+                        <const>50</const>
+                        ms.
+                        <br>Allotted response time to output for the first turn
+                        is <=
+                        <const>1000</const>
+                        ms.
+                    </div>
+                </div>
             </div>
         </div>
     </div>
