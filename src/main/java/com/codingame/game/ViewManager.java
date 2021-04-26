@@ -146,11 +146,14 @@ public class ViewManager {
         private final Group robotGroup;
         private final ProgressBar shieldBar;
         private final ProgressBar healthBar;
+        private final Curve curve = Curve.LINEAR;
+        private final Animation attackAnim;
+        private final Animation moveAnim;
+
 
         public RobotSprite(Robot robot) {
 
             this.model = robot;
-
             int size = (int) (robot.getSpriteSize() * sizeRatio);
             int color = model.getOwner().getColorToken();
             robotGroup = graphicEntityModule.createGroup(
@@ -160,12 +163,42 @@ public class ViewManager {
                             .setBaseHeight(size)
                             .setAlpha(1.0)
                             .setTint(color));
-            robotGroup.add(graphicEntityModule.createSprite().setImage(model.getRobotType() + "WIREFRAME.png")
-                    .setAnchor(0.5)
-                    .setBaseWidth(size)
-                    .setBaseHeight(size)
-                    .setAlpha(1.0)
-                    .setTint(0));
+            robotGroup.add(graphicEntityModule.createSprite().setImage(model.getRobotType() + "RIM.png")
+                            .setAnchor(0.5)
+                            .setBaseWidth(size)
+                            .setBaseHeight(size)
+                            .setAlpha(1.0));
+
+            int animAttackLength = model.getRobotType().getAttackAnimLength();
+            Sprite[] canonSprites = new Sprite[animAttackLength];
+            for (int i = 0; i < animAttackLength; i++) {
+                Sprite canon;
+                robotGroup.add(canon = graphicEntityModule.createSprite().setImage(model.getRobotType().toString()+"A"+(i+1)+".png")
+                        .setAnchor(0.5)
+                        .setBaseWidth(size)
+                        .setBaseHeight(size)
+                        .setAlpha(i==0 ? 1.0 : 0)
+                );//.setTint(0));
+                canonSprites[i] = canon;
+            }
+            attackAnim = new Animation(canonSprites, Curve.IMMEDIATE);
+
+            int animMoveLength = model.getRobotType().getMoveAnimLength();
+            Sprite[] moveSprites = new Sprite[animMoveLength];
+            for (int i = 0; i < animMoveLength; i++) {
+                Sprite animFrame;
+                robotGroup.add(animFrame = graphicEntityModule.createSprite().setImage(model.getRobotType().toString()+"M"+(i+1)+".png")
+                        .setAnchor(0.5)
+                        .setBaseWidth(size)
+                        .setBaseHeight(size)
+                        .setAlpha(i==0 ? 1.0 : 0)
+                        .setTint(0x00FFFF, Curve.IMMEDIATE)
+                );//.setTint(0));
+                moveSprites[i] = animFrame;
+            }
+
+            moveAnim = new Animation(moveSprites, curve).setLooping(true);//.setFrameLength(3);
+
             playerField.add(robotGroup);
             robotGroup.setX(coordToScreen(robot.getX()));
             robotGroup.setY(coordToScreen(robot.getY()));
@@ -198,7 +231,9 @@ public class ViewManager {
             healthBar.setBar(Math.max(0, model.getHealthRatio()));
             tooltips.removeTooltipText(robotGroup);
             tooltips.setTooltipText(robotGroup, getTooltip());
-
+            attackAnim.update(!model.getLastAction().equals("ATTACK"));
+            moveAnim.setActive(!model.getLastAction().equals("ATTACK"));
+            moveAnim.update();
         }
 
         @Override
@@ -310,6 +345,87 @@ public class ViewManager {
             rectangle.setLineColor(color, Curve.LINEAR);
         }
         backGroundColor = color;
+    }
+    
+    private class Animation {
+        private final Sprite[] sprites;
+        private boolean reverse = false;
+        private boolean looping = false;
+        private boolean active = true;
+        private int state = 0;
+        private Curve curve = Curve.LINEAR;
+
+        private int maxFrameLength = 1;
+        private int frameState = 0;
+
+        public Animation(Sprite [] sprites, int init) {
+            this.sprites = sprites;
+            state = init;
+        }
+        public Animation(Sprite [] sprites) {
+            this.sprites = sprites;
+        }
+        public Animation(Sprite [] sprites, int init, Curve c) {
+            this.sprites = sprites;
+            state = init;
+            curve = c;
+        }
+        public Animation(Sprite [] sprites, Curve c) {
+            this.sprites = sprites;
+            curve = c;
+        }
+        public void setReverse(boolean r) {
+            reverse = r;
+        }
+        public Animation setLooping(boolean l) {
+            looping = l;
+            return this;
+        }
+        public Animation setActive(boolean a) {
+            active = a;
+            return this;
+        }
+
+        public Animation setFrameLength(int frameLength) {
+            this.maxFrameLength = frameLength;
+            return this;
+        }
+
+        public void update() {
+            if (!active) {
+                return;
+            }
+            frameState++;
+            if (frameState < maxFrameLength) {
+                return;
+            }
+            if (!reverse) {
+                if (state < sprites.length - 1) {
+                    if (state>=0) {
+                        sprites[state].setAlpha(0, curve);
+                    }
+                    sprites[++state].setAlpha(1, curve);
+                }
+            } else {
+                if (state>0) {
+                    if (state < sprites.length) {
+                        sprites[state].setAlpha(0, curve);
+                    }
+                    sprites[--state].setAlpha(1, curve);
+                }
+            }
+            if (state == 0 && reverse || state == sprites.length - 1) {
+                reverse = !reverse;
+            }
+
+            if (frameState == maxFrameLength) {
+                frameState = 0;
+            }
+        }
+        public void update(boolean r) {
+            this.reverse = r;
+            update();
+        }
     }
 
 }

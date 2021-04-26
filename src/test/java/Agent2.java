@@ -1,6 +1,6 @@
-import java.util.*;
-import java.io.*;
-import java.math.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
 
 /**
  * Control your bots in order to destroy the enemy team !
@@ -35,7 +35,7 @@ class Agent2 {
                 int shieldRank = in.nextInt(); // entities are sorted in ascendant order based on their amount of shield
                 int totalRank = in.nextInt(); // entities are sorted in ascendant order based on their amount of health + shield
                 shieldMap.put(entId, shield);
-                attackMap.put(entId, attackMap.getOrDefault(entId, 0) + 1);
+                attackMap.put(Integer.parseInt(targets), attackMap.getOrDefault(entId, 0) + 1);
 
             }
             for (int i = 0; i < allyBotAlive; i++) {

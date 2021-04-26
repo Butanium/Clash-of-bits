@@ -34,7 +34,7 @@ public class Robot extends InGameEntity {
     private Point currentSpeed;
     private String lastAction = "IDLE";
     private Set<InGameEntity> lastTargets = new HashSet<>(Collections.singletonList(this));
-    private final String robotType;
+    private final RobotType robotType;
 
     public Robot(double x, double y, RobotType type, Player owner) {
         super(x, y, type.getSize(), type.getSpeed());
@@ -54,7 +54,7 @@ public class Robot extends InGameEntity {
         shieldHealth = maxShieldHealth;
         currentSpeed = new Point();
         setType(EntityType.ROBOT);
-        robotType = type.toString();
+        robotType = type;
     }
 
     public Robot(Point pos, RobotType type, Player owner) {
@@ -76,7 +76,7 @@ public class Robot extends InGameEntity {
         shieldHealth = maxShieldHealth;
         currentSpeed = new Point();
         setType(EntityType.ROBOT);
-        robotType = type.toString();
+        robotType = type;
 
     }
 
@@ -363,7 +363,7 @@ public class Robot extends InGameEntity {
         return res.orElse(null);
     }
 
-    public String getRobotType() {
+    public RobotType getRobotType() {
         return robotType;
     }
 
@@ -385,4 +385,5 @@ public class Robot extends InGameEntity {
     public double getMaxShieldHealth() {
         return maxShieldHealth;
     }
+    public String getLastAction() {return lastAction;}
 }
