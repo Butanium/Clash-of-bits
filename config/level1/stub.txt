@@ -10,7 +10,7 @@ read entId:int entType:word(10) health:int shield:int action:word(20) targets:wo
 loop allyBotAlive
 loop totalEntities
 read entId:int entType:word(256) distMe:int distMeRank:int
-write 0 MOVE 5;1 MOVE 6;2 IDLE;3 ATTACK 6
+write 0 MOVE 2;1 IDLE ;2 MOVE 8;3 ATTACK 9;4 FLEE 10;5 MOVE 10,11,12;
 
 STATEMENT
 Control your bots in order to destroy the enemy team !
