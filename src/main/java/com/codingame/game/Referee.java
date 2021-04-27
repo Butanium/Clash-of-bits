@@ -193,7 +193,16 @@ public class Referee extends AbstractReferee {
                                     player.setScore(-1);
                                     throw new IllegalArgumentException();
                                 }
-
+                                if (moveTargets.size() == 1 && moveTargets.stream().findAny().orElse(null)
+                                        .getId() == executor.getId()) {
+                                    String err = String.format("%s is not a proper action, " +
+                                            "you can't move/flee to yourself !", order);
+                                    player.deactivate(err);
+                                    gameManager.addToGameSummary(String.format("$%d sent invalid input : ", player.getIndex()));
+                                    gameManager.addToGameSummary(err);
+                                    player.setScore(-1);
+                                    throw new IllegalArgumentException();
+                                }
                                 if (move) {
                                     actionList.add(new Move(executor, moveTargets));
                                 } else {

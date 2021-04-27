@@ -23,6 +23,7 @@ public class Robot extends InGameEntity {
     private final int shieldRegenDuration;
     private final double shieldRegenPerFrame;
     private final Player owner;
+    private final RobotType robotType;
     /**
      * current state variables
      */
@@ -34,7 +35,6 @@ public class Robot extends InGameEntity {
     private Point currentSpeed;
     private String lastAction = "IDLE";
     private Set<InGameEntity> lastTargets = new HashSet<>(Collections.singletonList(this));
-    private final RobotType robotType;
 
     public Robot(double x, double y, RobotType type, Player owner) {
         super(x, y, type.getSize(), type.getSpeed());
@@ -118,6 +118,9 @@ public class Robot extends InGameEntity {
         lastTargets = entities;
         Set<Point> points = new HashSet<>(entities);
         Point target = getAveragePoint(points);
+        if (this.getDist(target) == 0) {
+            return;
+        }
         updatePos(getDirection(target).multiply(-1), getSpeed() * Constants.DELTA_TIME);
         restAttack();
     }
@@ -202,7 +205,7 @@ public class Robot extends InGameEntity {
         return owner.getIndex();
     }
 
-    public Player getPlayer () {
+    public Player getPlayer() {
         return owner;
     }
 
@@ -382,8 +385,12 @@ public class Robot extends InGameEntity {
     public double getMaxHealth() {
         return maxHealth;
     }
+
     public double getMaxShieldHealth() {
         return maxShieldHealth;
     }
-    public String getLastAction() {return lastAction;}
+
+    public String getLastAction() {
+        return lastAction;
+    }
 }
