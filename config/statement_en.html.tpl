@@ -1,10 +1,15 @@
 <!--suppress ALL, HtmlUnknownTarget -->
+<!-- LEAGUES level1 level2 level3 -->
 <div id="statement_back" class="statement_back" style="display:none"></div>
 <div class="statement-body">
+
     <!-- BEGIN level1 -->
+    <div>
     Welcome to clash of bots ! <br>
     If you you are lost and don't understand how you are supposed to extract data from the basic code,
-    make sure to check <a href="https://tech.io/playgrounds/57689/how-to-extract-values-from-the-game-loop-in-clash-of-bots"> this playground </a>. It explains how
+    make sure to check <a href="https://tech.io/playgrounds/57689/how-to-extract-values-from-the-game-loop-in-clash-of-bots"> this playground </a>.
+    It'll help you to get started.
+    </div>
     <!-- END -->
     <!-- GOAL -->
     <div class="statement-section statement-goal">
