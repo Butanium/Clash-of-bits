@@ -1,6 +1,6 @@
-import java.util.*;
-import java.io.*;
-import java.math.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
 
 /**
  * Control your bots in order to destroy the enemy team !
@@ -24,6 +24,13 @@ class boss1 {
                 String action = in.next(); // action executed by the gameEntity last turn
                 String targets = in.next(); // list of the targets id targeted by the robot last turn ("id1;id2;id3...") if the gameEntity is a robot, else -1 (the target for IDLE is the robot itself)
                 shieldMap.put(entId, shield);
+                int distEn = in.nextInt(); // NOT USED IN THIS LEAGUE (it'll be a RANGE so an int between 0 and 3)
+                int borderDist = in.nextInt(); // NOT USED IN THIS LEAGUE (it'll be a RANGE)
+                int borderDistRank = in.nextInt(); // NOT USED IN THIS LEAGUE (a RANK)
+                int distEnRank = in.nextInt(); // NOT USED IN THIS LEAGUE (it'll be a RANK so an int between 0 and entityCount)
+                int healthRank = in.nextInt(); // NOT USED IN THIS LEAGUE (a RANK)
+                int shieldRank = in.nextInt(); // NOT USED IN THIS LEAGUE (a RANK)
+                int totalRank = in.nextInt(); // NOT USED IN THIS LEAGUE (a RANK)
             }
             for (int i = 0; i < allyBotAlive; i++) {
                 int accRank = totalEntities;
@@ -43,6 +50,9 @@ class boss1 {
                     if (entType.equals("SELF")) {
                         selfId = entId;
                     }
+                    int shieldComp = in.nextInt(); // NOT USED IN THIS LEAGUE (a COMP so either  -1 | 0 | 1)
+                    int healthComp = in.nextInt(); // NOT USED IN THIS LEAGUE (a COMP)
+                    int totComp = in.nextInt(); // NOT USED IN THIS LEAGUE (a COMP)
                 }
                 if (shieldMap.get(selfId) == 0){
                     result.append(selfId).append(" FLEE ").append(accId).append(";");

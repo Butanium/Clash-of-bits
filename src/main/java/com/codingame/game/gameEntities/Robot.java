@@ -233,7 +233,7 @@ public class Robot extends InGameEntity {
             return getSelfSelfInfo(league);
         }
         String shieldComp, healthComp, totComp;
-        shieldComp = healthComp = totComp = "";
+        shieldComp = healthComp = totComp = "0";
         String id = getId() + "";
         String type = asker.getTeam() == getTeam() ? "ALLY" : "ENEMY";
         String distToAsker = getRange(asker) + "";
@@ -251,8 +251,8 @@ public class Robot extends InGameEntity {
     public String getSelfInfo(int league, Set<Robot> enemies, int playerId) {
         String healthRank, shieldRank, distEn, distEnRank, totalRank; //ok
         String borderDist, borderDistRank;
-        healthRank = shieldRank = distEn = distEnRank = totalRank = "";
-        borderDist = borderDistRank = "";
+        healthRank = shieldRank = distEn = distEnRank = totalRank = "0";
+        borderDist = borderDistRank = "0";
         String id = getId() + "";
         String type = playerId == getTeam() ? "ALLY" : "ENEMY";
         String appHealth = getApproximateHealth() + "";
@@ -261,6 +261,7 @@ public class Robot extends InGameEntity {
         if (league > 1) {
             int acc = 3;
             for (Robot enemy : enemies) {
+                if (enemy.getId() == this.getId()) { continue; }
                 acc = Math.min(acc, getRange(enemy));
             }
             distEn = "" + acc;
@@ -275,7 +276,7 @@ public class Robot extends InGameEntity {
 
     public String getSelfSelfInfo(int league) {
         String shieldComp, healthComp, totComp;
-        shieldComp = healthComp = totComp = "";
+        shieldComp = healthComp = totComp = "0";
         String id = getId() + "";
         String type = "SELF";
         String distMe = "0";
