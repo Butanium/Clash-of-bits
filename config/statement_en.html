@@ -1,6 +1,11 @@
 <!--suppress ALL, HtmlUnknownTarget -->
 <div id="statement_back" class="statement_back" style="display:none"></div>
 <div class="statement-body">
+    <!-- BEGIN level1 -->
+    Welcome to clash of bots ! <br>
+    If you you are lost and don't understand how you are supposed to extract data from the basic code,
+    make sure to check <a href="https://tech.io/playgrounds/57689/how-to-extract-values-from-the-game-loop-in-clash-of-bots"> this playground </a>. It explains how
+    <!-- END -->
     <!-- GOAL -->
     <div class="statement-section statement-goal">
         <h1>
@@ -385,7 +390,7 @@
             <!-- Protocol block -->
             <div class="blk">
                 <div class="title">Output for one game turn</div>
-                <div class="text"> <span class="statement-lineno"> One line containing all your orders separated by <const>";"</const> like this <const> "order1;order2;order3;..." </const>
+                <div class="text">  One line containing all your orders separated by <const>";"</const> like this <const> "order1;order2;order3;..." </const>
                 <br> An order has to follow the following synthax : <action>yourBotID [ACTION] [TARGETS]</action>
                 <br><action>ACTION</action> has to be a valid action : <action>ATTACK</action>, <action>MOVE</action>, <action>FLEE</action>, <action>IDLE</action>
 
@@ -398,7 +403,7 @@ It has also to follow specifics rules depending on the action you try to perform
     <li>If the action is <action>IDLE </action>, <action>TARGETS</action> can contain <strong> anything </strong> or just <strong> nothing</strong>, in any case it'll be ignored. <del> it allows you to REALLY make your bots thinking about the meaning of life </del></li>
 </ul>If you send 2 differents action concerning the same bot you'll loose the game because your bot will run out of memory (┬┬﹏┬┬)
 <br> If you don't send any input all your bots will <action> IDLE </action>. If you don't send any order concerning one or more of your bot, they will <action>IDLE</action>
-                </span>
+
                 </div>
 
                 <!-- Protocol block -->
