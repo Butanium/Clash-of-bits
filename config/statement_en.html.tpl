@@ -4,14 +4,14 @@
 <div class="statement-body">
 
     <!-- BEGIN level1 -->
-    <div>
+    <div> <ul>
         Welcome to clash of bots ! <br>
         If you you are lost and don't understand how you are supposed to extract data from the basic code,
         make sure to check <a
             href="https://tech.io/playgrounds/57689/how-to-extract-values-from-the-game-loop-in-clash-of-bots"> this
         playground </a>.
         It'll help you to get started.
-    </div>
+    </ul> </div>
     <!-- END -->
     <!-- GOAL -->
     <div class="statement-section statement-goal">
@@ -309,15 +309,29 @@
                 <br>
                 <br> For each entity your bots give
 
-                <const><!-- BEGIN level1 -->6 <!-- END --> <!-- BEGIN level2 -->8 <!-- END --> <!-- BEGIN level3 -->13
-                    <!-- END --></const>
+                <!-- BEGIN level1 -->
+                <const>6</const>
+                <!-- END -->
+                <!-- BEGIN level2 -->
+                <const> 8 </const>
+                <!-- END -->
+                <!-- BEGIN level3 -->
+                <const> 13 </const>
+                <!-- END -->
                 information : <var>entId</var>, <var>entType</var>, <var>health</var>, <var>shield</var>,
-                <var>action</var>, <var>targets</var><!-- BEGIN level2 level3 -->, <var>distEn</var>,
+                <var>action</var>, <var>targets</var>
+                <!-- BEGIN level2 level3 -->
+                , <var>distEn</var>,
                 <var>borderDist</var>
-                <!-- END --><!-- BEGIN level3 -->, <var>distEnRank</var>,
+                <!-- END -->
+                <!-- BEGIN level3 -->
+                , <var>distEnRank</var>,
                 <var>borderDistRank</var>, <var>shieldRank</var>, <var>healthRank</var>, <var>totalRank</var>
                 <!-- END -->.
-                <!-- BEGIN level1 level2 -->The others are just 0 and will be used in the next leagues. <!-- END -->
+
+                <!-- BEGIN level1 level2 -->
+                The others are just 0 and will be used in the next leagues.
+                <!-- END -->
                 <br>
                 <br><var>entId</var> is the unique gameEntity id, stay the same for the whole game.
                 <br>
@@ -382,12 +396,21 @@
 
                 <br><br><br> Then all of your ally become one after the other <strong>on air</strong>. An <strong>on
                 air </strong> ally give for each entity
-                <const><!-- BEGIN level1 --> 4 <!-- END --> <!-- BEGIN level2 level3 --> 7 <!-- END -->
-                </const>
+                <!-- BEGIN level1 -->
+                <const> 4 </const>
+                <!-- END -->
+                <!-- BEGIN level2 level3 -->
+                <const> 7</const>
+                <!-- END -->
+
                 information from <strong><u>its perspective :</u></strong> <var>entId</var>, <var>entType</var>, <var>distMe</var>,
                 <var>distMeRank</var>
-                <!-- BEGIN level2 level3 -->, <var>shieldComp</var>, <var>healthComp</var>, <var>totComp</var>
-                <!-- END -->. <!-- BEGIN level1 -->The others are just 0 and will be used in the next leagues.
+                <!-- BEGIN level2 level3 -->
+                , <var>shieldComp</var>, <var>healthComp</var>, <var>totComp</var>
+                <!-- END -->
+                .
+                <!-- BEGIN level1 -->
+                The others are just 0 and will be used in the next leagues.
                 <!-- END -->
                 For the first iteration, it sends its own information so <var>entType</var> is
                 <const> "SELF"</const>
