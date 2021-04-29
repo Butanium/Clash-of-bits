@@ -362,7 +362,7 @@
                 ,
                 <const>"IDLE"</const>
                 <br>
-                <br> <br>
+                <br>
                 <var>targets</var> is the list of the entities id targeted by the robot last turn separated with
                 <const>";"</const>
                 :
