@@ -10,6 +10,7 @@ class boss1 {
     public static void main(String args[]) {
         Scanner in = new Scanner(System.in);
         int botPerPlayer = in.nextInt(); // the amount of bot you control
+        int mapSize = in.nextInt();
         Map<Integer, Integer> shieldMap = new HashMap<>();
         // game loop
         while (true) {

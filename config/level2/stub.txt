@@ -5,8 +5,7 @@ read allyBotAlive:int
 read totalEntities:int
 
 loop totalEntities
-read entId:int entType:word(10) health:int shield:int action:word(20) targets:word(256) distEn:int borderDist:int
-borderDistRank:int distEnRank:int healthRank:int shieldRank:int totalRank:int
+read entId:int entType:word(10) health:int shield:int action:word(20) targets:word(256) distEn:int borderDist:int borderDistRank:int distEnRank:int healthRank:int shieldRank:int totalRank:int
 
 
 
@@ -20,6 +19,7 @@ Control your bots in order to destroy the enemy team !
 
 INPUT
 botPerPlayer: the amount of bot you control
+mapSize: the map size in meters (just here in case the creator change the map size during the contest)
 allyBotAlive: the amount of your bot which are still alive
 totalEntities : the amount of entities in the arena
 entId: the unique gameEntity id, stay the same for the whole game

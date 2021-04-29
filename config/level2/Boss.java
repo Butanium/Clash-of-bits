@@ -10,7 +10,7 @@ class Player {
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
         int botPerPlayer = in.nextInt(); // the amount of bot you control
-
+        int mapSize = in.nextInt();
         // game loop
         while (true) {
             StringBuilder result = new StringBuilder();

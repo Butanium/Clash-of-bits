@@ -304,6 +304,7 @@ public class Referee extends AbstractReferee {
     private void sendPlayerInput(Player player, int turn, int league) {
         if (turn == 1) {
             player.sendInputLine(botCount + "");
+            player.sendInputLine(((int) Constants.MAP_SIZE.getX()) + "");
         }
         Set<Robot> myBots = playersTeam.get(player.getIndex());
         Set<Robot> enemyBots = new HashSet<>();
