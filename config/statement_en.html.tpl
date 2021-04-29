@@ -327,7 +327,8 @@
                 <!-- BEGIN level3 -->
                 , <var>distEnRank</var>,
                 <var>borderDistRank</var>, <var>shieldRank</var>, <var>healthRank</var>, <var>totalRank</var>
-                <!-- END -->.
+                <!-- END -->
+                .
 
                 <!-- BEGIN level1 level2 -->
                 The others are just 0 and will be used in the next leagues.
