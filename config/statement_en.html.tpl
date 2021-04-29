@@ -335,7 +335,7 @@
                 <!-- END -->
                 <br>
                 <br><var>entId</var> is the unique gameEntity id, stay the same for the whole game.
-                <br>
+                <br><br>
                 <var>entType</var> indicates the type of entity. The value can be:
                 <ul style="padding-bottom: 0;">
                     <li>
@@ -361,20 +361,25 @@
                 <const>"FLEE"</const>
                 ,
                 <const>"IDLE"</const>
-                <br> <var>targets</var> is the list of the entities id targeted by the robot last turn separated with
+                <br>
+                <br> <br>
+                <var>targets</var> is the list of the entities id targeted by the robot last turn separated with
                 <const>";"</const>
                 :
                 <const>"id1;id2;id3..."</const>
                 if the gameEntity is a robot(the target for IDLE is the robot itself). Else
                 <const>-1</const>
-                .<!-- BEGIN level2 level3 -->
-                <br>
+                .
+                <!-- BEGIN level2 level3 -->
+                <br> <br>
                 <var>distEn</var> : the range from the closest enemy. If the entity is an enemy bot it returns the
                 distance to its closest ally
-                <br>
+                <br><br>
                 <var>borderDist</var> : the range from the closest border (among the left, right, top and bottom one)
                 <!-- END -->
                 <!-- BEGIN level3 -->
+                <br>
+                <br>
                 The next values are <strong> ranks</strong> : Entites are sorted per an attribute in <strong>ascending
                 order</strong> :
                 <ul>
@@ -419,7 +424,7 @@
                 allies then enemies.
                 <br>
                 <br><var>entId</var> is the unique gameEntity id.
-                <br> <var>entType</var>
+                <br><br> <var>entType</var>
                 indicates the type of entity. The value can be:
                 <ul style="padding-bottom: 0;">
                     <li>
@@ -451,14 +456,15 @@
                 <const>3</const>
                 for
                 <const>OUT OF RANGE</const>
-                <br>
+                <br><br>
                 <var>distMeRank</var> the rank of the entity in a ranking based on the exact distance between the
                 entities and the <strong> on air </strong> robot
                 <br>
                 <!-- BEGIN level2 level3 -->
+                <br>
                 <var>shieldComp</var>, <var>healthComp</var>, <var>totComp</var>
                 compare an attribut between the <strong>ON AIR</strong> and the other entity if the entity is a robot.
-                <var>shieldComp</var> compare the <strong>shields</strong> of the 2 bots,
+                <br><var>shieldComp</var> compare the <strong>shields</strong> of the 2 bots,
                 <var>healthComp</var> compare the healths of the 2 bots,
                 <var>totComp</var> compare the sum of healths and shields of the 2 bots.
                 <br>
