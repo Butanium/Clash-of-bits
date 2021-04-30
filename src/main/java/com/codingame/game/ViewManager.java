@@ -232,7 +232,7 @@ public class ViewManager {
             tooltips.removeTooltipText(robotGroup);
             tooltips.setTooltipText(robotGroup, getTooltip());
             attackAnim.update(!model.getLastAction().equals("ATTACK"));
-            moveAnim.setActive(!model.getLastAction().equals("ATTACK"));
+            moveAnim.setActive(!model.getLastAction().equals("ATTACK") && !model.getLastAction().equals("IDLE"));
             moveAnim.update();
         }
 
