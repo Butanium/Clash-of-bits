@@ -1,6 +1,4 @@
-import java.util.*;
-import java.io.*;
-import java.math.*;
+import java.util.Scanner;
 
 /**
  * Control your bots in order to destroy the enemy team !
@@ -11,7 +9,7 @@ class Agent1 {
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
         int botPerPlayer = in.nextInt(); // the amount of bot you control
-
+        int mapSize = in.nextInt();
         // game loop
         while (true) {
             StringBuilder result = new StringBuilder();
