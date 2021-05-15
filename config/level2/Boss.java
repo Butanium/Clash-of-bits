@@ -47,6 +47,7 @@ class Player {
                 int accDist = 3;
                 int selfId = 0;
                 int accShieldRank = totalEntities;
+                int accPrio = -1;
                 for (int j = 0; j < totalEntities; j++) {
                     int entId = in.nextInt(); // the unique entity id
                     String entType = in.next(); // the entity type in a string. It can be SELF | ALLY | ENEMY
