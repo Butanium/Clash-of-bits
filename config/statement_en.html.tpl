@@ -187,8 +187,8 @@
                     target with a probability of <b>precision [target range]</b>. Note that attacking OOR has a 0%
                     precision.
                 </li>
-                <li> The game is determinist, even if there is some RNG in shots, the 2 teams have the same random seed
-                    to determine if their shot will hit.
+                <li> The game is deterministic, even if there is some RNG in shots, the 2 teams have the same random seed
+                    to determine if their shot will hit. So a game between the 2 same AIs will <b>always</b> result as a draw.
                 </li>
 
 
