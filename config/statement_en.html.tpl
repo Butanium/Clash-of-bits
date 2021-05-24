@@ -106,7 +106,7 @@
                         ,
                         <const>25</const>
                         meaning that your life is
-                        <const>= 25%</const>
+                        <const>>= 25%</const>
                         but
                         <const>< 50%</const>
                         of your max life
