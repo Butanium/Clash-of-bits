@@ -41,6 +41,11 @@
             <version>${gamengine.version}</version>
         </dependency>
         <dependency>
+            <groupId>com.codingame.gameengine</groupId>
+            <artifactId>module-toggle</artifactId>
+            <version>${gamengine.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
             <version>RELEASE</version>

@@ -6,33 +6,38 @@ import com.codingame.gameengine.module.tooltip.TooltipModule;
 
 import java.util.*;
 
+import static com.codingame.game.Constants.*;
+import static com.codingame.gameengine.module.entities.Curve.EASE_OUT;
+
 
 public class ViewManager {
-    private final TooltipModule tooltips;
     public static double sizeRatio;
     public static int X0;
     public static int Y0;
+    private final TooltipModule tooltips;
     private final GraphicEntityModule graphicEntityModule;
     private final Set<ViewPart> viewParts = new HashSet<>();
-    private Group playerField;
     private final Set<Rectangle> backgroundRects = new HashSet<>();
-    private int backGroundColor = 0x00FF00;
     private final Group gameGroup;
+    private final Point fieldSize;
+    private Group playerField;
+    private int backGroundColor = 0x00FF00;
 
     public ViewManager(GraphicEntityModule graphicEntityModule, Group gameGroup, TooltipModule tooltipModule) {
         this.graphicEntityModule = graphicEntityModule;
-        double xRatio = 1920 / Constants.MAP_SIZE.getX();
-        double yRatio = 1080 / Constants.MAP_SIZE.getY();
+        double xRatio = 1920 / MAP_SIZE.getX();
+        double yRatio = 1080 / MAP_SIZE.getY();
         if (xRatio > yRatio) {
             sizeRatio = yRatio;
-            X0 = (int) ((1920 - Constants.MAP_SIZE.getX() * sizeRatio) * .5);
+            X0 = (int) ((1920 - MAP_SIZE.getX() * sizeRatio) * .5);
             Y0 = 0;
         } else {
             sizeRatio = xRatio;
             X0 = 0;
-            Y0 = (int) ((1080 - Constants.MAP_SIZE.getY() * sizeRatio) * .5);
+            Y0 = (int) ((1080 - MAP_SIZE.getY() * sizeRatio) * .5);
         }
         sizeRatio = Math.min(xRatio, yRatio);
+        fieldSize = new Point(coordToScreen(MAP_SIZE.getX()), coordToScreen(MAP_SIZE.getY()));
         this.gameGroup = gameGroup;
         this.tooltips = tooltipModule;
 
@@ -44,10 +49,10 @@ public class ViewManager {
                 .setY(Y0);
         gameGroup.add(playerField);
         playerField.add(graphicEntityModule.createRectangle()
-                .setHeight(coordToScreen(Constants.MAP_SIZE.getX()), Curve.IMMEDIATE)
-                .setWidth(coordToScreen(Constants.MAP_SIZE.getY()), Curve.IMMEDIATE)
+                .setHeight(coordToScreen(MAP_SIZE.getX()), Curve.IMMEDIATE)
+                .setWidth(coordToScreen(MAP_SIZE.getY()), Curve.IMMEDIATE)
                 .setX(0).setY(0).setLineWidth(coordToScreen(0.5))
-                .setLineColor(Constants.WALL_COLOR).setFillAlpha(1).setFillColor(Constants.BACKGROUND_COLOR));
+                .setLineColor(WALL_COLOR).setFillAlpha(1).setFillColor(BACKGROUND_COLOR));
         for (Robot robot : robots) {
             viewParts.add(new RobotSprite(robot));
         }
@@ -56,6 +61,25 @@ public class ViewManager {
     public void instantiateBullet(Bullet bullet) {
         viewParts.add(new BulletSprite(bullet));
         //Referee.debug("bullet instanced");
+    }
+
+    private void updateCameraPosition() {
+        Bound bound = new Bound();
+        for (ViewPart viewPart : viewParts) {
+            if (viewPart.isActive() && viewPart.getClass() == RobotSprite.class) {
+                double rx = ((RobotSprite) viewPart).model.getX(),
+                        ry = ((RobotSprite) viewPart).model.getY();
+                bound.add(new Point(rx, ry));
+            }
+        }
+
+        Point averagePoint = bound.average();
+        double scale = MAP_SIZE.getX() / (bound.size() + CAMERA_OFFSET);
+        playerField
+                .setScale(scale, EASE_OUT)
+                .setX((int) (0.5 + X0 - fieldSize.getX() * (scale - 1) / 2 + sizeRatio * (MAP_SIZE.getX() / 2. - averagePoint.getX())), EASE_OUT)
+                .setY((int) (0.5 + Y0 - fieldSize.getY() * (scale - 1) / 2 + sizeRatio * (MAP_SIZE.getY() / 2. - averagePoint.getY())), EASE_OUT);
+
     }
 
     public void update() {
@@ -71,6 +95,7 @@ public class ViewManager {
                 viewPart.update();
             }
         }
+        updateCameraPosition();
 
     }
 
@@ -96,10 +121,45 @@ public class ViewManager {
     public int randomColorChange(int hex, int shift) {
         Random random = new Random();
         RGB rgb = toRGB(hex);
-        int r = rgb.r +(int) (random.nextDouble() * (Math.min(255 - rgb.r, shift) + Math.min(rgb.r, shift))) - Math.min(rgb.r, shift);
-        int g = rgb.g+(int) (random.nextDouble() * (Math.min(255 - rgb.g, shift) + Math.min(rgb.g, shift))) - Math.min(rgb.g, shift);
-        int b = rgb.b+(int) (random.nextDouble() * (Math.min(255 - rgb.b, shift) + Math.min(rgb.b, shift))) - Math.min(rgb.b, shift);
-        return toHex(r,g,b);
+        int r = rgb.r + (int) (random.nextDouble() * (Math.min(255 - rgb.r, shift) + Math.min(rgb.r, shift))) - Math.min(rgb.r, shift);
+        int g = rgb.g + (int) (random.nextDouble() * (Math.min(255 - rgb.g, shift) + Math.min(rgb.g, shift))) - Math.min(rgb.g, shift);
+        int b = rgb.b + (int) (random.nextDouble() * (Math.min(255 - rgb.b, shift) + Math.min(rgb.b, shift))) - Math.min(rgb.b, shift);
+        return toHex(r, g, b);
+    }
+
+    private void changeMapColor() {
+        int color = randomColorChange(backGroundColor, NEON_SHIFT);
+        for (Rectangle rectangle : backgroundRects) {
+            rectangle.setLineColor(color, Curve.LINEAR);
+        }
+        backGroundColor = color;
+    }
+
+    private class Bound {
+        private double maxX = -1,
+                maxY = -1,
+                minX = MAP_SIZE.getX(),
+                minY = MAP_SIZE.getY();
+
+        public Bound() {
+        }
+
+        public void add(Point p) {
+            maxX = Double.max(maxX, p.getX());
+            maxY = Double.max(maxY, p.getY());
+            minX = Double.min(minX, p.getX());
+            minY = Double.min(minY, p.getY());
+        }
+
+        public Point average() {
+            return new Point((maxX + minX) / 2, (maxY + minY) / 2);
+        }
+
+        public double size() {
+            Point averagePoint = average();
+            return 2 * Double.max(maxX - averagePoint.getX(), maxY - averagePoint.getY());
+        }
+
     }
 
     private class ProgressBar {
@@ -108,12 +168,12 @@ public class ViewManager {
 
         public ProgressBar(int color) {
             bar = graphicEntityModule.createRectangle().setFillColor(color).setLineWidth(0).setAlpha(0.8)
-                    .setWidth(Constants.HEALTH_BAR_WIDTH).setHeight(Constants.HEALTH_BAR_HEIGHT);
+                    .setWidth(HEALTH_BAR_WIDTH).setHeight(HEALTH_BAR_HEIGHT);
             Group group = graphicEntityModule.createGroup(graphicEntityModule.createRectangle().setFillColor(0x777777).setAlpha(.5)
-                    .setWidth(Constants.HEALTH_BAR_WIDTH).setHeight(Constants.HEALTH_BAR_HEIGHT), bar);
+                    .setWidth(HEALTH_BAR_WIDTH).setHeight(HEALTH_BAR_HEIGHT), bar);
             for (int i = 0; i < 5; i++) {
-                group.add(graphicEntityModule.createRectangle().setHeight(Constants.HEALTH_BAR_HEIGHT).setWidth(2)
-                        .setX(group.getX() + i * Constants.HEALTH_BAR_WIDTH / 4).setFillColor(0).setAlpha(0.5));
+                group.add(graphicEntityModule.createRectangle().setHeight(HEALTH_BAR_HEIGHT).setWidth(2)
+                        .setX(group.getX() + i * HEALTH_BAR_WIDTH / 4).setFillColor(0).setAlpha(0.5));
             }
             barGroup = group;
         }
@@ -164,20 +224,20 @@ public class ViewManager {
                             .setAlpha(1.0)
                             .setTint(color));
             robotGroup.add(graphicEntityModule.createSprite().setImage(model.getRobotType() + "RIM.png")
-                            .setAnchor(0.5)
-                            .setBaseWidth(size)
-                            .setBaseHeight(size)
-                            .setAlpha(1.0));
+                    .setAnchor(0.5)
+                    .setBaseWidth(size)
+                    .setBaseHeight(size)
+                    .setAlpha(1.0));
 
             int animAttackLength = model.getRobotType().getAttackAnimLength();
             Sprite[] canonSprites = new Sprite[animAttackLength];
             for (int i = 0; i < animAttackLength; i++) {
                 Sprite canon;
-                robotGroup.add(canon = graphicEntityModule.createSprite().setImage(model.getRobotType().toString()+"A"+(i+1)+".png")
+                robotGroup.add(canon = graphicEntityModule.createSprite().setImage(model.getRobotType().toString() + "A" + (i + 1) + ".png")
                         .setAnchor(0.5)
                         .setBaseWidth(size)
                         .setBaseHeight(size)
-                        .setAlpha(i==0 ? 1.0 : 0)
+                        .setAlpha(i == 0 ? 1.0 : 0)
                 );//.setTint(0));
                 canonSprites[i] = canon;
             }
@@ -187,11 +247,11 @@ public class ViewManager {
             Sprite[] moveSprites = new Sprite[animMoveLength];
             for (int i = 0; i < animMoveLength; i++) {
                 Sprite animFrame;
-                robotGroup.add(animFrame = graphicEntityModule.createSprite().setImage(model.getRobotType().toString()+"M"+(i+1)+".png")
+                robotGroup.add(animFrame = graphicEntityModule.createSprite().setImage(model.getRobotType().toString() + "M" + (i + 1) + ".png")
                         .setAnchor(0.5)
                         .setBaseWidth(size)
                         .setBaseHeight(size)
-                        .setAlpha(i==0 ? 1.0 : 0)
+                        .setAlpha(i == 0 ? 1.0 : 0)
                         .setTint(0x00FFFF, Curve.IMMEDIATE)
                 );//.setTint(0));
                 moveSprites[i] = animFrame;
@@ -205,9 +265,9 @@ public class ViewManager {
             shieldBar = new ProgressBar(0x00E1F5);
             healthBar = new ProgressBar(0xAB0098);
             robotGroup.add(shieldBar.barGroup, healthBar.barGroup);
-            shieldBar.getBarGroup().setX(shieldBar.getBarGroup().getX()+15);
-            healthBar.getBarGroup().setX(healthBar.getBarGroup().getX()+ 15)
-                    .setY((int) (shieldBar.getBarGroup().getY() + Constants.HEALTH_BAR_HEIGHT*1.5));
+            shieldBar.getBarGroup().setX(shieldBar.getBarGroup().getX() + 15);
+            healthBar.getBarGroup().setX(healthBar.getBarGroup().getX() + 15)
+                    .setY((int) (shieldBar.getBarGroup().getY() + HEALTH_BAR_HEIGHT * 1.5));
             //shieldBar.getBarGroup().setY(shieldBar.getBarGroup().getY()+10);
             robotGroup.setRotation(Math.PI * (1 - robot.getTeam()));
             tooltips.setTooltipText(robotGroup, getTooltip());
@@ -215,7 +275,8 @@ public class ViewManager {
         }
 
         private String getTooltip() {
-            return String.format("health : %d/%d, \n shield : %d/%d \n action : %s", (int) model.getHealth(),
+            return String.format("Robot ID : %d \n health : %d/%d \n shield : %d/%d \n action : %s", model.getId(),
+                    (int) model.getHealth(),
                     (int) model.getMaxHealth(), (int) model.getShield(), (int) model.getMaxShieldHealth(),
                     model.getLastActionWithTarget());
         }
@@ -223,8 +284,9 @@ public class ViewManager {
         @Override
         public void update() {
             try {
-                robotGroup.setRotation(Math.PI / 2 + model.getDirection(model.getAveragePoint(model.getTargets())).getRotation(), Curve.EASE_OUT);
-            } catch (ZeroDivisionException ignored) {}
+                robotGroup.setRotation(Math.PI / 2 + model.getDirection(model.getAveragePoint(model.getTargets())).getRotation(), EASE_OUT);
+            } catch (ZeroDivisionException ignored) {
+            }
             robotGroup.setX(coordToScreen(model.getX()), Curve.LINEAR);
             robotGroup.setY(coordToScreen(model.getY()), Curve.LINEAR);
             shieldBar.setBar(Math.max(0, model.getShieldRatio()));
@@ -245,7 +307,6 @@ public class ViewManager {
         public void onRemove() {
 
         }
-
 
 
         @Override
@@ -270,7 +331,7 @@ public class ViewManager {
 
             model = bullet;
             bulletGroup = graphicEntityModule.createGroup(graphicEntityModule.createCircle().
-                    setRadius(coordToScreen(Constants.BULLET_SIZE)).setAlpha(1).
+                    setRadius(coordToScreen(BULLET_SIZE)).setAlpha(1).
                     setFillColor(bullet.getOwner().getColorToken())).setZIndex(1);
             playerField.add(bulletGroup);
             bulletGroup.setX(coordToScreen(model.getX()), Curve.IMMEDIATE)
@@ -286,11 +347,11 @@ public class ViewManager {
 
         @Override
         public boolean isActive() {
-             if (!model.isActive() && active) {
-                   active = false;
-                   return true;
-             }
-             return active;
+            if (!model.isActive() && active) {
+                active = false;
+                return true;
+            }
+            return active;
         }
 
         @Override
@@ -311,8 +372,8 @@ public class ViewManager {
 
     private class RGB {
         private final int r;
-        private int g;
-        private int b;
+        private final int g;
+        private final int b;
 
         RGB(int r, int g, int b) {
             this.r = r;
@@ -339,14 +400,7 @@ public class ViewManager {
         }
 
     }
-    private void changeMapColor() {
-        int color = randomColorChange(backGroundColor, Constants.NEON_SHIFT);
-        for (Rectangle rectangle: backgroundRects) {
-            rectangle.setLineColor(color, Curve.LINEAR);
-        }
-        backGroundColor = color;
-    }
-    
+
     private class Animation {
         private final Sprite[] sprites;
         private boolean reverse = false;
@@ -358,29 +412,35 @@ public class ViewManager {
         private int maxFrameLength = 1;
         private int frameState = 0;
 
-        public Animation(Sprite [] sprites, int init) {
+        public Animation(Sprite[] sprites, int init) {
             this.sprites = sprites;
             state = init;
         }
-        public Animation(Sprite [] sprites) {
+
+        public Animation(Sprite[] sprites) {
             this.sprites = sprites;
         }
-        public Animation(Sprite [] sprites, int init, Curve c) {
+
+        public Animation(Sprite[] sprites, int init, Curve c) {
             this.sprites = sprites;
             state = init;
             curve = c;
         }
-        public Animation(Sprite [] sprites, Curve c) {
+
+        public Animation(Sprite[] sprites, Curve c) {
             this.sprites = sprites;
             curve = c;
         }
+
         public void setReverse(boolean r) {
             reverse = r;
         }
+
         public Animation setLooping(boolean l) {
             looping = l;
             return this;
         }
+
         public Animation setActive(boolean a) {
             active = a;
             return this;
@@ -401,13 +461,13 @@ public class ViewManager {
             }
             if (!reverse) {
                 if (state < sprites.length - 1) {
-                    if (state>=0) {
+                    if (state >= 0) {
                         sprites[state].setAlpha(0, curve);
                     }
                     sprites[++state].setAlpha(1, curve);
                 }
             } else {
-                if (state>0) {
+                if (state > 0) {
                     if (state < sprites.length) {
                         sprites[state].setAlpha(0, curve);
                     }
@@ -422,6 +482,7 @@ public class ViewManager {
                 frameState = 0;
             }
         }
+
         public void update(boolean r) {
             this.reverse = r;
             update();

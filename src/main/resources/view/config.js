@@ -1,13 +1,18 @@
 import { GraphicEntityModule } from './entity-module/GraphicEntityModule.js';
-import { ViewportModule } from './viewport-module/ViewportModule.js';
+// import { ViewportModule } from './viewport-module/ViewportModule.js';
 import { TooltipModule } from './tooltip-module/TooltipModule.js';
 import { EndScreenModule } from './endscreen-module/EndScreenModule.js';
+import { ToggleModule } from './toggle-module/ToggleModule.js'
+
+
+
 // List of viewer modules that you want to use in your game
 export const modules = [
   GraphicEntityModule,
   TooltipModule,
-  ViewportModule,
-  EndScreenModule
+  // ViewportModule,
+  EndScreenModule,
+  ToggleModule
 
 ];
 export const playerColors = [
@@ -20,4 +25,22 @@ export const playerColors = [
   '#de6ddf', // lavender pink
   '#ff0000'  // solid red
 ];
+
+// The list of toggles displayed in the options of the viewer
+export const options = [
+  ToggleModule.defineToggle({
+    // The name of the toggle
+    // replace "myToggle" by the name of the toggle you want to use
+    toggle: 'moduleSwitch',
+    // The text displayed over the toggle
+    title: 'MOUSE MODE',
+    // The labels for the on/off states of your toggle
+    values: {
+      'MAP NAVIGATION': true,
+      'DEBUG TOOLTIPS': false
+    },
+    // Default value of your toggle
+    default: true
+  })
+]
 

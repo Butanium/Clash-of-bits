@@ -88,6 +88,7 @@ public class Robot extends InGameEntity {
         return shieldHealth;
     }
 
+    public double getTotVitals() {return health + shieldHealth;}
     /**
      * @param target : robot you shot at
      */
@@ -195,7 +196,7 @@ public class Robot extends InGameEntity {
             if (health <= 0) {
                 setActive(false);
                 attacker.setScore(attacker.getScore() + 1);
-                Referee.debug(String.format("%d robot got destroyed", getId()));
+                Referee.debug(String.format("robot %d got destroyed", getId()));
 
             }
         }

@@ -10,7 +10,6 @@ import com.codingame.gameengine.module.endscreen.EndScreenModule;
 import com.codingame.gameengine.module.entities.GraphicEntityModule;
 import com.codingame.gameengine.module.entities.Group;
 import com.codingame.gameengine.module.tooltip.TooltipModule;
-import com.codingame.gameengine.module.viewport.ViewportModule;
 import com.google.common.base.Function;
 import com.google.inject.Inject;
 
@@ -24,8 +23,8 @@ public class Referee extends AbstractReferee {
 
     public Set<forcefield> forceFields = new HashSet<>();
     public Set<healthPack> healthPacks = new HashSet<>();
-    @Inject
-    ViewportModule viewportModule;
+//    @Inject
+//    ViewportModule viewportModule;
     @Inject
     private MultiplayerGameManager<Player> gameManager;
     @Inject
@@ -67,7 +66,7 @@ public class Referee extends AbstractReferee {
         viewManager = new ViewManager(graphicEntityModule, viewportGroup, tooltips);
         viewManager.init(robotSet);
 
-        viewportModule.createViewport(viewportGroup);
+//        viewportModule.createViewport(viewportGroup);
         gameManager.setFrameDuration((int) (Constants.DELTA_TIME * 1000 / 2));
         gameManager.setTurnMaxTime(50);
         gameManager.setMaxTurns(30000 / gameManager.getTurnMaxTime() / 2);
@@ -322,26 +321,27 @@ public class Referee extends AbstractReferee {
         int robotCount = robotSet.size();
 
         List<Robot> healthSorted = new ArrayList<>(robotSet);
-        healthSorted.sort(Comparator.comparingDouble(Robot::getHealth));
+        healthSorted.sort(Comparator.comparingDouble(Robot::getHealth).thenComparingInt(Robot::getId));
         Map<Integer, Integer> healthRankings = getRanksR(healthSorted, Robot::getHealth);
 
         List<Robot> shieldSorted = new ArrayList<>(robotSet);
-        shieldSorted.sort(Comparator.comparingDouble(Robot::getShield));
+        shieldSorted.sort(Comparator.comparingDouble(Robot::getShield).thenComparingInt(Robot::getId));
         Map<Integer, Integer> shieldRankings = getRanksR(shieldSorted, Robot::getShield);
 
 
         List<Robot> totalSorted = new ArrayList<>(robotSet);
-        totalSorted.sort(Comparator.comparingDouble(r -> r.getShield() + r.getHealth()));
+        totalSorted.sort(Comparator.comparingDouble(Robot::getTotVitals).thenComparingInt(Robot::getId));
         Function<Robot, Double> f = r -> r.getShield() + r.getHealth();
         Map<Integer, Integer> totalRankings = getRanksR(totalSorted, f);
 
         List<Robot> borderDistSorted = new ArrayList<>(robotSet);
-        borderDistSorted.sort(Comparator.comparingDouble(Robot::getBoarderDist));
+        borderDistSorted.sort(Comparator.comparingDouble(Robot::getBoarderDist).thenComparingInt(Robot::getId));
         Map<Integer, Integer> borderRankings = getRanksR(borderDistSorted, Robot::getBoarderDist);
 
 
         List<Robot> distEnSorted = new ArrayList<>(robotSet);
-        distEnSorted.sort(Comparator.comparingDouble(r -> r.getDist(r.getClosestEntity(new HashSet<>(enemyBots)))));
+        distEnSorted.sort(Comparator.comparingDouble((Robot r) -> r.getDist(r.getClosestEntity(new HashSet<>(enemyBots))))
+            .thenComparingInt(Robot::getId));
         Map<Integer, Integer> distEnRankings = getRanksR(distEnSorted,
                 r -> r.getDist(r.getClosestEntity(new HashSet<>(enemyBots))));
 

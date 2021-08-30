@@ -18,5 +18,6 @@ public class Constants {
     public static final int BACKGROUND_COLOR = 0x9B9B9B;
     public static final int NEON_SHIFT = 30;
     public static final int WALL_COLOR = 0x030056;
+    public static final int CAMERA_OFFSET = 8;
 
 }
