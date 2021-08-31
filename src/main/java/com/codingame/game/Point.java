@@ -145,4 +145,8 @@ public class Point {
     public double getRotation() {
         return Math.atan2(y, x);
     }
+
+    public String toString() {
+        return  String.format("x : %f, y : %f", x, y);
+    }
 }

@@ -33,11 +33,11 @@ export const options = [
     // replace "myToggle" by the name of the toggle you want to use
     toggle: 'moduleSwitch',
     // The text displayed over the toggle
-    title: 'MOUSE MODE',
+    title: 'CAMERA MODE',
     // The labels for the on/off states of your toggle
     values: {
-      'MAP NAVIGATION': true,
-      'DEBUG TOOLTIPS': false
+      'DYNAMIC': true,
+      'FIXED': false
     },
     // Default value of your toggle
     default: true

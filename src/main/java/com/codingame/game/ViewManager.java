@@ -8,6 +8,7 @@ import java.util.*;
 
 import static com.codingame.game.Constants.*;
 import static com.codingame.gameengine.module.entities.Curve.EASE_OUT;
+import static com.codingame.gameengine.module.entities.Curve.LINEAR;
 
 
 public class ViewManager {
@@ -22,6 +23,7 @@ public class ViewManager {
     private final Point fieldSize;
     private Group playerField;
     private int backGroundColor = 0x00FF00;
+    private Point oldCameraPosition = new Point();
 
     public ViewManager(GraphicEntityModule graphicEntityModule, Group gameGroup, TooltipModule tooltipModule) {
         this.graphicEntityModule = graphicEntityModule;
@@ -72,14 +74,19 @@ public class ViewManager {
                 bound.add(new Point(rx, ry));
             }
         }
-
+        
         Point averagePoint = bound.average();
-        double scale = MAP_SIZE.getX() / (bound.size() + CAMERA_OFFSET);
+        Point boundSize = bound.size();
+        System.out.println(averagePoint);
+        Curve curve = oldCameraPosition.getDist(averagePoint) > CAMERA_OFFSET ? EASE_OUT : LINEAR;
+        double scale = Double.min(1080 / sizeRatio / (boundSize.getY() + CAMERA_OFFSET),
+                                  1920 / sizeRatio / (boundSize.getX() + CAMERA_OFFSET));
         playerField
-                .setScale(scale, EASE_OUT)
-                .setX((int) (0.5 + X0 - fieldSize.getX() * (scale - 1) / 2 + sizeRatio * (MAP_SIZE.getX() / 2. - averagePoint.getX())), EASE_OUT)
-                .setY((int) (0.5 + Y0 - fieldSize.getY() * (scale - 1) / 2 + sizeRatio * (MAP_SIZE.getY() / 2. - averagePoint.getY())), EASE_OUT);
-
+                .setScale(scale, curve)
+                .setX((int) (0.5 + X0 - fieldSize.getX() * (scale - 1) / 2 + scale*sizeRatio * (MAP_SIZE.getX() / 2. - averagePoint.getX())), curve)
+                .setY((int) (0.5 + Y0 - fieldSize.getY() * (scale - 1) / 2 + scale*sizeRatio * (MAP_SIZE.getY() / 2. - averagePoint.getY())), curve);
+        
+        oldCameraPosition = averagePoint;
     }
 
     public void update() {
@@ -130,12 +137,12 @@ public class ViewManager {
     private void changeMapColor() {
         int color = randomColorChange(backGroundColor, NEON_SHIFT);
         for (Rectangle rectangle : backgroundRects) {
-            rectangle.setLineColor(color, Curve.LINEAR);
+            rectangle.setLineColor(color, LINEAR);
         }
         backGroundColor = color;
     }
 
-    private class Bound {
+    private static class Bound {
         private double maxX = -1,
                 maxY = -1,
                 minX = MAP_SIZE.getX(),
@@ -155,9 +162,9 @@ public class ViewManager {
             return new Point((maxX + minX) / 2, (maxY + minY) / 2);
         }
 
-        public double size() {
+        public Point size() {
             Point averagePoint = average();
-            return 2 * Double.max(maxX - averagePoint.getX(), maxY - averagePoint.getY());
+            return new Point(maxX - averagePoint.getX(),maxY - averagePoint.getY()).multiply(2);
         }
 
     }
@@ -206,7 +213,7 @@ public class ViewManager {
         private final Group robotGroup;
         private final ProgressBar shieldBar;
         private final ProgressBar healthBar;
-        private final Curve curve = Curve.LINEAR;
+        private final Curve curve = LINEAR;
         private final Animation attackAnim;
         private final Animation moveAnim;
 
@@ -287,8 +294,8 @@ public class ViewManager {
                 robotGroup.setRotation(Math.PI / 2 + model.getDirection(model.getAveragePoint(model.getTargets())).getRotation(), EASE_OUT);
             } catch (ZeroDivisionException ignored) {
             }
-            robotGroup.setX(coordToScreen(model.getX()), Curve.LINEAR);
-            robotGroup.setY(coordToScreen(model.getY()), Curve.LINEAR);
+            robotGroup.setX(coordToScreen(model.getX()), LINEAR);
+            robotGroup.setY(coordToScreen(model.getY()), LINEAR);
             shieldBar.setBar(Math.max(0, model.getShieldRatio()));
             healthBar.setBar(Math.max(0, model.getHealthRatio()));
             tooltips.removeTooltipText(robotGroup);
@@ -341,8 +348,8 @@ public class ViewManager {
         @Override
         public void update() {
 
-            bulletGroup.setX(coordToScreen(model.getX()), Curve.LINEAR);
-            bulletGroup.setY(coordToScreen(model.getY()), Curve.LINEAR);
+            bulletGroup.setX(coordToScreen(model.getX()), LINEAR);
+            bulletGroup.setY(coordToScreen(model.getY()), LINEAR);
         }
 
         @Override
@@ -407,7 +414,7 @@ public class ViewManager {
         private boolean looping = false;
         private boolean active = true;
         private int state = 0;
-        private Curve curve = Curve.LINEAR;
+        private Curve curve = LINEAR;
 
         private int maxFrameLength = 1;
         private int frameState = 0;
