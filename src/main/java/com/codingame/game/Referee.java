@@ -8,10 +8,11 @@ import com.codingame.gameengine.core.AbstractReferee;
 import com.codingame.gameengine.core.MultiplayerGameManager;
 import com.codingame.gameengine.module.endscreen.EndScreenModule;
 import com.codingame.gameengine.module.entities.GraphicEntityModule;
-import com.codingame.gameengine.module.entities.Group;
-import com.codingame.gameengine.module.tooltip.TooltipModule;
+import com.codingame.gameengine.module.toggle.ToggleModule;
 import com.google.common.base.Function;
 import com.google.inject.Inject;
+import view.ViewManager;
+import view.modules.CameraModule;
 
 import java.util.*;
 
@@ -33,6 +34,10 @@ public class Referee extends AbstractReferee {
     TooltipModule tooltips;
     @Inject
     EndScreenModule endScreenModule;
+    @Inject
+    ToggleModule toggleModule;
+    @Inject
+    CameraModule cameraModule;
 
     private int botCount;
     private ViewManager viewManager;
@@ -62,8 +67,8 @@ public class Referee extends AbstractReferee {
             }
             playersTeam.put(player.getIndex(), team);
         }
-        Group viewportGroup = graphicEntityModule.createGroup();
-        viewManager = new ViewManager(graphicEntityModule, viewportGroup, tooltips);
+
+        viewManager = new ViewManager(graphicEntityModule, tooltips, toggleModule, cameraModule);
         viewManager.init(robotSet);
 
 //        viewportModule.createViewport(viewportGroup);
@@ -75,7 +80,8 @@ public class Referee extends AbstractReferee {
 
     @Override
     public void gameTurn(int turn) {
-        System.out.printf("p1 : %d, p2 : %d\n", gameManager.getPlayers().get(0).getScore(),
+        System.out.printf("turn : %d, p1 : %d, p2 : %d\n", turn,
+                gameManager.getPlayers().get(0).getScore(),
                 gameManager.getPlayers().get(1).getScore());
         destroyBots();
         boolean isFinish = false;

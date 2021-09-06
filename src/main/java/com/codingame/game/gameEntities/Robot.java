@@ -88,7 +88,10 @@ public class Robot extends InGameEntity {
         return shieldHealth;
     }
 
-    public double getTotVitals() {return health + shieldHealth;}
+    public double getTotVitals() {
+        return health + shieldHealth;
+    }
+
     /**
      * @param target : robot you shot at
      */
@@ -262,7 +265,9 @@ public class Robot extends InGameEntity {
         if (league > 1) {
             int acc = 3;
             for (Robot enemy : enemies) {
-                if (enemy.getId() == this.getId()) { continue; }
+                if (enemy.getId() == this.getId()) {
+                    continue;
+                }
                 acc = Math.min(acc, getRange(enemy));
             }
             distEn = "" + acc;
@@ -326,14 +331,6 @@ public class Robot extends InGameEntity {
         return 100;
     }
 
-    public String getLastActionWithTarget() {
-        List<String> targets = new ArrayList<>();
-        for (InGameEntity InGameEntity : lastTargets) {
-            targets.add(InGameEntity.getId() + "");
-        }
-        return lastAction + " " + String.join(";", targets);
-    }
-
     public int compareHealth(Robot target) {
         if (target.health > this.health) {
             return -1;
@@ -394,5 +391,18 @@ public class Robot extends InGameEntity {
 
     public String getLastAction() {
         return lastAction;
+    }
+
+
+    public String getStringTargets() {
+        List<String> targets = new ArrayList<>();
+        for (InGameEntity InGameEntity : lastTargets) {
+            targets.add(InGameEntity.getId()+"");
+        }
+        return String.join(";", targets);
+    }
+
+    public String getLastActionWithTarget() {
+        return lastAction + " " + getStringTargets();
     }
 }

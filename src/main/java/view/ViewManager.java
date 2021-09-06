@@ -1,8 +1,13 @@
-package com.codingame.game;
+package view;
 
+import com.codingame.game.Bullet;
+import com.codingame.game.Point;
+import com.codingame.game.TooltipModule;
+import com.codingame.game.ZeroDivisionException;
 import com.codingame.game.gameEntities.Robot;
 import com.codingame.gameengine.module.entities.*;
-import com.codingame.gameengine.module.tooltip.TooltipModule;
+import com.codingame.gameengine.module.toggle.ToggleModule;
+import view.modules.CameraModule;
 
 import java.util.*;
 
@@ -17,15 +22,17 @@ public class ViewManager {
     public static int Y0;
     private final TooltipModule tooltips;
     private final GraphicEntityModule graphicEntityModule;
-    private final Set<ViewPart> viewParts = new HashSet<>();
-    private final Set<Rectangle> backgroundRects = new HashSet<>();
-    private final Group gameGroup;
+    private final ToggleModule toggleModule;
+    private final CameraModule camera;
+
+    private final Set<ViewPart> autoCameraViewParts = new HashSet<>();
+    private final Group autoCameraGameGroup;
     private final Point fieldSize;
-    private Group playerField;
-    private int backGroundColor = 0x00FF00;
+    private Group autoCameraPlayerField;
     private Point oldCameraPosition = new Point();
 
-    public ViewManager(GraphicEntityModule graphicEntityModule, Group gameGroup, TooltipModule tooltipModule) {
+    public ViewManager(GraphicEntityModule graphicEntityModule, TooltipModule tooltipModule, ToggleModule toggleModule,
+                       CameraModule cameraModule) {
         this.graphicEntityModule = graphicEntityModule;
         double xRatio = 1920 / MAP_SIZE.getX();
         double yRatio = 1080 / MAP_SIZE.getY();
@@ -40,61 +47,75 @@ public class ViewManager {
         }
         sizeRatio = Math.min(xRatio, yRatio);
         fieldSize = new Point(coordToScreen(MAP_SIZE.getX()), coordToScreen(MAP_SIZE.getY()));
-        this.gameGroup = gameGroup;
-        this.tooltips = tooltipModule;
-
+        autoCameraGameGroup = graphicEntityModule.createGroup();
+        tooltips = tooltipModule;
+        this.toggleModule = toggleModule;
+        camera = cameraModule;
     }
 
-    public void init(Set<Robot> robots) {
-        playerField = graphicEntityModule.createGroup()
+    private Group createPlayerField() {
+        Group playerField = graphicEntityModule.createGroup()
                 .setX(X0)
                 .setY(Y0);
-        gameGroup.add(playerField);
+
         playerField.add(graphicEntityModule.createRectangle()
                 .setHeight(coordToScreen(MAP_SIZE.getX()), Curve.IMMEDIATE)
                 .setWidth(coordToScreen(MAP_SIZE.getY()), Curve.IMMEDIATE)
                 .setX(0).setY(0).setLineWidth(coordToScreen(0.5))
                 .setLineColor(WALL_COLOR).setFillAlpha(1).setFillColor(BACKGROUND_COLOR));
+        return playerField;
+    }
+
+    public void init(Set<Robot> robots) {
+        autoCameraPlayerField = createPlayerField();
+        autoCameraGameGroup.add(autoCameraPlayerField);
+        camera.createCamera(autoCameraPlayerField, (int) (0.5 + fieldSize.getX()), (int) (0.5 + fieldSize.getY()));
+
         for (Robot robot : robots) {
-            viewParts.add(new RobotSprite(robot));
+            ViewPart robotSprite = new RobotSprite(robot, autoCameraPlayerField);
+            autoCameraViewParts.add(robotSprite);
+            camera.addTrackedEntity(robotSprite.getSprite());
+
         }
+        camera.setCameraOffset(CAMERA_OFFSET*sizeRatio);
     }
 
     public void instantiateBullet(Bullet bullet) {
-        viewParts.add(new BulletSprite(bullet));
-        //Referee.debug("bullet instanced");
+        autoCameraViewParts.add(new BulletSprite(bullet, autoCameraPlayerField));
+
     }
 
     private void updateCameraPosition() {
         Bound bound = new Bound();
-        for (ViewPart viewPart : viewParts) {
+        for (ViewPart viewPart : autoCameraViewParts) {
             if (viewPart.isActive() && viewPart.getClass() == RobotSprite.class) {
                 double rx = ((RobotSprite) viewPart).model.getX(),
                         ry = ((RobotSprite) viewPart).model.getY();
                 bound.add(new Point(rx, ry));
             }
         }
-        
+
         Point averagePoint = bound.average();
         Point boundSize = bound.size();
         System.out.println(averagePoint);
         Curve curve = oldCameraPosition.getDist(averagePoint) > CAMERA_OFFSET ? EASE_OUT : LINEAR;
         double scale = Double.min(1080 / sizeRatio / (boundSize.getY() + CAMERA_OFFSET),
-                                  1920 / sizeRatio / (boundSize.getX() + CAMERA_OFFSET));
-        playerField
+                1920 / sizeRatio / (boundSize.getX() + CAMERA_OFFSET));
+        autoCameraPlayerField
                 .setScale(scale, curve)
-                .setX((int) (0.5 + X0 - fieldSize.getX() * (scale - 1) / 2 + scale*sizeRatio * (MAP_SIZE.getX() / 2. - averagePoint.getX())), curve)
-                .setY((int) (0.5 + Y0 - fieldSize.getY() * (scale - 1) / 2 + scale*sizeRatio * (MAP_SIZE.getY() / 2. - averagePoint.getY())), curve);
-        
+                .setX((int) (0.5 + X0 - fieldSize.getX() * (scale - 1) / 2 + scale * sizeRatio * (MAP_SIZE.getX() / 2. - averagePoint.getX())), curve)
+                .setY((int) (0.5 + Y0 - fieldSize.getY() * (scale - 1) / 2 + scale * sizeRatio * (MAP_SIZE.getY() / 2. - averagePoint.getY())), curve);
+
         oldCameraPosition = averagePoint;
     }
 
-    public void update() {
+    private void updatePlayerField(Group playerField, Set<ViewPart> viewParts) {
         Iterator<ViewPart> it = viewParts.iterator();
         while (it.hasNext()) {
             ViewPart viewPart = it.next();
             if (!viewPart.isActive()) {
                 it.remove();
+                viewPart.onRemove();
                 playerField.remove(viewPart.getSprite());
                 viewPart.getSprite().setVisible(false);
             } else {
@@ -102,7 +123,11 @@ public class ViewManager {
                 viewPart.update();
             }
         }
-        updateCameraPosition();
+    }
+
+    public void update() {
+        updatePlayerField(autoCameraPlayerField, autoCameraViewParts);
+        //updateCameraPosition();
 
     }
 
@@ -134,13 +159,6 @@ public class ViewManager {
         return toHex(r, g, b);
     }
 
-    private void changeMapColor() {
-        int color = randomColorChange(backGroundColor, NEON_SHIFT);
-        for (Rectangle rectangle : backgroundRects) {
-            rectangle.setLineColor(color, LINEAR);
-        }
-        backGroundColor = color;
-    }
 
     private static class Bound {
         private double maxX = -1,
@@ -163,15 +181,26 @@ public class ViewManager {
         }
 
         public Point size() {
-            Point averagePoint = average();
-            return new Point(maxX - averagePoint.getX(),maxY - averagePoint.getY()).multiply(2);
+            return new Point(maxX - minX, maxY - minY);
         }
 
     }
 
+    public abstract static class ViewPart {
+        public abstract void update();
+
+        public abstract boolean isActive();
+
+        public abstract void onRemove();
+
+        public abstract Group getSprite();
+
+        public abstract boolean isShown();
+    }
+
     private class ProgressBar {
         private final Group barGroup;
-        private final Entity bar;
+        private final Entity<?> bar;
 
         public ProgressBar(int color) {
             bar = graphicEntityModule.createRectangle().setFillColor(color).setLineWidth(0).setAlpha(0.8)
@@ -196,18 +225,6 @@ public class ViewManager {
 
     }
 
-    public abstract class ViewPart {
-        public abstract void update();
-
-        public abstract boolean isActive();
-
-        public abstract void onRemove();
-
-        public abstract Group getSprite();
-
-        public abstract boolean isShown();
-    }
-
     public class RobotSprite extends ViewPart {
         private final Robot model;
         private final Group robotGroup;
@@ -218,19 +235,19 @@ public class ViewManager {
         private final Animation moveAnim;
 
 
-        public RobotSprite(Robot robot) {
+        public RobotSprite(Robot robot, Group playerField) {
 
             this.model = robot;
             int size = (int) (robot.getSpriteSize() * sizeRatio);
             int color = model.getOwner().getColorToken();
             robotGroup = graphicEntityModule.createGroup(
-                    graphicEntityModule.createSprite().setImage(model.getRobotType() + "BODY.png")
+                    graphicEntityModule.createSprite().setImage(model.getRobotType().toString().charAt(0) + "B.png")
                             .setAnchor(0.5)
                             .setBaseWidth(size)
                             .setBaseHeight(size)
                             .setAlpha(1.0)
                             .setTint(color));
-            robotGroup.add(graphicEntityModule.createSprite().setImage(model.getRobotType() + "RIM.png")
+            robotGroup.add(graphicEntityModule.createSprite().setImage(model.getRobotType().toString().charAt(0) + "R.png")
                     .setAnchor(0.5)
                     .setBaseWidth(size)
                     .setBaseHeight(size)
@@ -240,7 +257,7 @@ public class ViewManager {
             Sprite[] canonSprites = new Sprite[animAttackLength];
             for (int i = 0; i < animAttackLength; i++) {
                 Sprite canon;
-                robotGroup.add(canon = graphicEntityModule.createSprite().setImage(model.getRobotType().toString() + "A" + (i + 1) + ".png")
+                robotGroup.add(canon = graphicEntityModule.createSprite().setImage(model.getRobotType().toString().charAt(0) + "A" + (i + 1) + ".png")
                         .setAnchor(0.5)
                         .setBaseWidth(size)
                         .setBaseHeight(size)
@@ -254,7 +271,7 @@ public class ViewManager {
             Sprite[] moveSprites = new Sprite[animMoveLength];
             for (int i = 0; i < animMoveLength; i++) {
                 Sprite animFrame;
-                robotGroup.add(animFrame = graphicEntityModule.createSprite().setImage(model.getRobotType().toString() + "M" + (i + 1) + ".png")
+                robotGroup.add(animFrame = graphicEntityModule.createSprite().setImage(model.getRobotType().toString().charAt(0) + "M" + (i + 1) + ".png")
                         .setAnchor(0.5)
                         .setBaseWidth(size)
                         .setBaseHeight(size)
@@ -281,11 +298,14 @@ public class ViewManager {
 
         }
 
+        //private String getTooltip() {return "";}
         private String getTooltip() {
-            return String.format("Robot ID : %d \n health : %d/%d \n shield : %d/%d \n action : %s", model.getId(),
-                    (int) model.getHealth(),
-                    (int) model.getMaxHealth(), (int) model.getShield(), (int) model.getMaxShieldHealth(),
-                    model.getLastActionWithTarget());
+            return String.format("%d %s %s %s %s %s", model.getId(),
+                    model.getHealth() == model.getMaxHealth() ? "M" : model.getHealth() + "",
+                    (model.getRobotType() + "").charAt(0),
+                    model.getShield() == model.getMaxShieldHealth() ? "M" : model.getShield() + "",
+                    (model.getRobotType() + "").charAt(0),
+                    model.getLastAction().charAt(0) + model.getStringTargets());
         }
 
         @Override
@@ -298,8 +318,10 @@ public class ViewManager {
             robotGroup.setY(coordToScreen(model.getY()), LINEAR);
             shieldBar.setBar(Math.max(0, model.getShieldRatio()));
             healthBar.setBar(Math.max(0, model.getHealthRatio()));
-            tooltips.removeTooltipText(robotGroup);
-            tooltips.setTooltipText(robotGroup, getTooltip());
+            if (!Objects.equals(tooltips.getTooltipText(robotGroup), getTooltip())) {
+                tooltips.setTooltipText(robotGroup, getTooltip());
+            }
+
             attackAnim.update(!model.getLastAction().equals("ATTACK"));
             moveAnim.setActive(!model.getLastAction().equals("ATTACK") && !model.getLastAction().equals("IDLE"));
             moveAnim.update();
@@ -312,7 +334,7 @@ public class ViewManager {
 
         @Override
         public void onRemove() {
-
+            camera.removeTrackedEntity(robotGroup);
         }
 
 
@@ -334,7 +356,7 @@ public class ViewManager {
         private final Group bulletGroup;
         private boolean active = true;
 
-        public BulletSprite(Bullet bullet) {
+        public BulletSprite(Bullet bullet, Group playerField) {
 
             model = bullet;
             bulletGroup = graphicEntityModule.createGroup(graphicEntityModule.createCircle().

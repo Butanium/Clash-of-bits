@@ -5,7 +5,7 @@ import java.util.Scanner;
 /**
  * Control your bots in order to destroy the enemy team !
  **/
-class idleDumb {
+class attackDumb {
 
     public static void main(String args[]) {
         Scanner in = new Scanner(System.in);
@@ -58,9 +58,9 @@ class idleDumb {
                         selfId = entId;
                     }
                 }
-                result.append(selfId).append(" IDLE ").append("yourmama");
+                result.append(selfId).append(" ATTACK ").append(accId).append(";");
             }
-            System.out.println("");
+            System.out.println(result);
         }
     }
 }

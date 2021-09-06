@@ -1,6 +1,7 @@
 package com.codingame.game;
 
 import com.codingame.game.gameEntities.Robot;
+import view.ViewManager;
 
 import java.util.*;
 
