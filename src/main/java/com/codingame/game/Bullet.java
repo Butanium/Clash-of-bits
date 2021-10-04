@@ -25,6 +25,7 @@ public class Bullet extends CircularHitBox {
         this.willHit = willHit;
         this.damage = damage;
         owner = shooter.getOwner();
+
     }
 
     private final Player owner;

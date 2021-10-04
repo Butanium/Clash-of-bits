@@ -11,8 +11,7 @@ import view.modules.CameraModule;
 import java.util.*;
 
 import static com.codingame.game.Constants.*;
-import static com.codingame.gameengine.module.entities.Curve.EASE_OUT;
-import static com.codingame.gameengine.module.entities.Curve.LINEAR;
+import static com.codingame.gameengine.module.entities.Curve.*;
 
 
 public class ViewManager {
@@ -374,6 +373,8 @@ public class ViewManager {
         public boolean isActive() {
             if (!model.isActive() && active) {
                 active = false;
+                bulletGroup.setAlpha(0., EASE_IN);
+                graphicEntityModule.createSprite().setImage("hitmarker.png").setScale(BULLET_SIZE);
                 return true;
             }
             return active;
