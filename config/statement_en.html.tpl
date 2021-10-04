@@ -27,7 +27,7 @@
             the little information given to you.
 
             <br>
-            But don't worry your bots get smarter and can give you more info in the following leagues
+            But don't worry your bots get smarter and can give you more info in the following leagues !
             <br>
 
         </div>

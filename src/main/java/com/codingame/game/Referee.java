@@ -8,7 +8,6 @@ import com.codingame.gameengine.core.AbstractReferee;
 import com.codingame.gameengine.core.MultiplayerGameManager;
 import com.codingame.gameengine.module.endscreen.EndScreenModule;
 import com.codingame.gameengine.module.entities.GraphicEntityModule;
-import com.codingame.gameengine.module.toggle.ToggleModule;
 import com.google.common.base.Function;
 import com.google.inject.Inject;
 import view.ViewManager;
@@ -34,8 +33,6 @@ public class Referee extends AbstractReferee {
     TooltipModule tooltips;
     @Inject
     EndScreenModule endScreenModule;
-    @Inject
-    ToggleModule toggleModule;
     @Inject
     CameraModule cameraModule;
 
@@ -68,7 +65,7 @@ public class Referee extends AbstractReferee {
             playersTeam.put(player.getIndex(), team);
         }
 
-        viewManager = new ViewManager(graphicEntityModule, tooltips, toggleModule, cameraModule);
+        viewManager = new ViewManager(graphicEntityModule, tooltips, cameraModule);
         viewManager.init(robotSet);
 
 //        viewportModule.createViewport(viewportGroup);

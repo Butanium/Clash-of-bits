@@ -6,7 +6,6 @@ import com.codingame.game.TooltipModule;
 import com.codingame.game.ZeroDivisionException;
 import com.codingame.game.gameEntities.Robot;
 import com.codingame.gameengine.module.entities.*;
-import com.codingame.gameengine.module.toggle.ToggleModule;
 import view.modules.CameraModule;
 
 import java.util.*;
@@ -22,17 +21,15 @@ public class ViewManager {
     public static int Y0;
     private final TooltipModule tooltips;
     private final GraphicEntityModule graphicEntityModule;
-    private final ToggleModule toggleModule;
     private final CameraModule camera;
 
-    private final Set<ViewPart> autoCameraViewParts = new HashSet<>();
-    private final Group autoCameraGameGroup;
+    private final Set<ViewPart> viewParts = new HashSet<>();
+    private final Group gameGroup;
     private final Point fieldSize;
-    private Group autoCameraPlayerField;
+    private Group playerField;
     private Point oldCameraPosition = new Point();
 
-    public ViewManager(GraphicEntityModule graphicEntityModule, TooltipModule tooltipModule, ToggleModule toggleModule,
-                       CameraModule cameraModule) {
+    public ViewManager(GraphicEntityModule graphicEntityModule, TooltipModule tooltipModule, CameraModule cameraModule) {
         this.graphicEntityModule = graphicEntityModule;
         double xRatio = 1920 / MAP_SIZE.getX();
         double yRatio = 1080 / MAP_SIZE.getY();
@@ -47,9 +44,8 @@ public class ViewManager {
         }
         sizeRatio = Math.min(xRatio, yRatio);
         fieldSize = new Point(coordToScreen(MAP_SIZE.getX()), coordToScreen(MAP_SIZE.getY()));
-        autoCameraGameGroup = graphicEntityModule.createGroup();
+        gameGroup = graphicEntityModule.createGroup();
         tooltips = tooltipModule;
-        this.toggleModule = toggleModule;
         camera = cameraModule;
     }
 
@@ -67,13 +63,13 @@ public class ViewManager {
     }
 
     public void init(Set<Robot> robots) {
-        autoCameraPlayerField = createPlayerField();
-        autoCameraGameGroup.add(autoCameraPlayerField);
-        camera.createCamera(autoCameraPlayerField, (int) (0.5 + fieldSize.getX()), (int) (0.5 + fieldSize.getY()));
-
+        playerField = createPlayerField();
+        gameGroup.add(playerField);
+        //camera.setContainer(autoCameraPlayerField, (int) (0.5 + fieldSize.getX()), (int) (0.5 + fieldSize.getY()));
+        camera.setContainer(playerField, 1920, 1080);
         for (Robot robot : robots) {
-            ViewPart robotSprite = new RobotSprite(robot, autoCameraPlayerField);
-            autoCameraViewParts.add(robotSprite);
+            ViewPart robotSprite = new RobotSprite(robot, playerField);
+            viewParts.add(robotSprite);
             camera.addTrackedEntity(robotSprite.getSprite());
 
         }
@@ -81,13 +77,13 @@ public class ViewManager {
     }
 
     public void instantiateBullet(Bullet bullet) {
-        autoCameraViewParts.add(new BulletSprite(bullet, autoCameraPlayerField));
+        viewParts.add(new BulletSprite(bullet, playerField));
 
     }
 
     private void updateCameraPosition() {
         Bound bound = new Bound();
-        for (ViewPart viewPart : autoCameraViewParts) {
+        for (ViewPart viewPart : viewParts) {
             if (viewPart.isActive() && viewPart.getClass() == RobotSprite.class) {
                 double rx = ((RobotSprite) viewPart).model.getX(),
                         ry = ((RobotSprite) viewPart).model.getY();
@@ -101,7 +97,7 @@ public class ViewManager {
         Curve curve = oldCameraPosition.getDist(averagePoint) > CAMERA_OFFSET ? EASE_OUT : LINEAR;
         double scale = Double.min(1080 / sizeRatio / (boundSize.getY() + CAMERA_OFFSET),
                 1920 / sizeRatio / (boundSize.getX() + CAMERA_OFFSET));
-        autoCameraPlayerField
+        playerField
                 .setScale(scale, curve)
                 .setX((int) (0.5 + X0 - fieldSize.getX() * (scale - 1) / 2 + scale * sizeRatio * (MAP_SIZE.getX() / 2. - averagePoint.getX())), curve)
                 .setY((int) (0.5 + Y0 - fieldSize.getY() * (scale - 1) / 2 + scale * sizeRatio * (MAP_SIZE.getY() / 2. - averagePoint.getY())), curve);
@@ -126,7 +122,7 @@ public class ViewManager {
     }
 
     public void update() {
-        updatePlayerField(autoCameraPlayerField, autoCameraViewParts);
+        updatePlayerField(playerField, viewParts);
         //updateCameraPosition();
 
     }

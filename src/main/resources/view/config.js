@@ -2,8 +2,8 @@ import {GraphicEntityModule} from './entity-module/GraphicEntityModule.js';
 // import { ViewportModule } from './viewport-module/ViewportModule.js';
 import {TooltipModule} from "./modules/TooltipModule.js";
 import {EndScreenModule} from './endscreen-module/EndScreenModule.js';
-import {ToggleModule} from './toggle-module/ToggleModule.js'
 import {CameraModule} from "./modules/CameraModule.js";
+import {CameraToggleModule} from './modules/CameraToggleModule.js';
 
 
 // List of viewer modules that you want to use in your game
@@ -13,7 +13,7 @@ export const modules = [
     CameraModule,
     // ViewportModule,
     EndScreenModule,
-    ToggleModule
+    CameraToggleModule
 
 ];
 export const playerColors = [
@@ -29,7 +29,7 @@ export const playerColors = [
 
 // The list of toggles displayed in the options of the viewer
 export const options = [
-    ToggleModule.defineToggle({
+    CameraToggleModule.defineToggle({
         // The name of the toggle
         // replace "myToggle" by the name of the toggle you want to use
         toggle: 'cameraMode',

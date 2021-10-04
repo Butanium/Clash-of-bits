@@ -8,12 +8,13 @@ import com.codingame.gameengine.module.entities.GraphicEntityModule;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Arrays;
 
 /**
- * The TooltipModule takes care of displaying tooltips under the mouse cursor when an element has a linked tooltip text.
+ * The CameraModule allow you to have a dynamic camera following a set of objects
  */
 @Singleton
 public class CameraModule implements Module {
@@ -22,20 +23,23 @@ public class CameraModule implements Module {
     @Inject
     GraphicEntityModule entityModule;
     Map<Integer, Boolean> registered, newRegistration;
+    ArrayList<Entity<?>> trackedEntities;
     Double cameraOffset;
     Integer container, sizeX, sizeY = -1;
     boolean sentContainer = false;
     double previousOffset = -1;
+    boolean active = true;
+    boolean oldActive = false;
 
 
     @Inject
     CameraModule(GameManager<AbstractPlayer> gameManager) {
+        trackedEntities = new ArrayList<>();
         this.gameManager = gameManager;
         gameManager.registerModule(this);
         registered = new HashMap<>();
         newRegistration = new HashMap<>();
         cameraOffset = 10.;
-
     }
 
     @Override
@@ -54,8 +58,8 @@ public class CameraModule implements Module {
 
 
     private void sendFrameData() {
-        Object[] data = {null, null, null};
-        Object[] empty = {null, null, null};
+        Object[] data = {null, null, null, null};
+        Object[] empty = {null, null, null, null};
         if (!newRegistration.isEmpty()) {
             data[0] = new HashMap<>(newRegistration);
             System.out.printf("added size : %d\n", newRegistration.size());
@@ -69,32 +73,48 @@ public class CameraModule implements Module {
             data[2] = new Integer[]{container, sizeX, sizeY};
             sentContainer = true;
         }
+        if (oldActive != active) {
+            oldActive = active;
+            data[3] = active;
+        }
         if (!Arrays.equals(data, empty)) {
             gameManager.setViewData("c", data);
         }
     }
 
+    private boolean isContainerChild(Entity<?> entity, int _container) {
+        boolean t = false;
+        Entity<?> root = entity;
+        while ((!t) && root.getParent().isPresent()) {
+            root = root.getParent().get();
+            t = root.getId() == _container;
+        }
+        return t;
+    }
+
     /**
      * Make the camera include the entity in its field of view
      *
-     * @param entity the <code>Entity</code> to link the tooltip to
+     * @param entity the <code>Entity</code> to add to the tracked entities
      */
     public void addTrackedEntity(Entity<?> entity) {
-        if (entity.getParent().isPresent() && entity.getParent().get().getId() == container) {
+        if (isContainerChild(entity, container)) {
             int id = entity.getId();
+            trackedEntities.add(entity);
             if (!registered.getOrDefault(id, false)) {
                 newRegistration.put(id, true);
                 registered.put(id, true);
                 System.out.printf("registered %d\n", id);
             }
         } else {
-            throw new RuntimeException("The entity given can't be track because it's not the son of the container !\n" +
-                    "don't forget to init the camera with createCamera");
+            throw new RuntimeException("The entity given can't be track because it's not the child of " +
+                    "the container / on of the container child !\n" +
+                    "Don't forget to init the camera with the setContainer method");
         }
     }
 
     /**
-     * @param entity the <code>Entity</code> to get the associated tooltip text from
+     * @param entity the <code>Entity</code> that you want to know if it's tracked
      * @return if the entity is tracked by the camera or not
      */
     public Boolean isTracked(Entity<?> entity) {
@@ -104,19 +124,22 @@ public class CameraModule implements Module {
     /**
      * Make the camera stop tracking this entity
      *
-     * @param entity the <code>Entity</code> to remove a tooltip from
+     * @param entity the <code>Entity</code> that you don't want to be tracked anymore
      */
     public void removeTrackedEntity(Entity<?> entity) {
-        if (registered.getOrDefault(entity.getId(), false)) {
-            newRegistration.put(entity.getId(), false);
-            registered.remove(entity.getId());
+        int id = entity.getId();
+        trackedEntities.remove(entity);
+        if (registered.getOrDefault(id, false)) {
+            newRegistration.put(id, false);
+            registered.remove(id);
         }
     }
 
     /**
-     * Sets the camera offset to the given value
+     * Sets the camera offset to the given value. It's the length in pixel between the edge of the screen and the
+     * closest to border entity
      *
-     * @param value the new camera offset, a positive
+     * @param value the new camera offset, a positive double
      */
     public void setCameraOffset(double value) {
         cameraOffset = value;
@@ -126,12 +149,17 @@ public class CameraModule implements Module {
      * Initialize the camera with container which has to contain all the other entities tracked by the camera
      *
      * @param container   the <code>Entity</code> to set as the container
-     * @param viewerSizeX the x size in the viewer of your container if the scale is 1
-     * @param viewerSizeY the y size in the viewer of your container if the sacle is 1
+     * @param viewerSizeX the x size (in pixel) in the viewer of the smallest rectangle that could include your container if the scale is 1
+     * @param viewerSizeY the y size (in pixel) in the viewer of the smallest rectangle that could include your container if the scale is 1
      */
-    public void createCamera(Entity<?> container, int viewerSizeX, int viewerSizeY) {
-        this.container = container.getId();
-        this.sizeX = viewerSizeX;
-        this.sizeY = viewerSizeY;
+    public void setContainer(Entity<?> container, int viewerSizeX, int viewerSizeY) {
+        if (trackedEntities.stream().allMatch((Entity<?> e) -> isContainerChild(e, container.getId()))) {
+            this.container = container.getId();
+            this.sizeX = viewerSizeX;
+            this.sizeY = viewerSizeY;
+        } else {
+            throw new RuntimeException("You can't change the container if there are tracked that are not child of the new container");
+        }
     }
+
 }
