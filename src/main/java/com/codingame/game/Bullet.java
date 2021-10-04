@@ -32,7 +32,7 @@ public class Bullet extends CircularHitBox {
     private final Point end;
     private final Robot target;
     private static final Random random = new Random();
-    private final boolean willHit;
+    private boolean willHit;
 
     private Point getDeviation(CircularHitBox target) {
         int sign;
@@ -54,6 +54,9 @@ public class Bullet extends CircularHitBox {
         if (!isInstanced) {
             viewManager.instantiateBullet(this);
             isInstanced = true;
+        }
+        if (!target.checkActive()) {
+            this.willHit = false;
         }
         if (willHit) {
             if (getDist(end) < Constants.DELTA_TIME * Constants.BULLET_SPEED + target.getSize()) {
@@ -84,6 +87,8 @@ public class Bullet extends CircularHitBox {
         return owner;
     }
 
+    public boolean willHit() { return willHit;}
 
+    public Robot getTarget() { return target;}
 
 }

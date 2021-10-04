@@ -290,7 +290,7 @@ public class ViewManager {
             //shieldBar.getBarGroup().setY(shieldBar.getBarGroup().getY()+10);
             robotGroup.setRotation(Math.PI * (1 - robot.getTeam()));
             tooltips.setTooltipText(robotGroup, getTooltip());
-
+            this.model.setSprite(robotGroup);
         }
 
         //private String getTooltip() {return "";}
@@ -350,13 +350,16 @@ public class ViewManager {
         private final Bullet model;
         private final Group bulletGroup;
         private boolean active = true;
+        private Entity<Circle> bulletSprite;
+        private Sprite hitMarker;
 
         public BulletSprite(Bullet bullet, Group playerField) {
 
             model = bullet;
-            bulletGroup = graphicEntityModule.createGroup(graphicEntityModule.createCircle().
+            bulletSprite = graphicEntityModule.createCircle().
                     setRadius(coordToScreen(BULLET_SIZE)).setAlpha(1).
-                    setFillColor(bullet.getOwner().getColorToken())).setZIndex(1);
+                    setFillColor(bullet.getOwner().getColorToken());
+            bulletGroup = graphicEntityModule.createGroup(bulletSprite).setZIndex(1);
             playerField.add(bulletGroup);
             bulletGroup.setX(coordToScreen(model.getX()), Curve.IMMEDIATE)
                     .setY(coordToScreen(model.getY()), Curve.IMMEDIATE);
@@ -373,8 +376,12 @@ public class ViewManager {
         public boolean isActive() {
             if (!model.isActive() && active) {
                 active = false;
-                bulletGroup.setAlpha(0., EASE_IN);
-                graphicEntityModule.createSprite().setImage("hitmarker.png").setScale(BULLET_SIZE);
+                bulletSprite.setAlpha(0., EASE_IN);
+                if (model.willHit()) {
+                    this.hitMarker = graphicEntityModule.createSprite().setImage("hitmarker.png").setScale(BULLET_SIZE)
+                            .setY(-7).setX(-7);
+                    model.getTarget().getSprite().add(hitMarker);
+                }
                 return true;
             }
             return active;
@@ -382,7 +389,10 @@ public class ViewManager {
 
         @Override
         public void onRemove() {
-
+            if (model.willHit()) {
+                model.getTarget().getSprite().remove(hitMarker);
+                hitMarker.setVisible(false);
+            }
         }
 
         @Override

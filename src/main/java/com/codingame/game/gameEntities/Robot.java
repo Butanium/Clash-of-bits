@@ -1,12 +1,13 @@
 package com.codingame.game.gameEntities;
 
 import com.codingame.game.*;
+import com.codingame.gameengine.module.entities.Group;
 
 import java.util.*;
 
 
 public class Robot extends InGameEntity {
-
+    private Group sprite;
 
     /**
      * robot class parameters
@@ -405,4 +406,10 @@ public class Robot extends InGameEntity {
     public String getLastActionWithTarget() {
         return lastAction + " " + getStringTargets();
     }
+
+    public void setSprite (Group sprite) {
+        this.sprite = sprite;
+    }
+
+    public Group getSprite() { return sprite; }
 }
