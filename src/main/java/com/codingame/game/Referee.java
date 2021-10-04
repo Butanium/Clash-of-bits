@@ -51,6 +51,7 @@ public class Referee extends AbstractReferee {
     // public void addToGameSummary(String message) {gameManager.addToGameSummary(message);}
     @Override
     public void init() {
+        endScreenModule.setTitleRankingsSprite("endScreen.png");
         long seed = gameManager.getSeed();
         for (Player player : gameManager.getPlayers()) {
             player.initialize(seed);
