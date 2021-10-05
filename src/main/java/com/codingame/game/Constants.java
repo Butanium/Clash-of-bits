@@ -1,10 +1,9 @@
 package com.codingame.game;
 
 public class Constants {
-    public static int GLOBAL_ID = 0;
     public static final double MOVE_PRECISION = 0.0001;
     public static final double DELTA_TIME = 0.25;
-    public static final Point MAP_SIZE = new Point(40,40);
+    public static final Point MAP_SIZE = new Point(40, 40);
     public static final double BULLET_SPEED = 20;
     public static final double MAX_BULLET_DEVIATION = 1;
     public static final double SHORT_RANGE = 3;
@@ -19,5 +18,19 @@ public class Constants {
     public static final int NEON_SHIFT = 30;
     public static final int WALL_COLOR = 0x030056;
     public static final int CAMERA_OFFSET = 8;
-
+    public static final double HITMARKER_RATIO = 1. / 1000.;
+    public static final int[] playerColors =
+            new int[]{
+                    0xff0000, // radical red
+                    0x0f6a00, // green
+                    0xff8f16, // west side orange
+                    0x0254ff, // blue
+                    0x9975e2, // medium purple
+                    0x3ac5ca, // scooter blue
+                    0xde6ddf, // lavender pink
+            };
+    public static int GLOBAL_ID = 0;
+    public static int getPlayerColor(int player) {
+        return playerColors[player];
+    }
 }

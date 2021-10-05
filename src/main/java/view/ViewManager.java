@@ -21,7 +21,7 @@ public class ViewManager {
     private final TooltipModule tooltips;
     private final GraphicEntityModule graphicEntityModule;
     private final CameraModule camera;
-
+    private final Set<ViewPart> priorityViewParts = new HashSet<>();
     private final Set<ViewPart> viewParts = new HashSet<>();
     private final Group gameGroup;
     private final Point fieldSize;
@@ -72,37 +72,14 @@ public class ViewManager {
             camera.addTrackedEntity(robotSprite.getSprite());
 
         }
-        camera.setCameraOffset(CAMERA_OFFSET*sizeRatio);
+        camera.setCameraOffset(CAMERA_OFFSET * sizeRatio);
     }
 
     public void instantiateBullet(Bullet bullet) {
-        viewParts.add(new BulletSprite(bullet, playerField));
+        priorityViewParts.add(new BulletSprite(bullet, playerField));
 
     }
 
-    private void updateCameraPosition() {
-        Bound bound = new Bound();
-        for (ViewPart viewPart : viewParts) {
-            if (viewPart.isActive() && viewPart.getClass() == RobotSprite.class) {
-                double rx = ((RobotSprite) viewPart).model.getX(),
-                        ry = ((RobotSprite) viewPart).model.getY();
-                bound.add(new Point(rx, ry));
-            }
-        }
-
-        Point averagePoint = bound.average();
-        Point boundSize = bound.size();
-        System.out.println(averagePoint);
-        Curve curve = oldCameraPosition.getDist(averagePoint) > CAMERA_OFFSET ? EASE_OUT : LINEAR;
-        double scale = Double.min(1080 / sizeRatio / (boundSize.getY() + CAMERA_OFFSET),
-                1920 / sizeRatio / (boundSize.getX() + CAMERA_OFFSET));
-        playerField
-                .setScale(scale, curve)
-                .setX((int) (0.5 + X0 - fieldSize.getX() * (scale - 1) / 2 + scale * sizeRatio * (MAP_SIZE.getX() / 2. - averagePoint.getX())), curve)
-                .setY((int) (0.5 + Y0 - fieldSize.getY() * (scale - 1) / 2 + scale * sizeRatio * (MAP_SIZE.getY() / 2. - averagePoint.getY())), curve);
-
-        oldCameraPosition = averagePoint;
-    }
 
     private void updatePlayerField(Group playerField, Set<ViewPart> viewParts) {
         Iterator<ViewPart> it = viewParts.iterator();
@@ -121,8 +98,8 @@ public class ViewManager {
     }
 
     public void update() {
+        updatePlayerField(playerField, priorityViewParts);
         updatePlayerField(playerField, viewParts);
-        //updateCameraPosition();
 
     }
 
@@ -228,10 +205,14 @@ public class ViewManager {
         private final Curve curve = LINEAR;
         private final Animation attackAnim;
         private final Animation moveAnim;
+        private final Sprite hitMarker;
+        private double damageTaken = 0;
+        private int impactColor = 0xFFFFFF;
 
 
         public RobotSprite(Robot robot, Group playerField) {
-
+            hitMarker = graphicEntityModule.createSprite().setImage("h.png").setScale(BULLET_SIZE)
+                    .setY(-7).setX(-7).setVisible(false).setZIndex(1);
             this.model = robot;
             int size = (int) (robot.getSpriteSize() * sizeRatio);
             int color = model.getOwner().getColorToken();
@@ -283,14 +264,15 @@ public class ViewManager {
             robotGroup.setY(coordToScreen(robot.getY()));
             shieldBar = new ProgressBar(0x00E1F5);
             healthBar = new ProgressBar(0xAB0098);
-            robotGroup.add(shieldBar.barGroup, healthBar.barGroup);
+            robotGroup.add(shieldBar.barGroup, healthBar.barGroup, hitMarker);
             shieldBar.getBarGroup().setX(shieldBar.getBarGroup().getX() + 15);
             healthBar.getBarGroup().setX(healthBar.getBarGroup().getX() + 15)
                     .setY((int) (shieldBar.getBarGroup().getY() + HEALTH_BAR_HEIGHT * 1.5));
             //shieldBar.getBarGroup().setY(shieldBar.getBarGroup().getY()+10);
             robotGroup.setRotation(Math.PI * (1 - robot.getTeam()));
+            ;
             tooltips.setTooltipText(robotGroup, getTooltip());
-            this.model.setSprite(robotGroup);
+            this.model.setRobotSprite(this);
         }
 
         //private String getTooltip() {return "";}
@@ -320,6 +302,19 @@ public class ViewManager {
             attackAnim.update(!model.getLastAction().equals("ATTACK"));
             moveAnim.setActive(!model.getLastAction().equals("ATTACK") && !model.getLastAction().equals("IDLE"));
             moveAnim.update();
+            if (damageTaken > 0) {
+                double t = Math.min(1, damageTaken * HITMARKER_RATIO);
+                Curve hit_curve = hitMarker.isVisible() ? EASE_OUT : IMMEDIATE;
+                hitMarker.setVisible(true);
+                damageTaken = 0;
+            } else {
+                hitMarker.setVisible(false);
+            }
+        }
+
+        public void takeDamage(double amount, int color) {
+            damageTaken += amount;
+            impactColor = color;
         }
 
         @Override
@@ -331,7 +326,6 @@ public class ViewManager {
         public void onRemove() {
             camera.removeTrackedEntity(robotGroup);
         }
-
 
         @Override
         public Group getSprite() {
@@ -351,7 +345,6 @@ public class ViewManager {
         private final Group bulletGroup;
         private boolean active = true;
         private Entity<Circle> bulletSprite;
-        private Sprite hitMarker;
 
         public BulletSprite(Bullet bullet, Group playerField) {
 
@@ -378,9 +371,8 @@ public class ViewManager {
                 active = false;
                 bulletSprite.setAlpha(0., EASE_IN);
                 if (model.willHit()) {
-                    this.hitMarker = graphicEntityModule.createSprite().setImage("hitmarker.png").setScale(BULLET_SIZE)
-                            .setY(-7).setX(-7);
-                    model.getTarget().getSprite().add(hitMarker);
+                    int playerColor = getPlayerColor(model.getOwner().getIndex());
+                    model.getTarget().getSprite().takeDamage(model.getDamage(), playerColor);
                 }
                 return true;
             }
@@ -389,10 +381,7 @@ public class ViewManager {
 
         @Override
         public void onRemove() {
-            if (model.willHit()) {
-                model.getTarget().getSprite().remove(hitMarker);
-                hitMarker.setVisible(false);
-            }
+
         }
 
         @Override
@@ -435,6 +424,20 @@ public class ViewManager {
             return g;
         }
 
+        public RGB lerp(RGB c, double t) {
+            return new RGB((int) Math.round((this.r) * (1 - t) - c.r * t),
+                    (int) Math.round((this.g) * (1 - t) - c.g * t),
+                    (int) Math.round((this.b) * (1 - t) - c.b * t));
+        }
+
+        public int hex() {
+            return toHex(this.r, this.g, this.b);
+        }
+
+    }
+
+    private int lerpRGB(int c1, int c2, double t) {
+        return new RGB(c1).lerp(new RGB(c2), t).hex();
     }
 
     private class Animation {

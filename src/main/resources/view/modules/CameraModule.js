@@ -1,7 +1,7 @@
 import {WIDTH, HEIGHT} from '../core/constants.js'
 import {api as entityModule} from '../entity-module/GraphicEntityModule.js'
 import {easeOut} from '../core/transitions.js'
-import {lerp, lerpPosition} from '../core/utils.js'
+import {lerpPosition} from '../core/utils.js'
 
 export class CameraModule {
     constructor(assets) {
@@ -31,7 +31,7 @@ export class CameraModule {
     setActive(active) {
         this.viewerActive = active
         if (this.currentUpdateProgress !== undefined) {
-            this.lastFrame = -1
+            this.lastFrame = -2
             this.updateScene(this.previousUpdateData, this.currentUpdateFrame, this.currentUpdateProgress)
         }
     }
@@ -62,11 +62,11 @@ export class CameraModule {
             }
             return
         }
+
         this.currentUpdateFrame = currentData
         this.currentUpdateProgress = progress
         this.previousUpdateData = previousData
         if (this.lastFrame !== currentData.number) {
-            this.lastFrame = currentData.number
             if (isActive) {
                 this.oldCameraState = {...this.currentCameraState}
                 let maxX, minX, minY, maxY;
@@ -124,15 +124,18 @@ export class CameraModule {
             }
 
         }
-        if ((this.lastFrame === currentData.number || progress === 1) && isActive) {
-            const currentPoint = lerpPosition(this.oldCameraState.position, this.cameraEndPosition, this.cameraCurve(progress))
+        const realProgress = Math.abs(currentData.number - this.lastFrame) > 1 ? 1 : progress
+        if (isActive) {
+            const currentPoint = lerpPosition(this.oldCameraState.position, this.cameraEndPosition, this.cameraCurve(realProgress))
             currentData.container.entity.graphics.position = currentPoint
-            const currentScale = lerpPosition(this.oldCameraState.scale, this.cameraEndScale, this.cameraCurve(progress))
+            const currentScale = lerpPosition(this.oldCameraState.scale, this.cameraEndScale, this.cameraCurve(realProgress))
             currentData.container.entity.graphics.scale = currentScale
-           // console.log(`frame ${currentData.number}, ${Math.round(progress * 100) / 100}%,container to x : ${currentPoint.x}, y : ${currentPoint.y}, scale : ${currentScale.x}`)
+            // console.log(`frame ${currentData.number}, ${Math.round(realProgress * 100) / 100}%,container to x : ${currentPoint.x}, y : ${currentPoint.y}, scale : ${currentScale.x}`)
             this.currentCameraState = {scale: currentScale, position: currentPoint}
-
         }
+        this.lastFrame = currentData.number
+
+
     }
 
     handleFrameData(frameInfo, data) {
@@ -173,8 +176,8 @@ export class CameraModule {
 
     reinitScene() {
         if (this.currentUpdateProgress !== undefined) {
-            this.lastFrame = -1
-            this.updateScene(this.previousUpdateData, this.currentUpdateFrame, this.currentUpdateProgress)
+            this.lastFrame = -2
+            this.updateScene(this.previousUpdateData, this.currentUpdateFrame, 1)
         }
     }
 
