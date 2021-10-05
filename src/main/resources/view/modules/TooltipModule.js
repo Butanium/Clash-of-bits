@@ -107,8 +107,8 @@ function getMouseMoveFunc(tooltip, container, module) {
                         }
                         const maxHealth = maxHealthDic[splitedText[2]]
                         const maxShield = maxShieldDic[splitedText[4]]
-                        const health = splitedText[1] = 'M' ? maxHealth : splitedText[1]
-                        const shield = splitedText[3] = 'M' ? maxShield : splitedText[3]
+                        const health = Math.round(splitedText[1] === 'M' ? maxHealth : splitedText[1])
+                        const shield = Math.round(splitedText[3] === 'M' ? maxShield : splitedText[3])
 
                         const text = "Robot ID : {0} \n health : {1}/{2} \n shield : {3}/{4} \n action : {5}".format(
                             splitedText[0], health, maxHealth, shield, maxShield, action)

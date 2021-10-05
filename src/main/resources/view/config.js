@@ -1,5 +1,4 @@
 import {GraphicEntityModule} from './entity-module/GraphicEntityModule.js';
-// import { ViewportModule } from './viewport-module/ViewportModule.js';
 import {TooltipModule} from "./modules/TooltipModule.js";
 import {EndScreenModule} from './endscreen-module/EndScreenModule.js';
 import {CameraModule} from "./modules/CameraModule.js";
@@ -11,7 +10,6 @@ export const modules = [
     GraphicEntityModule,
     TooltipModule,
     CameraModule,
-    // ViewportModule,
     EndScreenModule,
     CameraToggleModule
 
