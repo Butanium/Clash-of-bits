@@ -363,7 +363,7 @@ public class Robot extends InGameEntity {
         Set<InGameEntity> InGameEntitySet = new HashSet<>(entities);
         InGameEntitySet.remove(this);
         Optional<InGameEntity> res = InGameEntitySet.stream().min(Comparator.comparingDouble(this::getDist));
-        return res.orElse(null);
+        return res.orElse(this);
     }
 
     public RobotType getRobotType() {

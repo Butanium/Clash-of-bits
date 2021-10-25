@@ -1,17 +1,17 @@
 <!--suppress ALL, HtmlUnknownTarget -->
 <!-- LEAGUES level1 level2 level3 -->
-<div id="statement_back" class="statement_back" style="display:none"></div>
+<div id="statement_back" class="statement_back" style="display:nun"></div>
 <div class="statement-body">
 
     <!-- BEGIN level1 -->
     <div>
         <ul>
-            Welcome to clash of bots ! <br>
-            If you you are lost and don't understand how you are supposed to extract data from the basic code,
-            make sure to check <a
-                href="https://tech.io/playgrounds/57689/how-to-extract-values-from-the-game-loop-in-clash-of-bots"> this
-            playground </a>.
-            It'll help you to get started.
+            Bienvenue dans <b>clash of bots</b> ! <br>
+            Si tu es un peu perdu et que tu ne sais pas trop que faire de toutes les données qui te sont fournies,
+            essaie de jeter un coup d'oeil à ce petit playground :
+            <a href="https://tech.io/playgrounds/57689/how-to-extract-values-from-the-game-loop-in-clash-of-bots"> this
+                playground </a>.
+            Cela t'aidera au moins à commencer !
         </ul>
     </div>
     <!-- END -->
@@ -20,19 +20,18 @@
         <h1>
             <span class="icon icon-goal">&nbsp;</span>
 
-            <span>The Goal</span>
+            <span>But du jue</span>
         </h1>
         <div class="statement-goal-content">
-            In this game you have to destroy the enemy team, while keeping at least one of your bots alive.
+            Dans ce jeu, le but et de détruire l'équipe ennemie tout en gardant au moins l'un de ses robots en vie.
             <br>
-            Unfortunately,
-            your bots aren't very smart and cannot provide you that much information as X,Y coordinates or their exact
-            health. You will have to exploit the little information given to you.
-
+            Malheureusement, vos robots ne sont pas très malin et ne peuvent pas vous fournir des informations
+            aussi précise que les coordonnées cartésiennes des robots enemies ou leur nombre de point de vies exacte.
+            Vous allez donc devoir exploiter le peu d'informations qu'ils pourront vous donner...
             <br>
-            But don't worry your bots get smarter and can give you more info in the following leagues !
+            Mais ne vous inquiétez pas, vos robots deviendront plus intelligents et pourront vous donner plus
+            d'informations dans les ligues suivantes.
             <br>
-
         </div>
     </div>
     <!-- RULES -->
@@ -42,16 +41,19 @@
             <span>Rules</span>
         </h1>
         <div>
-            <div class="statement-rules-content">You begin the game with certain amount of bots<br>
-                A lot of information are distance between entities. The game use 4 different <b>range</b> :
+            <div class="statement-rules-content">
+                Vous commencez la partie avec un certain nombre de robots
+                <br>
+                Beaucoup d'informations sont des distance entre plusieurs entités.
+                Le jeu utilise 4 différentes <b>portées</b> :
                 <ul>
-                    <li>0 : Short range (dist <=
+                    <li>0 : Courte portée (dist <=
                         <const>3 m</const>
                         )
                     </li>
                 </ul>
                 <ul>
-                    <li>1 : Medium range (
+                    <li>1 : Moyenne portée (
                         <const>3 m</const>
                         < dist <=
                         <const>8 m</const>
@@ -59,7 +61,7 @@
                     </li>
                 </ul>
                 <ul>
-                    <li>2 : Long range (
+                    <li>2 : Longue portée (
                         <const>8 m</const>
                         < dist <=
                         <const>15 m</const>
@@ -67,42 +69,41 @@
                     </li>
                 </ul>
                 <ul>
-                    <li>3 : Out of range (dist >
+                    <li>3 : Hors de portée (dist >
                         <const>15 m</const>
                         )
                     </li>
                 </ul>
 
                 <br>
-
-                The Arena is a square, bot cannot get out of the Arena
+                L'arène est un carré dont les robots ne peuvent sortir
                 <ul>
-                    <li>
-                        The objects on the map are called <b>entities</b>.
-                        For now, the bots are the only entities.
+                    <li>Les objets présents sur la carte sont appelés <b>entités</b>. Pour l'instant il n'y a que les
+                        robots
                     </li>
                 </ul>
                 <br>
-                Your bots have 2 health bar :
+                Vos robots ont 2 barres de vie :
                 <ul>
                     <li>
-                        The blue one represents their shield, if a robot doesn't take any damage during 12 turns its
-                        shield
-                        will regenerate every turn. An empty shield will take 12 turn without damage to be
-                        completely restored
+                        Une bleu pour leur bouclier. Si un robot ne prends pas de dégâts pendant 12 tours de jeu, son
+                        bouclier commencer à se régénérer. Un bouclier complètement vide met 12 tours sans dégâts pour
+                        se recharger
                     </li>
                 </ul>
                 <ul>
                     <li>
-                        The purple one represents your health. It cannot be regenerated but will decrease only if you
-                        take more damage than your current shield
+                        Un violet qui pour leurs points de vie. Les points de vie ne se régènerent pas mais ne baissent
+                        que si le bouclier est vide.
                     </li>
                 </ul>
                 <br>
-                Your bots are not smart enough to give you the exact shield and health value of robots on the map.
-                So they use an approximation :
+                Vos bots ne sont pas assez intelligents pour vous donner des valeurs exactes pour
+                les bouclier et le nombre de points de vie des robots sur la carte.
+                Ils utilisent donc des approximations :
                 <ul>
-                    <li>For the health they give you either
+                    <li>
+                        Pour les points de vie ils donnent
                         <const>0</const>
                         |
                         <const>25</const>
@@ -114,13 +115,14 @@
                         <const>100</const>
                         ,
                         <const>25</const>
-                        meaning that your life is
+                        correspondant à une santé
                         <const>>= 25%</const>
-                        but
+                        mais
                         <const>< 50%</const>
-                        of your max life
+                        du nombre maximal de point de vie
                     </li>
-                    <li>For the shield they give you either
+                    <li>
+                        Pour les boucliers ils donnent :
                         <const>0</const>
                         |
                         <const>1</const>
@@ -134,57 +136,56 @@
                         <const>100</const>
                         ,
                         <const>1</const>
-                        meaning that the shield is
+                        quand le bouclier est
                         <const> >= 1%</const>
-                        and
+                        mais
                         <const>< 25%</const>
-                        of the max shield and
+                        du bouclier maximal et
                         <const>0</const>
-                        that the shield is empty
+                        que le bouclier est vide
                     </li>
 
                 </ul>
-                Your bots can perform 3 different actions :
+                Vos robots peuvent faire 3 actions différentes :
                 <ul>
                     <li>
-                        <b>ATTACK</b> one enemy bot. Your damage are done depending on the <b>range</b> your enemy is at
-                        (short
-                        medium long or close). The closer it is the more
-                        damage you'll do. If you're attacking an enemy out of range, you won't deal any damage. For more
-                        details,
-                        see expert rules.
+                        <b>ATTACK</b> pour attaquer un robot ennemi. Les dégâts infligés dépendent de la <b>portée</b>
+                        à laquelle vous tirez (courte, moyenne ou longue). Les dégâts étant maximum à courte portée.
+                        Notez qu'attaquer un ennemi hors de portée ne va faire aucun dégât. Pour plus de détails,
+                        consulter les règles experts.
                     </li>
 
                     <li>
-                        <b>MOVE </b>to a group of entities, which makes you moving toward the average position of
-                        the group. If the group is an only entity, the bot will move toward it.
+                        <b>MOVE</b> pour se déplacer vers un groupe d'entités, ce qui fait bouger votre robot
+                        vers la position moyenne du groupe. Si un groupe n'est composé que d'une seule entité,
+                        le robot se déplacera donc dans la direction de ladite entité.
                     </li>
 
                     <li>
-                        <b>FLEE </b> from a group of entities, which makes you moving backward from the average position
-                        of the group
+                        <b>FLEE </b> pour fuire un groupe d'entités. Le robot s'éloigne de la position moyenne du
+                        groupe.
                     </li>
                     <li>
-                        <b>IDLE </b> The bot wait for this turn and start thinking about the meaning of life.
+                        <b>IDLE </b> Le robot attend tout en réfléchissant au sens de sa vie.
                         <br><i>
-                        "A robot must obey the orders given it by human beings except where such orders would
-                        conflict with the First Law."
+                        "Un robot doit obéir
+                        aux ordres donnés par les êtres humains, sauf si de tels ordres entrent en contradiction avec
+                        la première loi".
                         </i><br>
-                        It's the default action if you don't send an order for a bot.
+                        C'est l'action par défaut qu'exécutera le robot si vous ne lui donnez pas d'ordres.
                     </li>
                 </ul>
                 <br>
-                You <strong>lose</strong> if :
+                Vous <strong>perdez</strong> si :
                 <ul>
-                    <li>All your bots got destroyed</li>
-                    <li>Your enemy destroyed more bots than you at the end of the match</li>
+                    <li>Tous vos robots sont détruits</li>
+                    <li>Votre ennemi a détruits plus de robots que vous à la fin de la partie</li>
                     <li>
-                        You send invalid orders to your bots making their operating system crash.
+                        Vous envoyez des ordres invalides à vos robots, faisant ainsi exploser le cerveau positronique.
                         <br>
-                        But they are smart enough to tell you why you made them crash,
-                        so be sure to check the little dot in the replay.
+                        Heureusement ils sont assez intelligents pour vous dire pourquoi ils ont explosé, pensez à
+                        passer votre souris sur la petite pastille dans le replay.
                     </li>
-
                 </ul>
             </div>
         </div>
@@ -193,32 +194,32 @@
     <div class="statement-section statement-expertrules">
         <h1>
             <span class="icon icon-expertrules">&nbsp;</span>
-            <span>Expert Rules</span>
+            <span>Règles experts</span>
         </h1>
         <div class="statement-expert-rules-content">
-            A turn duration for the simulation is 250 ms
+            Le temps entre chaque tours de jeu est 250 ms
             <br>
-            Concerning <strong>attack</strong> :
+            En ce qui conrcerne l'<strong>attaque</strong> :
             <ul>
                 <li>
-                    In order to fire bullet at an opponent, a bot has to attack the <b>same target</b> for <b>aim duration</b>
-                    turns. Then it'll fire <b>bullet per shot</b> bullets each turn for <b>shot duration</b> turns
+                    Pour tirer des balles sur un ennemi, un robot doit attaquer <b>la même cible</b> pendant
+                    <b>temps de visée</b> tours. Ensuite il tirera <b>balles par tir</b> balles chaque tour pendant
+                    <b>temps de tir</b> tours.
                 </li>
-                <li>The moment a bullet is fired, the game engine determine if it will hit the targeted robot
-                    based on the <b>current</b> range of the
-                    target with a probability of <b>precision [target range]</b>. Note that attacking out of range has a
-                    0%
-                    precision.
+                <li>
+                    A l'instant où une balle est tirée, le moteur de jeu détermine si elle va touchée sa cible ou non en fonction
+                    de sa portée <b>actuelle</b> avec une probabilité de <b>précision [portée de la cible]</b>.
+                    N'oubliez pas qu'attaquer une cible hors dep portée ne peut pas toucher.
                 </li>
-                <li> The game is deterministic, even if there is some RNG in shots, the 2 teams have the same random
-                    seed
-                    to determine if their shot will hit. So a game between the 2 same AIs will <b>always</b> result as a
-                    draw.
+                <li>
+                    Le jeu est "déterministe", même s'il y a de l'aléatoire dans les tirs, les deux équipes ont la
+                    même "seed" de random pour savoir si les tirs vont toucher. Un match entre 2 équipe identique
+                    sera <b>toujours</b> un match nul.
                 </li>
 
 
             </ul>
-            You can see all bot properties per class in this table
+            Voici les caractéristiques des différentes classes de robots.
 
             <style type="text/css" ;>
                 table.tableizer-table {
@@ -246,22 +247,22 @@
                 >
                     <thead>
                     <tr class="tableizer-firstrow" ;>
-                        <th>Bot class</th>
-                        <th>Damage per bullet</th>
-                        <th>Bullet per shot</th>
-                        <th>Aim duration (turn)</th>
-                        <th>Shot duration (turn)</th>
-                        <th>Precision short range</th>
-                        <th>Precision mid range</th>
-                        <th>Precision long range</th>
-                        <th>Speed</th>
-                        <th>Health</th>
-                        <th>Shield</th>
+                        <th>Classe de robot</th>
+                        <th>Dommages par balle</th>
+                        <th>Balles par tirs</th>
+                        <th>Temps de visée (tour)</th>
+                        <th>Temps de tir (tour)</th>
+                        <th>Precision à courte portée</th>
+                        <th>Precision à moyenne portée</th>
+                        <th>Precision à longue portée</th>
+                        <th>Vitesse</th>
+                        <th>Point de vie max</th>
+                        <th>Bouclier max</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr align="center" ;>
-                        <td>Assault</td>
+                        <td>Assaut</td>
                         <td>300</td>
                         <td>3</td>
                         <td>4</td>
@@ -277,8 +278,8 @@
                 </table>
             </div>
             <br>
-            You can check the source code of the game on its <a href="https://github.com/Butanium/Clash-of-bots">github
-            repo</a>
+            Vous pouvez consulter le code source du jeu sur mon <a href="https://github.com/Butanium/Clash-of-bots">dépôt
+            github</a>
         </div>
     </div>
 
@@ -289,7 +290,8 @@
             <span>Note</span>
         </h1>
         <div class="statement-warning-content">
-            You can change the camera from dynamic to fixed in the settings with the camera mode toggle.
+            Vous pouvez changer le mode de la caméra entre dynamique et statique dans le bouton "camera mode"
+            des paramètres.
         </div>
 
 
@@ -299,11 +301,16 @@
         <div class="statement-story-cover"
              style="background-size: cover; background-color: grey">
             <div class="statement-story">
-                <h1>Where does this idea come from ?</h1>
-                <div class="story-text"><strong> This challenge is highly inspired by the game "GLADIABOTS".<br> It's
-                    almost a copy actually, but I made it with the GFX47 (the gladiabots dev) permission. So if you
-                    enjoy this challenge or need some inspiration don't hesitate to <a href="https://gladiabots.com/">give
-                        it a look</a></strong>
+                <h1>D'où est ce que vient cette idée ?</h1>
+                <div class="story-text">
+                    <strong>
+                    Ce challenge est très fortement inspiré du jeu "GLADIABOTS".
+                    <br>
+                    On se rapproche en réalité plus de la copie que de l'inspiration, c'est pour cela que j'ai
+                    demandé la permission de son développeur indépendant GFX47. Si le jeu vous intrigue où que vous
+                    cherchez de nouvelles stratégie à expérimenter, n'hésitez pas à y
+                    <a href="https://gladiabots.com/">jeter un coup d'oeil</a>
+                    </strong>
                     <br> <br>
                 </div>
             </div>
@@ -317,31 +324,33 @@
         </h1>
         <!-- Protocol block -->
         <div class="blk">
-            <div class="title">Initialization input</div>
+            <div class="title">Entrées d'initialisation</div>
             <div class="text">
-                <span class="statement-lineno"> Line 1: </span> one integer <var>botPerPlayer</var>,
-                the amount of bot controlled by each players at the beginning of the game
+                <span class="statement-ligneno"> Ligne 1: </span> un nombre entier <var>botPerPlayer</var>,
+                le nombre de bot contrôlé par joueur au début de la partie
                 <br>
-                <span class="statement-lineno"> Line 2: </span> one integer <var>mapSize</var>,
-                the map size in meters. It's here just in case I need to change it during the contest.
+                <span class="statement-ligneno"> ligne 2: </span> un nombre entier <var>mapSize</var>,
+                la taille de la carte en mètre. C'est ici au cas où la taille de la carte vienne à changer
+                durant le challenge.
                 <br>
             </div>
         </div>
 
         <!-- Protocol block -->
         <div class="blk">
-            <div class="title">Input for one game turn</div>
+            <div class="title">Entrée dans un tour de jeu</div>
             <div class="text">
-                <span class="statement-lineno">First line: </span>an integer <var>allyBotAlive</var>, the amount of your
-                bot which are still alive.
+                <span class="statement-ligneno">Première ligne: </span>un nombre entier <var>allyBotAlive</var>,
+                le nombre de vos bots qui sont encore en vie.
                 <br>
-                <span class="statement-lineno">Next line</span>: an integer <var>totalEntities</var>, the amount of
-                entities in the arena<br>
+                <span class="statement-ligneno">Ligne suivante</span>: un nombre entier <var>totalEntities</var>,
+                le nombre d'entités dans l'arène
                 <br>
-                <br> For each entity your bots give
+                <br>
+                <br> Pour chaque entité, vos robots vous envoient
 
                 <!-- BEGIN level1 -->
-                <const>6</const>
+                <const> 6</const>
                 <!-- END -->
                 <!-- BEGIN level2 -->
                 <const> 8</const>
@@ -349,7 +358,7 @@
                 <!-- BEGIN level3 -->
                 <const> 13</const>
                 <!-- END -->
-                pieces of information : <var>entId</var>, <var>entType</var>, <var>health</var>, <var>shield</var>,
+                informations : <var>entId</var>, <var>entType</var>, <var>health</var>, <var>shield</var>,
                 <var>action</var>, <var>targets</var>
                 <!-- BEGIN level2 level3 -->
                 , <var>distEn</var>,
@@ -362,29 +371,30 @@
                 .
 
                 <!-- BEGIN level1 level2 -->
-                The others are just 0 and will be used in the next leagues.
+                Les autres sont juste 0 et ne seront utilisées que dans les prochaines ligues.
                 <!-- END -->
                 <br>
-                <br><var>entId</var> is the unique entity id, stay the same for the whole game.
+                <br><var>entId</var> est l'id unique de l'entité, il sera le même pendant toute la partie.
                 <br><br>
-                <var>entType</var> indicates the type of entity. The value can be :
+                <var>entType</var> indique le type d'entité. Cela peut être :
                 <ul style="padding-bottom: 0;">
                     <li>
                         <const>"ALLY"</const>
-                        for one of your Robots
+                        pour l'un de vos robots
                     </li>
                     <li>
                         <const>"ENEMY"</const>
-                        for an enemy Robot
+                        pour un robot ennemi
                     </li>
 
                 </ul>
-                <var>health</var>, <var>shield</var> for the approximate entity's health and shield.
+                <var>health</var>, <var>shield</var> pour la senté et le bouclier approximatif de l'entité
+                si c'est un robot, 0 sinon.
                 <br>
                 <br>
-                <var>action</var> indicates the action executed by the robot last turn. (
+                <var>action</var> indique l'action réalisé par le robot au tour précédent (
                 <const>NONE</const>
-                if the entity is not a robot) The value can be
+                si l'entité n'est pas un robot). Les différentes valeurs possibles sont :
                 <const>"ATTACK"</const>
                 ,
                 <const>"MOVE"</const>
@@ -394,19 +404,21 @@
                 <const>"IDLE"</const>
                 <br>
                 <br>
-                <var>targets</var> is the list of the entities id targeted by the robot last turn separated with
+                <var>targets</var> est la liste des ids des entités visées par la dernière action du robot au dernier
+                tour. Les ids sont séparés par des
                 <const>";"</const>
                 :
                 <const>"id1;id2;id3..."</const>
-                if the entity is a robot(the target for IDLE is the robot itself). Else
+                si l'entité est un robot (la cible de IDLE étant le robot lui même). Sinon
                 <const>-1</const>
                 .
                 <!-- BEGIN level2 level3 -->
                 <br> <br>
-                <var>distEn</var> : the range from the closest enemy. If the entity is an enemy bot it returns the
-                distance to its closest ally
+                <var>distEn</var> : la portée à laquelle est le plus proche ennemi. Si l'entité est un robot ennemi,
+                alors c'est la portée du plus proche allié qui est donnée.
                 <br><br>
-                <var>borderDist</var> : the range from the closest border (among the left, right, top and bottom one)
+                <var>borderDist</var> : la portée à laquelle est le plus proche côté de l'arène (entre gauche,
+                droit, haut, bas)
                 <!-- END -->
                 <!-- BEGIN level3 -->
                 <br>
@@ -431,7 +443,7 @@
                 </ul>
                 <!-- END -->
 
-                <br><br><br> Then all of your ally become one after the other <strong>on air</strong>. An <strong>on
+                <br><br><br> Then all of your ally become un after the other <strong>on air</strong>. An <strong>on
                 air </strong> ally give for each entity
                 <!-- BEGIN level1 -->
                 <const> 4</const>
@@ -454,13 +466,13 @@
                 <i>so that you can get the <strong> on air</strong> ally id</i>. Then it sends information about other
                 allies then enemies.
                 <br>
-                <br><var>entId</var> is the unique entity id.
+                <br><var>entId</var> is the unique gameEntity id.
                 <br><br> <var>entType</var>
                 indicates the type of entity. The value can be:
                 <ul style="padding-bottom: 0;">
                     <li>
                         <const>"ALLY"</const>
-                        for one of your Robots
+                        for un of your Robots
                     </li>
                     <li>
                         <const>"ENEMY"</const>
@@ -521,8 +533,8 @@
 
             <!-- Protocol block -->
             <div class="blk">
-                <div class="title">Output for one game turn</div>
-                <div class="text"> One line containing all your orders separated by
+                <div class="title">Output for un game turn</div>
+                <div class="text"> un ligne containing all your orders separated by
                     <const>";"</const>
                     like this
                     <const> "order1;order2;order3;..."</const>
@@ -575,7 +587,7 @@
                     run out of memory (┬┬﹏┬┬)
                     <br> If you don't send any input all your bots will
                     <action> IDLE</action>
-                    . If you don't send any order concerning one or more of your bot, they will
+                    . If you don't send any order concerning un or more of your bot, they will
                     <action>IDLE</action>
 
                 </div>

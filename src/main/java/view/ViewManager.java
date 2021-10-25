@@ -1,5 +1,17 @@
 package view;
+/* Zindex :
+    - 0 : map
+    - 1 : robot base
+    - 2 : robot surface
+    - 3 : robot move
+    - 4 : robot canon
+    - 5 : robot hit marker
+    - 6 : bullets
+    - 7 : UI 0
+    - 8 : UI 1
 
+
+*/
 import com.codingame.game.Bullet;
 import com.codingame.game.Point;
 import com.codingame.game.TooltipModule;
@@ -176,12 +188,12 @@ public class ViewManager {
 
         public ProgressBar(int color) {
             bar = graphicEntityModule.createRectangle().setFillColor(color).setLineWidth(0).setAlpha(0.8)
-                    .setWidth(HEALTH_BAR_WIDTH).setHeight(HEALTH_BAR_HEIGHT);
+                    .setWidth(HEALTH_BAR_WIDTH).setHeight(HEALTH_BAR_HEIGHT).setZIndex(7);
             Group group = graphicEntityModule.createGroup(graphicEntityModule.createRectangle().setFillColor(0x777777).setAlpha(.5)
                     .setWidth(HEALTH_BAR_WIDTH).setHeight(HEALTH_BAR_HEIGHT), bar);
             for (int i = 0; i < 5; i++) {
                 group.add(graphicEntityModule.createRectangle().setHeight(HEALTH_BAR_HEIGHT).setWidth(2)
-                        .setX(group.getX() + i * HEALTH_BAR_WIDTH / 4).setFillColor(0).setAlpha(0.5));
+                        .setX(group.getX() + i * HEALTH_BAR_WIDTH / 4).setFillColor(0).setAlpha(0.5).setZIndex(8));
             }
             barGroup = group;
         }
@@ -212,7 +224,7 @@ public class ViewManager {
 
         public RobotSprite(Robot robot, Group playerField) {
             hitMarker = graphicEntityModule.createSprite().setImage("h.png").setScale(BULLET_SIZE)
-                    .setY(-7).setX(-7).setVisible(false).setZIndex(1);
+                    .setY(-7).setX(-7).setVisible(false).setZIndex(5);
             this.model = robot;
             int size = (int) (robot.getSpriteSize() * sizeRatio);
             int color = model.getOwner().getColorToken();
@@ -222,12 +234,12 @@ public class ViewManager {
                             .setBaseWidth(size)
                             .setBaseHeight(size)
                             .setAlpha(1.0)
-                            .setTint(color));
+                            .setTint(color)).setZIndex(1);
             robotGroup.add(graphicEntityModule.createSprite().setImage(model.getRobotType().toString().charAt(0) + "R.png")
                     .setAnchor(0.5)
                     .setBaseWidth(size)
                     .setBaseHeight(size)
-                    .setAlpha(1.0));
+                    .setAlpha(1.0).setZIndex(2));
 
             int animAttackLength = model.getRobotType().getAttackAnimLength();
             Sprite[] canonSprites = new Sprite[animAttackLength];
@@ -238,6 +250,7 @@ public class ViewManager {
                         .setBaseWidth(size)
                         .setBaseHeight(size)
                         .setAlpha(i == 0 ? 1.0 : 0)
+                        .setZIndex(4)
                 );//.setTint(0));
                 canonSprites[i] = canon;
             }
@@ -253,6 +266,7 @@ public class ViewManager {
                         .setBaseHeight(size)
                         .setAlpha(i == 0 ? 1.0 : 0)
                         .setTint(0x00FFFF, Curve.IMMEDIATE)
+                        .setZIndex(3)
                 );//.setTint(0));
                 moveSprites[i] = animFrame;
             }
@@ -270,7 +284,7 @@ public class ViewManager {
                     .setY((int) (shieldBar.getBarGroup().getY() + HEALTH_BAR_HEIGHT * 1.5));
             //shieldBar.getBarGroup().setY(shieldBar.getBarGroup().getY()+10);
             robotGroup.setRotation(Math.PI * (1 - robot.getTeam()));
-            ;
+
             tooltips.setTooltipText(robotGroup, getTooltip());
             this.model.setRobotSprite(this);
         }
@@ -352,7 +366,7 @@ public class ViewManager {
             bulletSprite = graphicEntityModule.createCircle().
                     setRadius(coordToScreen(BULLET_SIZE)).setAlpha(1).
                     setFillColor(bullet.getOwner().getColorToken());
-            bulletGroup = graphicEntityModule.createGroup(bulletSprite).setZIndex(1);
+            bulletGroup = graphicEntityModule.createGroup(bulletSprite).setZIndex(6);
             playerField.add(bulletGroup);
             bulletGroup.setX(coordToScreen(model.getX()), Curve.IMMEDIATE)
                     .setY(coordToScreen(model.getY()), Curve.IMMEDIATE);

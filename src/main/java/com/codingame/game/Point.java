@@ -51,7 +51,7 @@ public class Point {
 
     public double getDist(Point point) {
         if (point == null){
-            return 3;
+            throw new IllegalArgumentException();
         }
         return Math.sqrt((point.getX() - this.x) * (point.getX() - this.x) + (point.getY() - this.y) * (point.getY() - this.y));
     }
