@@ -78,7 +78,7 @@
                 The Arena is a square, bot cannot get out of the Arena
                 <ul>
                     <li>
-                        The objects on the map are called <b>entities</b>.
+                        The objects in the arena are called <b>entities</b>.
                         For now, the bots are the only entities.
                     </li>
                 </ul>
@@ -99,7 +99,7 @@
                     </li>
                 </ul>
                 <br>
-                Your bots are not smart enough to give you the exact shield and health value of robots on the map.
+                Your bots are not smart enough to give you the exact shield and health value of robots in the arena.
                 So they use an approximation :
                 <ul>
                     <li>For the health they give you either
@@ -323,7 +323,7 @@
                 the amount of bot controlled by each players at the beginning of the game
                 <br>
                 <span class="statement-lineno"> Line 2: </span> one integer <var>mapSize</var>,
-                the map size in meters. It's here just in case I need to change it during the contest.
+                the arena size in meters. It's here just in case I need to change it during the contest.
                 <br>
             </div>
         </div>
@@ -415,19 +415,21 @@
                 order</strong> :
                 <ul>
                     <li>
-                        <var>distEnRank</var> : the attribute is the real distance between the entity and the closest
+                        <var>distEnRank</var> : the attribute is the exact distance between the entity and the closest
                         enemy.
                         If the entity is an enemy bot the distance is calculated based on its distance to its closest
                         ally
                     </li>
                     <li>
-                        <var>borderDistRank</var> : the attribute is the real distance between the entity and the
+                        <var>borderDistRank</var> : the attribute is the exact distance between the entity and the
                         closest border.
 
                     </li>
-                    <li><var>shieldRank</var> : the attribute is the real shield value</li>
-                    <li><var>healthRank</var> : the attribute is the real health value</li>
-                    <li><var>totalRank</var> : the attribute is the sum of real health and shield</li>
+                    <li><var>shieldRank</var> : the attribute is the exact shield value.
+
+                    </li>
+                    <li><var>healthRank</var> : the attribute is the exact health value</li>
+                    <li><var>totalRank</var> : the attribute is the sum of exact health and shield</li>
                 </ul>
                 <!-- END -->
 
@@ -471,7 +473,7 @@
                         for the robot <strong> on air </strong></li>
 
                 </ul>
-                <var>distMe</var> for the range at which the robot is from your <strong> on air </strong> robot.
+                <var>distMe</var> for the range at which the entity is from your <strong> on air </strong> robot.
                 <const>0</const>
                 for
                 <const>SHORT RANGE</const>
@@ -526,7 +528,7 @@
                     <const>";"</const>
                     like this
                     <const> "order1;order2;order3;..."</const>
-                    <br> An order has to follow the following synthax :
+                    <br> An order has to respect the following synthax :
                     <action>yourBotID [ACTION] [TARGETS]</action>
                     <br>
                     <action>ACTION</action>
@@ -552,7 +554,12 @@
                             has to contains
                             <const>1</const>
                             <strong> enemy bot </strong> id, not more, not less, don't try to attack yourself or your
-                            allies
+                            allies.
+                            <br>
+                            <i>
+                                "A robot must protect its own existence as long as such protection does not conflict
+                                with the First or Second Law."
+                            </i>
                         </li>
                         <li>If the action is
                             <action> MOVE</action>
@@ -571,19 +578,19 @@
                             <del> it allows you to REALLY make your bots thinking about the meaning of life</del>
                         </li>
                     </ul>
-                    If you send 2 differents action concerning the same bot you'll loose the game because your bot will
+                    If you send 2 differents orders concerning the same bot you'll loose the game because your bot will
                     run out of memory (┬┬﹏┬┬)
-                    <br> If you don't send any input all your bots will
+                    <br> If you don't send any output, all your bots will
                     <action> IDLE</action>
                     . If you don't send any order concerning one or more of your bot, they will
                     <action>IDLE</action>
 
                 </div>
-
+                <br>
                 <!-- Protocol block -->
                 <div class="blk">
                     <div class="title">Constraints</div>
-                    <div class="text"><var>The mapsize</var> is a square of size between
+                    <div class="text">The arena is a square of size between
                         <const>20</const>
                         and
                         <const>60</const>

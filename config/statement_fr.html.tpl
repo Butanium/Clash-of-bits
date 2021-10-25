@@ -20,13 +20,13 @@
         <h1>
             <span class="icon icon-goal">&nbsp;</span>
 
-            <span>But du jue</span>
+            <span>But du jeu</span>
         </h1>
         <div class="statement-goal-content">
             Dans ce jeu, le but et de détruire l'équipe ennemie tout en gardant au moins l'un de ses robots en vie.
             <br>
             Malheureusement, vos robots ne sont pas très malin et ne peuvent pas vous fournir des informations
-            aussi précise que les coordonnées cartésiennes des robots enemies ou leur nombre de point de vies exacte.
+            aussi précise que les coordonnées cartésiennes des robots ennemies ou leur nombre de point de vies exacte.
             Vous allez donc devoir exploiter le peu d'informations qu'ils pourront vous donner...
             <br>
             Mais ne vous inquiétez pas, vos robots deviendront plus intelligents et pourront vous donner plus
@@ -171,7 +171,7 @@
                         "Un robot doit obéir
                         aux ordres donnés par les êtres humains, sauf si de tels ordres entrent en contradiction avec
                         la première loi".
-                        </i><br>
+                    </i><br>
                         C'est l'action par défaut qu'exécutera le robot si vous ne lui donnez pas d'ordres.
                     </li>
                 </ul>
@@ -207,7 +207,8 @@
                     <b>temps de tir</b> tours.
                 </li>
                 <li>
-                    A l'instant où une balle est tirée, le moteur de jeu détermine si elle va touchée sa cible ou non en fonction
+                    A l'instant où une balle est tirée, le moteur de jeu détermine si elle va touchée sa cible ou non en
+                    fonction
                     de sa portée <b>actuelle</b> avec une probabilité de <b>précision [portée de la cible]</b>.
                     N'oubliez pas qu'attaquer une cible hors dep portée ne peut pas toucher.
                 </li>
@@ -304,12 +305,12 @@
                 <h1>D'où est ce que vient cette idée ?</h1>
                 <div class="story-text">
                     <strong>
-                    Ce challenge est très fortement inspiré du jeu "GLADIABOTS".
-                    <br>
-                    On se rapproche en réalité plus de la copie que de l'inspiration, c'est pour cela que j'ai
-                    demandé la permission de son développeur indépendant GFX47. Si le jeu vous intrigue où que vous
-                    cherchez de nouvelles stratégie à expérimenter, n'hésitez pas à y
-                    <a href="https://gladiabots.com/">jeter un coup d'oeil</a>
+                        Ce challenge est très pourtement inspiré du jeu "GLADIABOTS".
+                        <br>
+                        On se rapproche en réalité plus de la copie que de l'inspiration, c'est pour cela que j'ai
+                        demandé la permission de son développeur indépendant GFX47. Si le jeu vous intrigue où que vous
+                        cherchez de nouvelles stratégie à expérimenter, n'hésitez pas à y
+                        <a href="https://gladiabots.com/">jeter un coup d'oeil</a>
                     </strong>
                     <br> <br>
                 </div>
@@ -423,28 +424,36 @@
                 <!-- BEGIN level3 -->
                 <br>
                 <br>
-                The next values are <strong> ranks</strong> : Entites are sorted per an attribute in <strong>ascending
-                order</strong> :
+                Les données suivantes sont des <strong>rangs</strong> : les entités sont triées selon les différents
+                attributs par <strong>ordre croissant</strong> :
                 <ul>
                     <li>
-                        <var>distEnRank</var> : the attribute is the real distance between the entity and the closest
-                        enemy.
-                        If the entity is an enemy bot the distance is calculated based on its distance to its closest
-                        ally
+                        <var>distEnRank</var> : L'attribut considéré est leur distance au robot ennemi
+                        le plus proche. Si l'entité est un robot ennemi, la distance considérée est celle à son plus
+                        proche allié.
                     </li>
                     <li>
-                        <var>borderDistRank</var> : the attribute is the real distance between the entity and the
-                        closest border.
+                        <var>borderDistRank</var> : l'attribut est la distance au plus proche côté.
+                    </li>
+                    <li>
+                        <var>shieldRank</var> : l'attribut est la valeur exacte du bouclier.
+                    </li>
+                    <li>
+                        <var>healthRank</var> : l'attribut est le nombre exact des points de vie.
+                    </li>
+                    <li>
+                        <var>totalRank</var> : l'attribut est la somme du nombre exact de point de vie et de bouclier
 
                     </li>
-                    <li><var>shieldRank</var> : the attribute is the real shield value</li>
-                    <li><var>healthRank</var> : the attribute is the real health value</li>
-                    <li><var>totalRank</var> : the attribute is the sum of real health and shield</li>
+
                 </ul>
+                A noter que pour ces 3 derniers attributs les entités qui ne sont pas des robots ont le rang
+                <const>-1</const>
                 <!-- END -->
 
-                <br><br><br> Then all of your ally become un after the other <strong>on air</strong>. An <strong>on
-                air </strong> ally give for each entity
+                <br><br><br>
+                Ensuite, vos robots deviennent chacun leur tour <strong>actifs</strong>.
+                Un robot <strong>actif</strong> donne pour chaque entité dans l'arène
                 <!-- BEGIN level1 -->
                 <const> 4</const>
                 <!-- END -->
@@ -452,78 +461,81 @@
                 <const> 7</const>
                 <!-- END -->
 
-                information from <strong><u>its perspective :</u></strong> <var>entId</var>, <var>entType</var>, <var>distMe</var>,
+                données calculées selon <strong><u>sa perspective :</u></strong> <var>entId</var>, <var>entType</var>,
+                <var>distMe</var>,
                 <var>distMeRank</var>
                 <!-- BEGIN level2 level3 -->
                 , <var>shieldComp</var>, <var>healthComp</var>, <var>totComp</var>
                 <!-- END -->
                 .
                 <!-- BEGIN level1 -->
-                The others are just 0 and will be used in the next leagues.
+                Les autres sont juste 0 et seront utilisés dans les ligues suivantes.
                 <!-- END -->
-                For the first iteration, it sends its own information so <var>entType</var> is
+                Lors de la première itération, le robot envoie les données le concernant.
+                Donc <var>entType</var> est
                 <const> "SELF"</const>
-                <i>so that you can get the <strong> on air</strong> ally id</i>. Then it sends information about other
-                allies then enemies.
+                <i>comme ça vous pouvez facilment récupérer l'id du robot<strong> actif</strong></i>.
+                Ensuite le robot vous envoie les informations sur chaque ennemi.
                 <br>
-                <br><var>entId</var> is the unique gameEntity id.
+                <br><var>entId</var> est l'id unique de l'entité.
                 <br><br> <var>entType</var>
                 indicates the type of entity. The value can be:
                 <ul style="padding-bottom: 0;">
                     <li>
                         <const>"ALLY"</const>
-                        for un of your Robots
+                        pour un robot allié
                     </li>
                     <li>
                         <const>"ENEMY"</const>
-                        for an enemy Robot
+                        pour un robot ennemi
                     </li>
                     <li>
                         <const> "SELF"</const>
-                        for the robot <strong> on air </strong></li>
+                        pour le robot<strong> actif</strong></li>
 
                 </ul>
-                <var>distMe</var> for the range at which the robot is from your <strong> on air </strong> robot.
+                <var>distMe</var> la portée à laquelle se trouve l'entité par rapport au robot
+                <strong> actif </strong>
                 <const>0</const>
-                for
-                <const>SHORT RANGE</const>
+                pour
+                <const>courte portée</const>
                 ,
                 <const>1</const>
-                for
-                <const>MEDIUM RANGE</const>
+                pour
+                <const>moyenne portée</const>
                 ,
                 <const>2</const>
-                for
-                <const>LONG RANGE</const>
+                pour
+                <const>longue portée</const>
                 ,
                 <const>3</const>
-                for
-                <const>OUT OF RANGE</const>
+                pour
+                <const>hors de portée</const>
                 <br><br>
-                <var>distMeRank</var> the rank of the entity in a ranking based on the exact distance between the
-                entities and the <strong> on air </strong> robot
+                <var>distMeRank</var> le rang de l'entité dans un classement du plus proche au plus loin du robot
+                <strong>actif </strong> basé sur la distance exacte les séparant.
                 <br>
                 <!-- BEGIN level2 level3 -->
                 <br>
                 <var>shieldComp</var>, <var>healthComp</var>, <var>totComp</var>
-                compare an attribute between the <strong>ON AIR</strong> and the other entity if the entity is a robot.
-                <br><var>shieldComp</var> compare the <strong>shields</strong> of the 2 bots,
-                <var>healthComp</var> compare the healths of the 2 bots,
-                <var>totComp</var> compare the sum of healths and shields of the 2 bots.
+                comparent un attribut entre le robot <strong>actif</strong> et un autre robot.
+                <br><var>shieldComp</var> compare la valeur exacte des <strong>bouclier</strong> des 2 robots,
+                <var>healthComp</var> compare la santé exacte des 2 robots,
+                <var>totComp</var> compare la somme de la santé et du bouclier des 2 robots.
                 <br>
-                The comps can be either :
+                Ces variables peuvent prendre les valeurs :
                 <ul style="padding-bottom: 0;">
                     <li>
                         <const>-1</const>
-                        if the other robot has more attribute than the <strong>ON AIR </strong> bot
+                        si l'autre robot possède plus d'attributs que le robot <strong>actif</strong>
                     </li>
                     <li>
                         <const>0</const>
-                        if the other robot has the same value for the attribute than the <strong> ON AIR </strong> bot
+                        si l'autre robot possède autant d'attributs que le robot <strong>actif</strong>
                     </li>
                     <li>
                         <const>1</const>
-                        if the other robot has less attribute than the <strong>ON AIR </strong> bot
+                        si l'autre robot possède moins d'attributs que le robot <strong>actif</strong>
                     </li>
                 </ul>
                 <!-- END -->
@@ -533,16 +545,16 @@
 
             <!-- Protocol block -->
             <div class="blk">
-                <div class="title">Output for un game turn</div>
-                <div class="text"> un ligne containing all your orders separated by
+                <div class="title">Sortie pour un tour de jeu</div>
+                <div class="text"> Une ligne contenant tous les ordres donnés à vos robots séparés par
                     <const>";"</const>
-                    like this
-                    <const> "order1;order2;order3;..."</const>
-                    <br> An order has to follow the following synthax :
-                    <action>yourBotID [ACTION] [TARGETS]</action>
+                    comme ceci
+                    <const> "ordre1;ordre2;ordre3;..."</const>
+                    <br> Un ordre doit respecter la synthaxe suivante :
+                    <action>idDuRobot [ACTION] [CIBLES]</action>
                     <br>
                     <action>ACTION</action>
-                    has to be a valid action :
+                    doit être une action valide parmis :
                     <action>ATTACK</action>
                     ,
                     <action>MOVE</action>
@@ -551,63 +563,66 @@
                     ,
                     <action>IDLE</action>
 
-                    <action> TARGETS</action>
-                    has to use this synthax :
-                    <action>targetID1,targetID2,targetID3</action>
+                    <action> CIBLES</action>
+                    doit respecter la synthaxe suivante :
+                    <action>cibleID1,cibleID2,cibleID3</action>
                     <br>
-                    It has also to follow specifics rules depending on the action you try to perform :
+                    Vous devez aussi respecter certaines règles en fonction de l'action que vous souhaitez réaliser.
                     <ul>
-                        <li>If the action is
+                        <li>Si l'action est
                             <action>ATTACK</action>
                             ,
-                            <action>TARGETS</action>
-                            has to contains
+                            <action>CIBLES</action>
+                            doit contenir
                             <const>1</const>
-                            <strong> enemy bot </strong> id, not more, not less, don't try to attack yourself or your
-                            allies
+                            id de <strong> robot ennemi</strong>, ni plus, ni moins. Un robot ne peu ni s'attaquer lui
+                            même ni attaquer ses alliés.
+                            <br>
+                            <i>
+                                "Un robot doit protéger son existence dans la mesure où cette protection n'entre
+                                pas en contradiction avec la première ou la deuxième loi."
+                            </i>
                         </li>
-                        <li>If the action is
+                        <li>
+                            Si l'action est
                             <action> MOVE</action>
-                            or
+                            ou
                             <action> FLEE</action>
                             ,
-                            <action>TARGETS</action>
-                            has to contain at least 1 entity id
+                            <action>CIBLES</action>
+                            doit contenir au moins un id d'entité.
                         </li>
-                        <li>If the action is
+                        <li>Si l'action est
                             <action>IDLE</action>
                             ,
-                            <action>TARGETS</action>
-                            can contain <strong> anything </strong> or just <strong> nothing</strong>, in any case it'll
-                            be ignored.
-                            <del> it allows you to REALLY make your bots thinking about the meaning of life</del>
+                            <action>CIBLES</action>
+                            peut contenir tout et n'importe quoi (ou rien du tout), dans tous les cas cela sera ignoré.
+                            <del> Cela vous permet de faire réfléchir vos robots au sens de la vie</del>
                         </li>
                     </ul>
-                    If you send 2 differents action concerning the same bot you'll loose the game because your bot will
-                    run out of memory (┬┬﹏┬┬)
-                    <br> If you don't send any input all your bots will
-                    <action> IDLE</action>
-                    . If you don't send any order concerning un or more of your bot, they will
+                    Si vous envoyez 2 ordres différents s'adressant au même robot, vous perdrez la partie car votre
+                    robot sera à cours de mémoire vive (┬┬﹏┬┬)
+                    <br> Si vous n'envoyez pas de sortie, tous vos bots feront l'action
+                    <action>IDLE</action>
+                    . Si vous n'envoyez pas d'ordre à un ou plusieurs robots, ils effectueront
                     <action>IDLE</action>
 
                 </div>
-
+                <br>
                 <!-- Protocol block -->
                 <div class="blk">
-                    <div class="title">Constraints</div>
-                    <div class="text"><var>The mapsize</var> is a square of size between
+                    <div class="title">Contraintes</div>
+                    <div class="text">L'arène est un carré de côté compris entre
                         <const>20</const>
-                        and
+                        et
                         <const>60</const>
-                        meters (for now it's
+                        mètres (pour le moment c'est toujours
                         <const>40</const>
                         )<br>
-                        <br>Allotted response time to output
-                        is <=
+                        <br>Temps de réponse max par tour : 
                         <const>50</const>
                         ms.
-                        <br>Allotted response time to output for the first turn
-                        is <=
+                        <br>Temps de réponse max pour le premier tour :
                         <const>1000</const>
                         ms.
                     </div>
