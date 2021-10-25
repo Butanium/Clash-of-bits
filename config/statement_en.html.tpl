@@ -411,7 +411,7 @@
                 <!-- BEGIN level3 -->
                 <br>
                 <br>
-                The next values are <strong> ranks</strong> : Entites are sorted per an attribute in <strong>ascending
+                The next values are <strong> ranks</strong> : Entities are sorted per an attribute in <strong>ascending
                 order</strong> :
                 <ul>
                     <li>
