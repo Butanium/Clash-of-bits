@@ -3,17 +3,18 @@
 <div id="statement_back" class="statement_back" style="display:none"></div>
 <div class="statement-body">
 
-    <!-- BEGIN level1 -->
+    <!-- BEGIN level1 level2 -->
     <div>
-        <ul>
+        <div style="text-align: left;padding-left: 15px">
             Welcome to clash of bots ! <br>
             If you you are lost and don't understand how you are supposed to extract data from the basic code,
             make sure to check <a
                 href="https://tech.io/playgrounds/57689/how-to-extract-values-from-the-game-loop-in-clash-of-bots"> this
             playground </a>.
             It'll help you to get started.
-        </ul>
+        </div>
     </div>
+    <br>
     <!-- END -->
     <!-- GOAL -->
     <div class="statement-section statement-goal">
@@ -169,7 +170,7 @@
                         <br><i>
                         "A robot must obey the orders given it by human beings except where such orders would
                         conflict with the First Law."
-                        </i><br>
+                    </i><br>
                         It's the default action if you don't send an order for a bot.
                     </li>
                 </ul>
@@ -201,7 +202,8 @@
             Concerning <strong>attack</strong> :
             <ul>
                 <li>
-                    In order to fire bullet at an opponent, a bot has to attack the <b>same target</b> for <b>aim duration</b>
+                    In order to fire bullet at an opponent, a bot has to attack the <b>same target</b> for <b>aim
+                    duration</b>
                     turns. Then it'll fire <b>bullet per shot</b> bullets each turn for <b>shot duration</b> turns
                 </li>
                 <li>The moment a bullet is fired, the game engine determine if it will hit the targeted robot

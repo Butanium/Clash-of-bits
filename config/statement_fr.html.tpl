@@ -3,16 +3,18 @@
 <div id="statement_back" class="statement_back" style="display:nun"></div>
 <div class="statement-body">
 
-    <!-- BEGIN level1 -->
+    <!-- BEGIN level1 level2 -->
     <div>
-        <ul>
+        <div style="text-align: left;padding-left: 15px">
+
             Bienvenue dans <b>clash of bots</b> ! <br>
             Si tu es un peu perdu et que tu ne sais pas trop que faire de toutes les données qui te sont fournies,
             essaie de jeter un coup d'oeil à ce petit playground :
             <a href="https://tech.io/playgrounds/57689/how-to-extract-values-from-the-game-loop-in-clash-of-bots"> this
                 playground </a>.
             Cela t'aidera au moins à commencer !
-        </ul>
+        </div>
+        <br>
     </div>
     <!-- END -->
     <!-- GOAL -->
@@ -619,7 +621,7 @@
                         mètres (pour le moment c'est toujours
                         <const>40</const>
                         )<br>
-                        <br>Temps de réponse max par tour : 
+                        <br>Temps de réponse max par tour :
                         <const>50</const>
                         ms.
                         <br>Temps de réponse max pour le premier tour :
