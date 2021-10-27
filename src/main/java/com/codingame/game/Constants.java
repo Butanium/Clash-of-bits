@@ -1,5 +1,7 @@
 package com.codingame.game;
 
+import com.codingame.game.gameElements.Point;
+
 public class Constants {
     public static final double MOVE_PRECISION = 0.0001;
     public static final double DELTA_TIME = 0.25;

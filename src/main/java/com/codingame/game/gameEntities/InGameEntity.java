@@ -1,8 +1,8 @@
 package com.codingame.game.gameEntities;
 
-import com.codingame.game.CircularHitBox;
+import com.codingame.game.gameElements.CircularHitBox;
 import com.codingame.game.Constants;
-import com.codingame.game.Point;
+import com.codingame.game.gameElements.Point;
 
 import java.util.Set;
 

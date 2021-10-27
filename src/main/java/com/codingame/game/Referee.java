@@ -1,6 +1,8 @@
 package com.codingame.game;
 
 import com.codingame.game.action.*;
+import com.codingame.game.gameElements.Bullet;
+import com.codingame.game.gameElements.Point;
 import com.codingame.game.gameEntities.*;
 import com.codingame.gameengine.core.AbstractMultiplayerPlayer;
 import com.codingame.gameengine.core.AbstractPlayer.TimeoutException;
@@ -12,6 +14,7 @@ import com.google.common.base.Function;
 import com.google.inject.Inject;
 import view.ViewManager;
 import view.modules.CameraModule;
+import view.modules.TooltipModule;
 
 import java.util.*;
 

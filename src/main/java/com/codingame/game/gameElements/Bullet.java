@@ -1,5 +1,7 @@
-package com.codingame.game;
+package com.codingame.game.gameElements;
 
+import com.codingame.game.Constants;
+import com.codingame.game.Player;
 import com.codingame.game.gameEntities.Robot;
 import view.ViewManager;
 
@@ -12,21 +14,19 @@ public class Bullet extends CircularHitBox {
     private static final Random random = new Random();
     public static Set<Bullet> bulletSet = new HashSet<>();
     private final Player owner;
-    private final Point end;
+    private final Robot shooter;
     private final Robot target;
     private final double damage;
     private boolean hasExplode;
     private boolean isInstanced = false;
     private boolean willHit;
+    private Point direction;
 
     public Bullet(Robot shooter, Robot target, boolean willHit, double damage) {
         super(shooter, 0, Constants.BULLET_SPEED);
+        this.shooter = shooter;
         this.target = target;
-        if (willHit) {
-            end = new Point(target);
-        } else {
-            end = getDeviation(target);
-        }
+        direction = willHit ? shooter.getDirection(target) : getDeviation(target);
 
         this.willHit = willHit;
         this.damage = damage;
@@ -49,24 +49,26 @@ public class Bullet extends CircularHitBox {
     public boolean updatePos(ViewManager viewManager) {
         //Referee.debug(String.format("bullet fired at %f, %f ",getX(),getY()));
         if (!isInstanced) {
-            viewManager.instantiateBullet(this);
+            viewManager.instantiateBullet(this,
+                    shooter.getDirection(target).multiply(shooter.getSize()));
             isInstanced = true;
         }
         if (!target.checkActive()) {
             this.willHit = false;
         }
         if (willHit) {
-            if (getDist(end) < Constants.DELTA_TIME * Constants.BULLET_SPEED + target.getSize()) {
+            direction = getDirection(target);
+            if (getDist(target) < Constants.DELTA_TIME * Constants.BULLET_SPEED + target.getSize()) {
                 target.takeDamage(damage, owner);
                 hasExplode = true;
                 setXY(target);
                 return true;
             } else {
-                setXY(this.addPoint(end.addPoint(this.multiply(-1)).normalize().
-                        multiply(Constants.DELTA_TIME * Constants.BULLET_SPEED)));
+                move(direction.
+                        multiply(Constants.DELTA_TIME * Constants.BULLET_SPEED));
             }
         } else {
-            move((end).multiply(Constants.DELTA_TIME * Constants.BULLET_SPEED));
+            move(direction.multiply(Constants.DELTA_TIME * Constants.BULLET_SPEED));
             if (!isInsideMap()) {
                 setXY(clampToMap(this));
                 hasExplode = true;

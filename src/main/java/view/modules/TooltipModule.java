@@ -1,4 +1,4 @@
-package com.codingame.game;
+package view.modules;
 
 
 import com.codingame.gameengine.core.AbstractPlayer;

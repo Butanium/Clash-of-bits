@@ -1,4 +1,6 @@
-package com.codingame.game;
+package com.codingame.game.gameElements;
+import com.codingame.game.ZeroDivisionException;
+
 import java.util.*;
 
 
@@ -56,6 +58,10 @@ public class Point {
         return Math.sqrt((point.getX() - this.x) * (point.getX() - this.x) + (point.getY() - this.y) * (point.getY() - this.y));
     }
 
+    /**
+     * @param pt the point you want the direction to go from the point
+     * @return the normalized vector indicating the direction to go if you want to go to pt
+     */
     public Point getDirection(Point pt) {
         double dist = getDist(pt);
         if (dist == 0) {

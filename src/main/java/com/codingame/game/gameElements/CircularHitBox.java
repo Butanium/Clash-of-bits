@@ -1,5 +1,7 @@
-package com.codingame.game;
+package com.codingame.game.gameElements;
 
+
+import com.codingame.game.Constants;
 
 public class CircularHitBox extends Point {
 

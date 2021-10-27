@@ -1,7 +1,9 @@
 package com.codingame.game.gameEntities;
 
 import com.codingame.game.*;
-import view.ViewManager.RobotSprite;
+import com.codingame.game.gameElements.Bullet;
+import com.codingame.game.gameElements.Point;
+import view.entitiesSprites.RobotSprite;
 
 import java.util.*;
 
