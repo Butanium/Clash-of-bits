@@ -1,10 +1,14 @@
 package com.codingame.game.gameElements;
+
 import com.codingame.game.ZeroDivisionException;
 
 import java.util.*;
 
 
 public class Point {
+
+    private double x;
+    private double y;
 
     public Point() {
         this.x = this.y = 0;
@@ -15,35 +19,34 @@ public class Point {
         this.y = y;
     }
 
+
     public Point(double v) {
         x = y = v;
     }
 
-    public Point(Point point){
+    public Point(Point point) {
         x = point.x;
         y = point.y;
     }
 
-
-    private double x;
-    private double y;
-
-
     public double getX() {
         return this.x;
+    }
+
+    public void setX(double x) {
+        this.x = x;
     }
 
     public double getY() {
         return this.y;
     }
 
-    public double getMaxCoord() {return Math.max(x,y);}
-    public void setX(double x) {
-        this.x = x;
-    }
-
     public void setY(double y) {
         this.y = y;
+    }
+
+    public double getMaxCoord() {
+        return Math.max(x, y);
     }
 
     public void setXY(Point p) {
@@ -52,7 +55,7 @@ public class Point {
     }
 
     public double getDist(Point point) {
-        if (point == null){
+        if (point == null) {
             throw new IllegalArgumentException();
         }
         return Math.sqrt((point.getX() - this.x) * (point.getX() - this.x) + (point.getY() - this.y) * (point.getY() - this.y));
@@ -75,8 +78,27 @@ public class Point {
         y += direction.y;
     }
 
-    public Point addPoint(Point pt) {
+    public Point add(Point pt) {
         return new Point(x + pt.x, y + pt.y);
+    }
+
+    public Point subtract(Point pt) {
+        return new Point(x - pt.x, y - pt.y);
+    }
+
+    public Point divide(double d) {
+        if (d==0) {
+            throw new ZeroDivisionException("divide point by 0 is forbidden");
+        }
+        return multiply(1./d);
+    }
+
+    public double min() {
+        return Math.min(x, y);
+    }
+
+    public double max() {
+        return Math.max(x, y);
     }
 
     public Point clamp(Point inf, Point sup) {
@@ -84,12 +106,11 @@ public class Point {
     }
 
 
-
-    public Point multiply (double u){
-        return new Point(x*u, y*u);
+    public Point multiply(double u) {
+        return new Point(x * u, y * u);
     }
 
-    public Point getAveragePoint (Set<Point> points) {
+    public Point getAveragePoint(Set<Point> points) {
         if (points.size() == 0) {
             throw new IllegalArgumentException("Set of point is empty");
         }
@@ -102,49 +123,51 @@ public class Point {
         return new Point(x, y).multiply(1. / points.size());
 
     }
+
     public double magnitude() {
         return getDist(new Point());
     }
 
-    public Point normalize(){
+    public Point normalize() {
         if (isZero()) {
             throw new ZeroDivisionException("cannot normalize zero vector");
         }
-        return multiply(1/magnitude());
+        return multiply(1 / magnitude());
     }
 
-    public double scalar(Point pt){
-        return x*pt.x + y*pt.y;
+    public double scalar(Point pt) {
+        return x * pt.x + y * pt.y;
     }
 
-    public double pointCos(Point pt){
+    public double pointCos(Point pt) {
         double m1 = magnitude();
         double m2 = pt.magnitude();
-        if (m1 == 0 || m2 == 0){
+        if (m1 == 0 || m2 == 0) {
             throw new ZeroDivisionException("cannot get cos with zero vector");
         }
-        return scalar(pt)/(m1*m2);
+        return scalar(pt) / (m1 * m2);
     }
 
-    public double angle(Point pt){
+    public double angle(Point pt) {
         double m1 = magnitude();
         double m2 = pt.magnitude();
-        if (m1 == 0 || m2 == 0){
+        if (m1 == 0 || m2 == 0) {
             throw new ZeroDivisionException("cannot get angle with zero vector");
         }
         return Math.acos(pointCos(pt));
     }
 
-    public boolean equals(Point pt){
+
+    public boolean equals(Point pt) {
         return x == pt.x && y == pt.y;
     }
 
-    public boolean isZero(){
+    public boolean isZero() {
         return x == 0 && y == 0;
     }
 
     @SuppressWarnings("SuspiciousNameCombination")
-    public Point orthogonal(){
+    public Point orthogonal() {
         return new Point(y, -x);
     }
 
@@ -153,6 +176,7 @@ public class Point {
     }
 
     public String toString() {
-        return  String.format("x : %f, y : %f", x, y);
+        return String.format("x : %f, y : %f", x, y);
     }
+
 }

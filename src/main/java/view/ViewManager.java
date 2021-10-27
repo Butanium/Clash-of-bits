@@ -44,21 +44,22 @@ public class ViewManager {
     public double sizeRatio;
     private Group playerField;
 
+
     public ViewManager(GraphicEntityModule graphicEntityModule, TooltipModule tooltipModule, CameraModule cameraModule) {
         this.graphicEntityModule = graphicEntityModule;
-        double xRatio = 1920 / MAP_SIZE.getX();
-        double yRatio = 1080 / MAP_SIZE.getY();
+        double xRatio = 1920 / WALL_SIZE.getX();
+        double yRatio = 1080 / WALL_SIZE.getY();
         if (xRatio > yRatio) {
             sizeRatio = yRatio;
-            X0 = (int) ((1920 - MAP_SIZE.getX() * sizeRatio) * .5);
+            X0 = (int) ((1920 - WALL_SIZE.getX() * sizeRatio) * .5);
             Y0 = 0;
         } else {
             sizeRatio = xRatio;
             X0 = 0;
-            Y0 = (int) ((1080 - MAP_SIZE.getY() * sizeRatio) * .5);
+            Y0 = (int) ((1080 - WALL_SIZE.getY() * sizeRatio) * .5);
         }
-        sizeRatio = Math.min(xRatio, yRatio);
-        fieldSize = new Point(coordToScreen(MAP_SIZE.getX()), coordToScreen(MAP_SIZE.getY()));
+        fieldSize = new Point((int) (sizeRatio * WALL_SIZE.getX()),
+                (int) (sizeRatio * WALL_SIZE.getY()));
         gameGroup = graphicEntityModule.createGroup();
         tooltips = tooltipModule;
         camera = cameraModule;
@@ -70,9 +71,9 @@ public class ViewManager {
                 .setY(Y0);
 
         playerField.add(graphicEntityModule.createRectangle()
-                .setHeight(coordToScreen(MAP_SIZE.getX()), Curve.IMMEDIATE)
-                .setWidth(coordToScreen(MAP_SIZE.getY()), Curve.IMMEDIATE)
-                .setX(0).setY(0).setLineWidth(coordToScreen(0.5))
+                .setHeight((int) fieldSize.getX(), Curve.IMMEDIATE)
+                .setWidth((int) fieldSize.getY(), Curve.IMMEDIATE)
+                .setX(0).setY(0).setLineWidth(0.5 * sizeRatio)
                 .setLineColor(WALL_COLOR).setFillAlpha(1).setFillColor(BACKGROUND_COLOR));
         return playerField;
     }
@@ -89,6 +90,7 @@ public class ViewManager {
 
         }
         camera.setCameraOffset(CAMERA_OFFSET * sizeRatio);
+        playerField.add(graphicEntityModule.createCircle().setRadius((int) sizeRatio).setX(coordToScreen(0)).setY(coordToScreen(0)));
     }
 
     public void instantiateBullet(Bullet bullet, Point deviation) {
@@ -122,7 +124,8 @@ public class ViewManager {
     }
 
     public int coordToScreen(double pos) {
-        return (int) (pos * sizeRatio);
+        double padding = PADDING * sizeRatio;
+        return (int) (pos / MAP_SIZE.max() * (WALL_SIZE.max()*sizeRatio - 2*padding) + padding);
     }
 
 }

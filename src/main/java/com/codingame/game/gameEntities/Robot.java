@@ -165,12 +165,12 @@ public class Robot extends InGameEntity {
     }
 
     public void updatePos(Point direction, double amount) {
-        setXY(clampToMap(addPoint(direction.multiply(amount))));
+        setXY(clampToMap(add(direction.multiply(amount))));
     }
 
     public boolean performCollision(Robot robot) {
         if (checkCollide(robot) && !equals(robot)) {
-            Point dir = robot.addPoint(this.multiply(-1)).normalize();
+            Point dir = robot.add(this.multiply(-1)).normalize();
             if (currentSpeed.isZero() == robot.currentSpeed.isZero()) {
                 double amount = (getSize() + robot.getSize()) / 2;
                 updatePos(dir, -amount);

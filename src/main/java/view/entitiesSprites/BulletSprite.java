@@ -20,12 +20,14 @@ public class BulletSprite extends ViewPart {
     private final ViewManager viewManager;
     private boolean active = true;
     private Entity<Circle> bulletSprite;
+    private final int spriteSize;
 
     public BulletSprite(Bullet bullet, Group playerField, ViewManager viewManager) {
         this.viewManager = viewManager;
+        spriteSize = (int) (BULLET_SIZE*viewManager.sizeRatio);
         model = bullet;
         bulletSprite = viewManager.graphicEntityModule.createCircle().
-                setRadius(coordToScreen(BULLET_SIZE)).setAlpha(1).
+                setRadius(spriteSize).
                 setFillColor(bullet.getOwner().getColorToken());
         bulletGroup = viewManager.graphicEntityModule.createGroup(bulletSprite).setZIndex(6);
         playerField.add(bulletGroup);
@@ -35,9 +37,10 @@ public class BulletSprite extends ViewPart {
 
     public BulletSprite(Bullet bullet, Group playerField, ViewManager viewManager, Point deviation) {
         this.viewManager = viewManager;
+        spriteSize = (int) (BULLET_SIZE*viewManager.sizeRatio);
         model = bullet;
         bulletSprite = viewManager.graphicEntityModule.createCircle().
-                setRadius(coordToScreen(BULLET_SIZE)).setAlpha(1).
+                setRadius(spriteSize).
                 setFillColor(bullet.getOwner().getColorToken());
         bulletGroup = viewManager.graphicEntityModule.createGroup(bulletSprite).setZIndex(6);
         playerField.add(bulletGroup);

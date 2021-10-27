@@ -6,6 +6,8 @@ public class Constants {
     public static final double MOVE_PRECISION = 0.0001;
     public static final double DELTA_TIME = 0.25;
     public static final Point MAP_SIZE = new Point(40, 40);
+    public static final double PADDING = 0.9;
+    public static final Point WALL_SIZE = MAP_SIZE.add(new Point(PADDING));
     public static final double BULLET_SPEED = 20;
     public static final double MAX_BULLET_DEVIATION = 1;
     public static final double SHORT_RANGE = 3;
@@ -17,7 +19,6 @@ public class Constants {
     public static final int HEALTH_BAR_WIDTH = 20;
     public static final int HEALTH_BAR_HEIGHT = 5;
     public static final int BACKGROUND_COLOR = 0x9B9B9B;
-    public static final int NEON_SHIFT = 30;
     public static final int WALL_COLOR = 0x030056;
     public static final int CAMERA_OFFSET = 8;
     public static final double HITMARKER_RATIO = 1. / 1000.;

@@ -57,7 +57,7 @@ public class CircularHitBox extends Point {
 
     public Point clampToMap(Point point){
         Point s = new Point(hitBoxSize);
-        return point.clamp(s, Constants.MAP_SIZE.addPoint(s.multiply(-1)));
+        return point.clamp(s, Constants.MAP_SIZE.add(s.multiply(-1)));
     }
 
     public double getSpeed() {

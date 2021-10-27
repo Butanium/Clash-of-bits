@@ -41,7 +41,7 @@ public class Bullet extends CircularHitBox {
         } else {
             sign = -1;
         }
-        Point newTarget = target.addPoint(getDirection(target).orthogonal().normalize().multiply(
+        Point newTarget = target.add(getDirection(target).orthogonal().normalize().multiply(
                 sign * target.getSize() * (1.01 + Constants.MAX_BULLET_DEVIATION * random.nextDouble())));
         return getDirection(newTarget);
     }
