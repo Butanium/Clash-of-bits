@@ -1,4 +1,4 @@
-package view.tools;
+package view.fx;
 
 import com.codingame.gameengine.module.entities.Curve;
 import com.codingame.gameengine.module.entities.Sprite;

@@ -3,7 +3,7 @@ package com.codingame.game.gameElements;
 import com.codingame.game.Constants;
 import com.codingame.game.Player;
 import com.codingame.game.gameEntities.Robot;
-import view.ViewManager;
+import view.managers.ViewManager;
 
 import java.util.*;
 
@@ -35,14 +35,11 @@ public class Bullet extends CircularHitBox {
     }
 
     private Point getDeviation(CircularHitBox target) {
-        int sign;
-        if (random.nextBoolean()) {
-            sign = 1;
-        } else {
-            sign = -1;
-        }
+        int sign = random.nextBoolean() ? 1 : -1;
+        double rnd = random.nextDouble();
         Point newTarget = target.add(getDirection(target).orthogonal().normalize().multiply(
-                sign * target.getSize() * (1.01 + Constants.MAX_BULLET_DEVIATION * random.nextDouble())));
+                target.getSize() * sign * (Constants.MAX_BULLET_DEVIATION * rnd +
+                        (1 - rnd) * Constants.MIN_BULLET_DEVIATION)));
         return getDirection(newTarget);
     }
 

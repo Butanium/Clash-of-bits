@@ -1,14 +1,19 @@
-import com.codingame.gameengine.runner.MultiplayerGameRunner;
+package Runners;
 
-public class SkeletonMain {
+import com.codingame.gameengine.runner.MultiplayerGameRunner;
+import agents.attackDumb;
+
+public class FullAttackTestCase {
     public static void main(String[] args) {
         /* Multiplayer Game */
         MultiplayerGameRunner gameRunner = new MultiplayerGameRunner();
 
         // Adds as many player as you need to test your game
-        gameRunner.addAgent(Agent1.class);
-        gameRunner.addAgent(boss1.class);
         //gameRunner.addAgent(Agent1.class);
+        //gameRunner.addAgent(boss1.class);
+        //gameRunner.addAgent(Agent1.class);
+        gameRunner.addAgent(attackDumb.class);
+        gameRunner.addAgent(attackDumb.class);
 
         //gameRunner.addAgent("js C:/Users/Clement/Documents/coding/codinGame/game-skeleton/src/test/java/testMaxime.js");
 

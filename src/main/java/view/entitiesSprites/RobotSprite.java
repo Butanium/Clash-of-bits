@@ -2,13 +2,11 @@ package view.entitiesSprites;
 
 import com.codingame.game.ZeroDivisionException;
 import com.codingame.game.gameEntities.Robot;
-import com.codingame.gameengine.module.entities.Curve;
-import com.codingame.gameengine.module.entities.GraphicEntityModule;
-import com.codingame.gameengine.module.entities.Group;
-import com.codingame.gameengine.module.entities.Sprite;
+import com.codingame.gameengine.module.entities.*;
 import view.UI.ProgressBar;
-import view.ViewManager;
-import view.tools.Animation;
+import view.fx.AnimationType;
+import view.managers.ViewManager;
+import view.fx.Animation;
 
 import java.util.Objects;
 
@@ -25,9 +23,9 @@ public class RobotSprite extends ViewPart {
     private final Animation attackAnim;
     private final Animation moveAnim;
     private final Sprite hitMarker;
+    private final ViewManager viewManager;
     private double damageTaken = 0;
     private int impactColor = 0xFFFFFF;
-    private final ViewManager viewManager;
 
     public RobotSprite(Robot robot, Group playerField, ViewManager viewManager) {
         this.viewManager = viewManager;
@@ -98,7 +96,6 @@ public class RobotSprite extends ViewPart {
         this.model.setRobotSprite(this);
     }
 
-    //private String getTooltip() {return "";}
     private String getTooltip() {
         return String.format("%d %s %s %s %s %s", model.getId(),
                 model.getHealth() == model.getMaxHealth() ? "M" : model.getHealth() + "",
@@ -147,19 +144,18 @@ public class RobotSprite extends ViewPart {
 
     @Override
     public void onRemove() {
+        setVisible(false);
+        updateVisibility();
         viewManager.camera.removeTrackedEntity(robotGroup);
+        viewManager.getAnimManager().createAnimation(AnimationType.Explosion, robotGroup.getX(), robotGroup.getY(), 2,
+                0.5);
+
     }
 
     @Override
     public Group getSprite() {
         return robotGroup;
     }
-
-    @Override
-    public boolean isShown() {
-        return true;
-    }
-
 
 }
 

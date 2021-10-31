@@ -10,7 +10,7 @@
             If you you are lost and don't understand how you are supposed to extract data from the basic code,
             make sure to check <a
                 href="https://tech.io/playgrounds/57689/how-to-extract-values-from-the-game-loop-in-clash-of-bots"> this
-            playground </a>.
+            agents.playground </a>.
             It'll help you to get started.
         </div>
     </div>

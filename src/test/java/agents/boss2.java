@@ -1,12 +1,12 @@
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+package agents;
+
+import java.util.*;
 
 /**
  * Control your bots in order to destroy the enemy team !
  **/
 @SuppressWarnings("InfiniteLoopStatement")
-class Agent2 {
+class boss2 {
 
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
@@ -17,9 +17,9 @@ class Agent2 {
             StringBuilder result = new StringBuilder();
             int allyBotAlive = in.nextInt(); // the amount of your bot which are still alive
             int totalEntities = in.nextInt(); // the amount of entities in the arena
-            System.err.printf("%d allybots, %d entities", allyBotAlive, totalEntities);
             Map<Integer, Integer> shieldMap = new HashMap<>();
-            Map<Integer, Integer> attackMap = new HashMap<>();
+            Map<Integer, Integer> shieldRankings = new HashMap<>();
+            Map<Integer, Set<Integer>> attackersMap = new HashMap<>();
             for (int i = 0; i < totalEntities; i++) {
                 int entId = in.nextInt(); // the unique entity id, stay the same for the whole game
                 String entType = in.next(); // the entity type in a string. It can be ALLY | ENEMY
@@ -35,16 +35,20 @@ class Agent2 {
                 int shieldRank = in.nextInt(); // entities are sorted in ascendant order based on their amount of shield
                 int totalRank = in.nextInt(); // entities are sorted in ascendant order based on their amount of health + shield
                 shieldMap.put(entId, shield);
+                shieldRankings.put(entId, shieldRank);
                 if (action.equals("ATTACK")) {
-                    attackMap.put(Integer.parseInt(targets), attackMap.getOrDefault(entId, 0) + 1);
+                    Set<Integer> r = attackersMap.getOrDefault(Integer.parseInt(targets), new HashSet<>());
+                    r.add(entId);
+                    attackersMap.put(Integer.parseInt(targets), r);
                 }
-
             }
             for (int i = 0; i < allyBotAlive; i++) {
                 int accRank = totalEntities;
                 int accId = 0;
-                int accDist = 0;
+                int accDist = 3;
                 int selfId = 0;
+                int accShieldRank = totalEntities;
+                int accPrio = -1;
                 for (int j = 0; j < totalEntities; j++) {
                     int entId = in.nextInt(); // the unique entity id
                     String entType = in.next(); // the entity type in a string. It can be SELF | ALLY | ENEMY
@@ -61,12 +65,20 @@ class Agent2 {
                     if (entType.equals("SELF")) {
                         selfId = entId;
                     }
+                    if (totComp == 1) {
+                        Set<Integer> s = attackersMap.getOrDefault(selfId, new HashSet<>());
+                        s.remove(entId);
+                        attackersMap.put(selfId, s);
+                    }
+                    if (shieldMap.get(entId) < 25 && distMe < 3 && entType.equals("ENEMY")) {
+                        accPrio = entId;
+                    }
                 }
-                if (shieldMap.get(selfId) <= 25 && accDist < 3 && attackMap.getOrDefault(selfId, 0) > 0) {
+                if (shieldMap.get(selfId) <= 25 && attackersMap.getOrDefault(selfId, new HashSet<>()).size() > 0){
                     result.append(selfId).append(" FLEE ").append(accId).append(";");
-                } else if (accDist < 2 || accDist < 3 &&
-                        (attackMap.getOrDefault(selfId, 0) > 0 || shieldMap.get(selfId) <= 50)) {
-                    result.append(selfId).append(" ATTACK ").append(accId).append(";");
+                }
+                else if (accDist < 2 || shieldMap.get(selfId) <= 50 || accPrio >= 0) {
+                    result.append(selfId).append(" ATTACK ").append(accPrio >= 0 ? accPrio : accId).append(";");
                 } else {
                     result.append(selfId).append(" MOVE ").append(accId).append(";");
                 }

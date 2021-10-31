@@ -12,7 +12,7 @@ import com.codingame.gameengine.module.endscreen.EndScreenModule;
 import com.codingame.gameengine.module.entities.GraphicEntityModule;
 import com.google.common.base.Function;
 import com.google.inject.Inject;
-import view.ViewManager;
+import view.managers.ViewManager;
 import view.modules.CameraModule;
 import view.modules.TooltipModule;
 
@@ -73,7 +73,7 @@ public class Referee extends AbstractReferee {
         viewManager.init(robotSet);
 
 //        viewportModule.createViewport(viewportGroup);
-        gameManager.setFrameDuration((int) (Constants.DELTA_TIME * 1000 / 2));
+        gameManager.setFrameDuration(Constants.FRAME_DURATION);
         gameManager.setTurnMaxTime(50);
         gameManager.setMaxTurns(30000 / gameManager.getTurnMaxTime() / 2);
         gameManager.setFirstTurnMaxTime(1000);

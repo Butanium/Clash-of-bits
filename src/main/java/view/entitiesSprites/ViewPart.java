@@ -1,15 +1,28 @@
 package view.entitiesSprites;
 
-import com.codingame.gameengine.module.entities.Group;
+import com.codingame.gameengine.module.entities.Entity;
 
 public abstract class ViewPart {
+    private boolean visible = true;
     public abstract void update();
 
     public abstract boolean isActive();
 
     public abstract void onRemove();
 
-    public abstract Group getSprite();
+    public abstract Entity getSprite();
 
-    public abstract boolean isShown();
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
+
+    public void updateVisibility() {
+        if (getSprite().isVisible() != this.isVisible()) {
+            getSprite().setVisible(this.isVisible());
+        }
+    }
 }

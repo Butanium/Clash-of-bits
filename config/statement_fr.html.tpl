@@ -9,9 +9,9 @@
 
             Bienvenue dans <b>clash of bots</b> ! <br>
             Si tu es un peu perdu et que tu ne sais pas trop que faire de toutes les données qui te sont fournies,
-            essaie de jeter un coup d'oeil à ce petit playground :
+            essaie de jeter un coup d'oeil à ce petit agents.playground :
             <a href="https://tech.io/playgrounds/57689/how-to-extract-values-from-the-game-loop-in-clash-of-bots"> this
-                playground </a>.
+                agents.playground </a>.
             Cela t'aidera au moins à commencer !
         </div>
         <br>
