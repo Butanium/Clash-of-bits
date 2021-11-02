@@ -2,7 +2,6 @@ package view.managers;
 
 import com.codingame.game.gameElements.Bullet;
 import com.codingame.game.gameElements.Point;
-import com.codingame.gameengine.module.entities.Group;
 import view.entitiesSprites.BulletSprite;
 
 import java.util.HashSet;
@@ -18,7 +17,7 @@ public class BulletManager {
         this.viewManager = viewManager;
     }
 
-    public void instantiateBullet(Bullet bullet, Point deviation, Group arena) {
+    public void instantiateBullet(Bullet bullet, Point deviation) {
         if (availableBullets.isEmpty()) {
             usedBullets.add(new BulletSprite(bullet,  viewManager, deviation));
         } else {

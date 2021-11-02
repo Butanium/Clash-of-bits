@@ -96,4 +96,8 @@ public class Bullet extends CircularHitBox {
         return damage;
     }
 
+    public Point getDirection() {
+        return direction;
+    }
+
 }

@@ -8,11 +8,10 @@
         <div style="text-align: left;padding-left: 15px">
 
             Bienvenue dans <b>clash of bots</b> ! <br>
-            Si tu es un peu perdu et que tu ne sais pas trop que faire de toutes les données qui te sont fournies,
-            essaie de jeter un coup d'oeil à ce petit agents.playground :
-            <a href="https://tech.io/playgrounds/57689/how-to-extract-values-from-the-game-loop-in-clash-of-bots"> this
-                agents.playground </a>.
-            Cela t'aidera au moins à commencer !
+            Si après avoir lu la présentation, tu es un peu perdu et que tu ne sais pas trop que faire de toutes les
+            données qui te sont fournies, essaie de jeter un coup d'oeil à ce
+            <a href="https://tech.io/playgrounds/57689/how-to-extract-values-from-the-game-loop-in-clash-of-bots">
+                playground </a> : cela t'aidera à commencer !
         </div>
         <br>
     </div>
@@ -40,7 +39,7 @@
     <div class="statement-section statement-rules">
         <h1>
             <span class="icon icon-rules">&nbsp;</span>
-            <span>Rules</span>
+            <span>Règles</span>
         </h1>
         <div>
             <div class="statement-rules-content">
@@ -323,7 +322,7 @@
     <div class="statement-section statement-protocol">
         <h1>
             <span class="icon icon-protocol">&nbsp;</span>
-            <span>Game Input</span>
+            <span>Entrées du jeu</span>
         </h1>
         <!-- Protocol block -->
         <div class="blk">

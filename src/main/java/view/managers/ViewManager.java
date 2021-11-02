@@ -100,7 +100,7 @@ public class ViewManager {
 
     public void instantiateBullet(Bullet bullet, Point deviation) {
         commitEntity();
-        bulletManager.instantiateBullet(bullet, deviation, arena);
+        bulletManager.instantiateBullet(bullet, deviation);
     }
 
     private void applyCommits() {
@@ -142,7 +142,9 @@ public class ViewManager {
         double padding = PADDING * sizeRatio;
         return (int) (pos / MAP_SIZE.max() * (WALL_SIZE.max() * sizeRatio - 2 * padding) + padding);
     }
-    
+
+
+
     public void addToArena (Entity entity) {
         arena.add(entity);
     }
