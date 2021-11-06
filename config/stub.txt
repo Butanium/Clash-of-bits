@@ -5,13 +5,13 @@ read allyBotAlive:int
 read totalEntities:int
 
 loop totalEntities
-read entId:int entType:word(10) health:int shield:int action:word(20) targets:word(256) distEn:int borderDist:int borderDistRank:int distEnRank:int healthRank:int shieldRank:int totalRank:int
+read entId:int entType:word(10) health:int shield:int action:word(20) targets:word(256) enemyRange:int borderRange:int borderDistRank:int distEnRank:int healthRank:int shieldRank:int totalRank:int
 
 
 
 loop allyBotAlive
 loop totalEntities
-read entId:int entType:word(256) distMe:int distMeRank:int shieldComp:int healthComp:int totComp:int
+read entId:int entType:word(256) range:int distMeRank:int shieldComp:int healthComp:int totComp:int
 write 0 MOVE 2;1 IDLE ;2 MOVE 8;3 ATTACK 9;4 FLEE 10;5 MOVE 10,11,12;
 
 STATEMENT
@@ -19,7 +19,7 @@ Control your bots in order to destroy the enemy team !
 
 INPUT
 botPerPlayer: the amount of bot you control
-arenaSize: the arena size in meters (just here in case the creator change the areba size during the contest)
+arenaSize: the arena size in meters (just here in case the creator change the arena size during the contest)
 allyBotAlive: the amount of your bot which are still alive
 totalEntities : the amount of entities in the arena
 entId: the unique gameEntity id, stay the same for the whole game
@@ -30,15 +30,15 @@ health: the approximate gameEntity health. Can be 0 | 25 | 50 | 75 | 100, 25 mea
 shield : the approximate gameEntity shield. Can be 0 | 1 | 25 | 50 | 75 | 100, 1 meaning that your shield is >= 1% and < 25% of your max shield and 0 that you have no more shield left
 action: action executed by the gameEntity last turn
 targets: list of the targets id targeted by the robot last turn ("id1;id2;id3...") if the gameEntity is a robot, else -1 (the target for IDLE is the robot itself)
-distEn : /!\ALWAYS 0 FOR THE FIRST LEAGUE/!\ then, the RANGE from to the closest enemy (if the entity is an enemy it returns
+enemyRange : /!\ALWAYS 0 FOR THE FIRST LEAGUE/!\ then, the RANGE from to the closest enemy (if the entity is an enemy it returns
 the range to its closest ally)
-borderDist : /!\ALWAYS 0 FOR THE FIRST LEAGUE/!\ approximate distance between the gameEntity and the closest border
+borderRange : /!\ALWAYS 0 FOR THE FIRST LEAGUE/!\ approximate distance between the gameEntity and the closest border
 distEnRank : /!\ALWAYS 0 FOR THE FIRST 2 LEAGUES/!\ entities are sorted by ascending order based on their distance to the closest enemy
 borderDistRank : /!\ALWAYS 0 FOR THE FIRST 2 LEAGUES/!\ gameEntity are sorted in ascending order based on their distance to the closest border
 shieldRank: /!\ALWAYS 0 FOR THE FIRST 2 LEAGUES/!\ entities are sorted in ascendant order based on their amount of shield
 healthRank: /!\ALWAYS 0 FOR THE FIRST 2 LEAGUES/!\ entities are sorted in ascendant order based on their amount of health, this is the rank of the current gameEntity in the sorted list
 totalRank: /!\ALWAYS 0 FOR THE FIRST 2 LEAGUES/!\ entities are sorted in ascendant order based on their amount of health + shield
-distMe : approximate distance between the target and the current bot. Can be 0 to 3 for short, medium, long and out of range
+range : approximate distance between the target and the current bot. Can be 0 to 3 for short, medium, long and out of range
 distMeRank : entities are sorted by ascending order based on their distance to the current bot
 shieldComp: /!\ALWAYS 0 FOR THE FIRST LEAGUE/!\ -1 if the gameEntity has more shield than the current bot, 0 if it's equal, 1 if your bot as more shield
 healthComp: /!\ALWAYS 0 FOR THE FIRST LEAGUE/!\ same as shieldComp but for the health

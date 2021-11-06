@@ -188,6 +188,35 @@
                         passer votre souris sur la petite pastille dans le replay.
                     </li>
                 </ul>
+                <!-- BEGIN level3 -->
+                <br>
+                <strong>
+                    Maintenant vos robots commencent à des emplacements aléatoire dans l'arène
+                </strong>
+                <br>
+                <br>
+                Les emplacements des deux équipes sont <strong>symétriques</strong>
+                <br>
+                La symétrie peut être :
+                <ul>
+                    <li>
+                        <strong>centrale</strong> (par rapport au centre de l'arène)
+                    </li>
+                    <li>
+                        <strong>horizontale</strong> (par rapport à la ligne horizontale passant par le centre de
+                        l'arène).
+                    </li>
+                </ul>
+                Il y a 2 règles que ces emplacements de départ respecteront toujours :
+                <ul>
+                    <li>
+                        La distance entre 2 robots doit être d'au moins <strong>2 mètres</strong>
+                    </li>
+                    <li>
+                        La distance entre 2 robots d'équipes différentes doit être d'au moins <strong>9 mètres</strong>
+                    </li>
+                </ul>
+                <!-- END -->
             </div>
         </div>
     </div>

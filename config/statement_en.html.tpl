@@ -43,7 +43,8 @@
             <span>Rules</span>
         </h1>
         <div>
-            <div class="statement-rules-content">You begin the game with certain amount of bots<br>
+            <div class="statement-rules-content">
+                You begin the game with certain amount of bots<br>
                 A lot of information are distance between entities. The game use 4 different <b>range</b> :
                 <ul>
                     <li>0 : Short range (dist <=
@@ -187,6 +188,34 @@
                     </li>
 
                 </ul>
+                <!-- BEGIN level3 -->
+                <br>
+                <strong>
+                    Now your bots spawn randomly on the map.
+                </strong>
+                <br>
+                <br>
+                The bot spawns of both teams are <strong>symmetric</strong>.
+                <br>
+                The symmetry can be :
+                <ul>
+                    <li>
+                        <strong>central</strong> (across the center of the arena)
+                    </li>
+                    <li>
+                        <strong>horizontal</strong> (across the horizontal line through the center of the arena).
+                    </li>
+                </ul>
+                There are 2 rules that those spawn will always respect :
+                <ul>
+                    <li>
+                        The distance between 2 bots has to be at least <strong>2 meters</strong>
+                    </li>
+                    <li>
+                        The distance between 2 bots of different team has to be at least <strong>9 meters</strong>
+                    </li>
+                </ul>
+                <!-- END -->
             </div>
         </div>
     </div>
@@ -354,7 +383,7 @@
                 pieces of information : <var>entId</var>, <var>entType</var>, <var>health</var>, <var>shield</var>,
                 <var>action</var>, <var>targets</var>
                 <!-- BEGIN level2 level3 -->
-                , <var>distEn</var>,
+                , <var>enemyRange</var>,
                 <var>borderDist</var>
                 <!-- END -->
                 <!-- BEGIN level3 -->
@@ -405,8 +434,8 @@
                 .
                 <!-- BEGIN level2 level3 -->
                 <br> <br>
-                <var>distEn</var> : the range from the closest enemy. If the entity is an enemy bot it returns the
-                distance to its closest ally
+                <var>enemyRange</var> : the range from the closest enemy. If the entity is an enemy bot it returns the
+                range to its closest ally
                 <br><br>
                 <var>borderDist</var> : the range from the closest border (among the left, right, top and bottom one)
                 <!-- END -->
@@ -444,7 +473,7 @@
                 <const> 7</const>
                 <!-- END -->
 
-                information from <strong><u>its perspective :</u></strong> <var>entId</var>, <var>entType</var>, <var>distMe</var>,
+                information from <strong><u>its perspective :</u></strong> <var>entId</var>, <var>entType</var>, <var>range</var>,
                 <var>distMeRank</var>
                 <!-- BEGIN level2 level3 -->
                 , <var>shieldComp</var>, <var>healthComp</var>, <var>totComp</var>
@@ -475,7 +504,7 @@
                         for the robot <strong> on air </strong></li>
 
                 </ul>
-                <var>distMe</var> for the range at which the entity is from your <strong> on air </strong> robot.
+                <var>range</var> for the range at which the entity is from your <strong> on air </strong> robot.
                 <const>0</const>
                 for
                 <const>SHORT RANGE</const>
