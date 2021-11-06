@@ -88,11 +88,7 @@ public abstract class InGameEntity extends CircularHitBox {
         }
     }
 
-    public double getBoarderDist() {
-        double minX = Math.min(new Point(getX(), 0).magnitude(), new Point(Constants.MAP_SIZE.getX() - getX(), 0).magnitude());
-        double minY = Math.min(new Point(0, getY()).magnitude(), new Point(0, Constants.MAP_SIZE.getY() - getY()).magnitude());
-        return Math.min(minX, minY);
-    }
+
 
     public abstract String giveInfo(int league, Robot asker, int distRank, Set<Robot> enemies);
 

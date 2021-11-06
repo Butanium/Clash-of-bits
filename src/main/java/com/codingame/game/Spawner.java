@@ -15,7 +15,7 @@ public class Spawner {
     private final Random random;
     private final boolean symmetry;
     private final Point center = MAP_SIZE.multiply(.5);
-    private final double horizontal_x = center.getX();
+    private final double horizontal_y = center.getX();
 
     public Spawner(long seed, int botCount, int teamCount) {
         this.teamCount = teamCount;
@@ -26,22 +26,39 @@ public class Spawner {
 
     }
 
-    public ArrayList<Point>[] getSpawnsPosition() {
-        ArrayList<Point>[] result = new ArrayList[2];
-        int c = 0;
-        while (c < botCount) {
-            Point rnd = randomPoint();
-
+    public ArrayList<Point>[] getSpawnsPosition(int league) {
+        if (league < 3) {
+            return getDefaultSpawn();
         }
+        ArrayList<Point>[] result = new ArrayList[teamCount];
+        for (int i = 0; i < teamCount; i++) {
+            result[i] = new ArrayList<>();
+        }
+        int c = 0;
+        int debug = 0;
+        while (c < botCount && debug < 2000) {
+            Point rnd = randomPoint();
+            if (check_enemies(rnd, result[1]) && check_allies(rnd, result[0])) {
+                c++;
+                result[0].add(rnd);
+                result[1].add(symmetric(rnd));
 
-        return result;
+            }
+            debug++;
+        }
+        System.out.printf("spawn %s after %d tries\n", c == botCount ? "succeed" : "failed", debug);
+        if (c == botCount) {
+            return result;
+        } else {
+            return getDefaultSpawn();
+        }
     }
 
     private Point symmetric(Point p) {
         if (symmetry) {
             return p.centeredSymmetric(center);
         } else {
-            return p.horizontalSymmetric(horizontal_x);
+            return p.horizontalSymmetric(horizontal_y);
         }
     }
 
@@ -60,6 +77,21 @@ public class Spawner {
         return allies.stream().noneMatch(p -> p.getDist(point) < MIN_SPAWN_DIST);
     }
 
+
+    private ArrayList<Point>[] getDefaultSpawn() {
+        double y = (Constants.MAP_SIZE.getY() - Constants.LONG_RANGE) / 2 - 1;
+        return new ArrayList[]{getDefaultTeamSpawn(y), getDefaultTeamSpawn(Constants.MAP_SIZE.getY() - y)};
+    }
+
+    private ArrayList<Point> getDefaultTeamSpawn(double y) {
+        ArrayList<Point> spawns = new ArrayList<>();
+        for (int i = 0; i < botCount; i++) {
+            int shift = botCount % 2 == 0 && i > botCount / 2 ? 1 + i : i;
+            spawns.add(new Point(Constants.MAP_SIZE.getX() / 2 +
+                    (shift - (botCount / 2)) * 2 * Constants.MIN_SPAWN_DIST, y));
+        }
+        return spawns;
+    }
 
 
 }

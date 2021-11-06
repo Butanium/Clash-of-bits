@@ -60,12 +60,23 @@ public class CircularHitBox extends Point {
         return point.clamp(s, Constants.MAP_SIZE.add(s.multiply(-1)));
     }
 
+    public Point clampToMap(Point point, Point direction){
+        Point s = new Point(hitBoxSize);
+        double boarderDist = getBoarderDist();
+        return point.clamp(s, Constants.MAP_SIZE.subtract(s));
+    }
+
+
     public double getSpeed() {
         return speed;
     }
 
     public boolean isInsideMap() {
-        return getX() >= hitBoxSize && getY() > hitBoxSize &&
+        return getX() >= hitBoxSize && getY() >= hitBoxSize &&
                 getX() <= Constants.MAP_SIZE.getX() - hitBoxSize && getY() <= Constants.MAP_SIZE.getY() - hitBoxSize;
     }
+
+
+
+
 }

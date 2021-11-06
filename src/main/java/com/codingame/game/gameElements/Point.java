@@ -1,5 +1,6 @@
 package com.codingame.game.gameElements;
 
+import com.codingame.game.Constants;
 import com.codingame.game.ZeroDivisionException;
 
 import java.util.*;
@@ -183,8 +184,23 @@ public class Point {
         return new Point(2 * center.x - x, 2 * center.y - y);
     }
 
-    public Point horizontalSymmetric(double horizontal_x) {
-        return new Point(2 * horizontal_x - x, y);
+    public Point horizontalSymmetric(double horizontal_y) {
+        return new Point(x, 2 * horizontal_y - y);
+    }
+
+    public double getBoarderDist() {
+        double minX = Math.min(Math.abs(x), Math.abs(Constants.MAP_SIZE.x - x));
+        double minY = Math.min(Math.abs(y), Math.abs(Constants.MAP_SIZE.y - y));
+        return Math.min(minX, minY);
+    }
+
+    public double getBoarderDiff() {
+        return Math.min(Math.min(x, y), Math.min(Constants.MAP_SIZE.getX() - x, Constants.MAP_SIZE.getY() - y));
+    }
+
+    public double getBoarderDistOut() {
+        return Math.abs(Arrays.stream(new double[]{x, y, Constants.MAP_SIZE.getX() - x, Constants.MAP_SIZE.getY() - y})
+                .filter(x -> x < 0).findFirst().getAsDouble());
     }
 
 }

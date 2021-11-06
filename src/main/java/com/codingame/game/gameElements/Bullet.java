@@ -7,6 +7,8 @@ import view.managers.ViewManager;
 
 import java.util.*;
 
+import static com.codingame.game.Constants.MAP_SIZE;
+
 /**
  *
  */
@@ -67,7 +69,13 @@ public class Bullet extends CircularHitBox {
         } else {
             move(direction.multiply(Constants.DELTA_TIME * Constants.BULLET_SPEED));
             if (!isInsideMap()) {
-                setXY(clampToMap(this));
+                if (getX() >= 0 && MAP_SIZE.getX() - getX() > 0) {
+                    int s = getY() < 0 ? 1 : -1;
+                    move(direction.multiply(s / direction.getY() * getBoarderDistOut()));
+                } else {
+                    int s = getX() < 0 ? 1 : -1;
+                    move(direction.multiply(s / direction.getX() * getBoarderDistOut()));
+                }
                 hasExplode = true;
                 return true;
                 //Referee.debug(String.format("ball hit at : %f, %f", getX(), getY()));

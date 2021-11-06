@@ -55,12 +55,19 @@ public class Referee extends AbstractReferee {
     @Override
     public void init() {
         endScreenModule.setTitleRankingsSprite("endScreen.png");
+        botCount = getBotCount();
         long seed = gameManager.getSeed();
+        Spawner spawner = new Spawner(seed, botCount, gameManager.getPlayerCount());
+        ArrayList<Point>[] spawns =  spawner.getSpawnsPosition(gameManager.getLeagueLevel());
+        if (gameManager.getPlayerCount() != 2) {
+            throw new IllegalArgumentException("matchs with more than 2 players are not implemented for now");
+        }
+
+
         for (Player player : gameManager.getPlayers()) {
             player.initialize(seed);
             Set<Robot> team = new HashSet<>();
-            botCount = getBotCount();
-            for (Point spawn : getSpawns(seed, player.getIndex(), botCount)) {
+            for (Point spawn : spawns[player.getIndex()]) {
                 Robot robot = new Robot(spawn, RobotType.ASSAULT, player);
                 robotSet.add(robot);
                 gameEntitySet.add(robot);
@@ -81,10 +88,13 @@ public class Referee extends AbstractReferee {
 
     @Override
     public void gameTurn(int turn) {
-        System.out.printf("turn : %d, p1 : %d, p2 : %d\n", turn,
-                gameManager.getPlayers().get(0).getScore(),
-                gameManager.getPlayers().get(1).getScore());
-        destroyBots();
+
+        boolean destroyedBotExist = destroyBots();
+        if (destroyedBotExist) {
+            System.out.printf("turn : %d, p1 : %d, p2 : %d\n", turn,
+                    gameManager.getPlayers().get(0).getScore(),
+                    gameManager.getPlayers().get(1).getScore());
+        }
         boolean isFinish = false;
         for (int key : playersTeam.keySet()) {
             if (playersTeam.get(key).size() == 0) {
@@ -283,19 +293,7 @@ public class Referee extends AbstractReferee {
         return Constants.BOT_PER_PLAYER;
     }
 
-    private Point[] getSpawns(long seed, int playerId, int botCount) {
-        Point[] spawns = new Point[botCount];
-        double y = (Constants.MAP_SIZE.getY()-Constants.LONG_RANGE)/2-1;
-        if (playerId != 0) {
-            y = Constants.MAP_SIZE.getY() - y;
-        }
-        for (int i = 0; i < botCount; i++) {
-            int shift = botCount % 2 == 0 && i > botCount / 2 ? 1 + i : i;
-            spawns[i] = new Point(Constants.MAP_SIZE.getX() / 2 +
-                    (shift - (botCount / 2)) * 2 * Constants.MIN_SPAWN_DIST, y);
-        }
-        return spawns;
-    }
+
 
 //    public Set<Robot> getPlayerBots(int playerId) {  useless for now
 //        Set<Robot> result = new HashSet<>();
@@ -502,16 +500,19 @@ public class Referee extends AbstractReferee {
         return result;
     }
 
-    private void destroyBots() {
+    private boolean destroyBots() {
+        boolean result = false;
         Iterator<Robot> it = robotSet.iterator();
         while (it.hasNext()) {
             Robot robot = it.next();
             if (!robot.checkActive()) {
                 it.remove();
+                result = true;
                 playersTeam.get(robot.getTeam()).remove(robot);
                 gameEntitySet.remove(robot);
             }
         }
+        return result;
     }
 
 

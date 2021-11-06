@@ -4,7 +4,7 @@ import agents.Agent1;
 import agents.boss1;
 import com.codingame.gameengine.runner.MultiplayerGameRunner;
 
-public class NormalGameTestCase {
+public class NormalGameTestCaseLeague3 {
     public static void main(String[] args) {
         /* Multiplayer Game */
         MultiplayerGameRunner gameRunner = new MultiplayerGameRunner();
@@ -20,7 +20,7 @@ public class NormalGameTestCase {
         //gameRunner.addAgent(league2outsider.class);
 
       //  gameRunner.addAgent(outsider1.class);
-        gameRunner.setLeagueLevel(2);
+        gameRunner.setLeagueLevel(3);
       //  gameRunner.setSeed(-2925940299915773277L);
         gameRunner.start();
         // Another way to add a player
