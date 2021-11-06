@@ -372,7 +372,9 @@ public class Referee extends AbstractReferee {
             player.sendInputLine(self.giveInfo(league, self, 0, enemyBots));
             List<InGameEntity> rangeSortedEntities = new ArrayList<>(gameEntitySet);
             rangeSortedEntities.sort(Comparator.comparingDouble(r -> r.getDist(self)));
-            Map<Integer, Integer> selfRangeRankings = getRanksE(rangeSortedEntities, r -> r.getDist(self));
+            // on n'utilise pas de rank car on part du principe qu'il n'y aura pas d'égalité et dans le cas contraire
+            // c'est impossible à gérer
+            // Map<Integer, Integer> selfRangeRankings = getRanksE(rangeSortedEntities, r -> r.getDist(self));
             for (Robot ally : myBots) {
                 if (ally.getId() == self.getId()) {
                     continue;

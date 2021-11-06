@@ -87,10 +87,10 @@ public class Point {
     }
 
     public Point divide(double d) {
-        if (d==0) {
+        if (d == 0) {
             throw new ZeroDivisionException("divide point by 0 is forbidden");
         }
-        return multiply(1./d);
+        return multiply(1. / d);
     }
 
     public double min() {
@@ -177,6 +177,14 @@ public class Point {
 
     public String toString() {
         return String.format("x : %f, y : %f", x, y);
+    }
+
+    public Point centeredSymmetric(Point center) {
+        return new Point(2 * center.x - x, 2 * center.y - y);
+    }
+
+    public Point horizontalSymmetric(double horizontal_x) {
+        return new Point(2 * horizontal_x - x, y);
     }
 
 }
