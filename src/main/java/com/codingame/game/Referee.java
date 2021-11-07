@@ -70,7 +70,7 @@ public class Referee extends AbstractReferee {
             ArrayList<Point> points = spawns[player.getIndex()];
             for (int i = 0; i < points.size(); i++) {
                 Point spawn = points.get(i);
-                Robot robot = new Robot(spawn, RobotType.ASSAULT, player);
+                Robot robot = new Robot(spawn, RobotType.ASSAULT, player, this);
                 robotSet.add(robot);
                 gameEntitySet.add(robot);
                 team.add(robot);
@@ -329,27 +329,27 @@ public class Referee extends AbstractReferee {
 
         List<Robot> healthSorted = new ArrayList<>(robotSet);
         healthSorted.sort(Comparator.comparingDouble(Robot::getHealth).thenComparingInt(Robot::getId));
-        Map<Integer, Integer> healthRankings = getRanksR(healthSorted, Robot::getHealth);
+        Map<Integer, Integer> healthRankings = getRanks(healthSorted, Robot::getHealth);
 
         List<Robot> shieldSorted = new ArrayList<>(robotSet);
         shieldSorted.sort(Comparator.comparingDouble(Robot::getShield).thenComparingInt(Robot::getId));
-        Map<Integer, Integer> shieldRankings = getRanksR(shieldSorted, Robot::getShield);
+        Map<Integer, Integer> shieldRankings = getRanks(shieldSorted, Robot::getShield);
 
 
         List<Robot> totalSorted = new ArrayList<>(robotSet);
         totalSorted.sort(Comparator.comparingDouble(Robot::getTotVitals).thenComparingInt(Robot::getId));
         Function<Robot, Double> f = r -> r.getShield() + r.getHealth();
-        Map<Integer, Integer> totalRankings = getRanksR(totalSorted, f);
+        Map<Integer, Integer> totalRankings = getRanks(totalSorted, f);
 
         List<InGameEntity> borderDistSorted = new ArrayList<>(gameEntitySet);
         borderDistSorted.sort(Comparator.comparingDouble(InGameEntity::getBorderDist).thenComparingInt(InGameEntity::getId));
-        Map<Integer, Integer> borderRankings = getRanksR(borderDistSorted, InGameEntity::getBorderDist);
+        Map<Integer, Integer> borderRankings = getRanks(borderDistSorted, InGameEntity::getBorderDist);
 
 
         List<InGameEntity> distEnSorted = new ArrayList<>(gameEntitySet);
         distEnSorted.sort(Comparator.comparingDouble((InGameEntity e) -> e.getDist(e.getClosestEntity(new HashSet<>(enemyBots))))
             .thenComparingInt(InGameEntity::getId));
-        Map<Integer, Integer> distEnRankings = getRanksR(distEnSorted,
+        Map<Integer, Integer> distEnRankings = getRanks(distEnSorted,
                 r -> r.getDist(r.getClosestEntity(new HashSet<>(enemyBots))));
 
 
@@ -400,7 +400,7 @@ public class Referee extends AbstractReferee {
         }
     }
 
-    private <T extends InGameEntity> Map<Integer, Integer> getRanksR(List<T> sortedList, Function<T, Double> evaluation) {
+    private <T extends InGameEntity> Map<Integer, Integer> getRanks(List<T> sortedList, Function<T, Double> evaluation) {
         Map<Integer, Integer> rankings = new HashMap<>();
         if (sortedList.size() == 0) {
             return rankings;
@@ -496,6 +496,10 @@ public class Referee extends AbstractReferee {
             }
         }
         return result;
+    }
+
+    public void addToGameSummary(Player player, String message) {
+        gameManager.addTooltip(player, message);
     }
 
 

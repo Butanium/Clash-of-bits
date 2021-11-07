@@ -29,33 +29,7 @@ public class Spawner {
 
     }
 
-    public ArrayList<Point>[] getSpawnsPosition(int league) {
-        if (league < 3) {
-            return getDefaultSpawn();
-        }
-        ArrayList<Point>[] result = new ArrayList[teamCount];
-        for (int i = 0; i < teamCount; i++) {
-            result[i] = new ArrayList<>();
-        }
-        int c = 0;
-        int debug = 0;
-        while (c < botCount && debug < 2000) {
-            Point rnd = randomPoint();
-            if (check_enemies(rnd, result[1]) && check_allies(rnd, result[0]) && check_border(rnd)) {
-                c++;
-                result[0].add(rnd);
-                result[1].add(symmetric(rnd));
 
-            }
-            debug++;
-        }
-        System.out.printf("spawn %s after %d tries\n", c == botCount ? "succeed" : "failed", debug);
-        if (c == botCount) {
-            return result;
-        } else {
-            return getDefaultSpawn();
-        }
-    }
 
     public ArrayList<Point>[] getGridSpawnPositions(int league) {
         if (league < 3 ) {
@@ -200,6 +174,34 @@ public class Spawner {
         throw new SpawnFailure();
 
     }
+
+        /*public ArrayList<Point>[] getSpawnsPosition(int league) {
+        if (league < 3) {
+            return getDefaultSpawn();
+        }
+        ArrayList<Point>[] result = new ArrayList[teamCount];
+        for (int i = 0; i < teamCount; i++) {
+            result[i] = new ArrayList<>();
+        }
+        int c = 0;
+        int debug = 0;
+        while (c < botCount && debug < 2000) {
+            Point rnd = randomPoint();
+            if (check_enemies(rnd, result[1]) && check_allies(rnd, result[0]) && check_border(rnd)) {
+                c++;
+                result[0].add(rnd);
+                result[1].add(symmetric(rnd));
+
+            }
+            debug++;
+        }
+        System.out.printf("spawn %s after %d tries\n", c == botCount ? "succeed" : "failed", debug);
+        if (c == botCount) {
+            return result;
+        } else {
+            return getDefaultSpawn();
+        }
+    }*/
 
 
 }
