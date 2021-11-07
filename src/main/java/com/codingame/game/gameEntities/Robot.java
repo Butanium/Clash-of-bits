@@ -38,10 +38,12 @@ public class Robot extends InGameEntity {
     private Point currentSpeed;
     private String lastAction = "IDLE";
     private Set<InGameEntity> lastTargets = new HashSet<>(Collections.singletonList(this));
+    private final Referee referee;
 
-    public Robot(double x, double y, RobotType type, Player owner) {
+    public Robot(double x, double y, RobotType type, Player owner, Referee referee) {
         super(x, y, type.getSize(), type.getSpeed());
         this.owner = owner;
+        this.referee = referee;
         spriteSize = type.getSpriteSize();
         maxHealth = type.getHealth();
         maxShieldHealth = type.getShield();
@@ -60,9 +62,10 @@ public class Robot extends InGameEntity {
         robotType = type;
     }
 
-    public Robot(Point pos, RobotType type, Player owner) {
+    public Robot(Point pos, RobotType type, Player owner, Referee referee) {
         super(pos, type.getSize(), type.getSpeed());
         this.owner = owner;
+        this.referee = referee;
         spriteSize = type.getSpriteSize();
         maxHealth = type.getHealth();
         maxShieldHealth = type.getShield();
@@ -203,6 +206,8 @@ public class Robot extends InGameEntity {
                 setActive(false);
                 attacker.setScore(attacker.getScore() + 1);
                 Referee.debug(String.format("robot %d got destroyed", getId()));
+                referee.addToGameSummary(attacker, String.format("%s destroyed bot %d",
+                        attacker.getNicknameToken(), this.getId()));
 
             }
         }
