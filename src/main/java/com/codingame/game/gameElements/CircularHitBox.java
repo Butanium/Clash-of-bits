@@ -62,7 +62,7 @@ public class CircularHitBox extends Point {
 
     public Point clampToMap(Point point, Point direction){
         Point s = new Point(hitBoxSize);
-        double boarderDist = getBoarderDist();
+        double boarderDist = getBorderDist();
         return point.clamp(s, Constants.MAP_SIZE.subtract(s));
     }
 

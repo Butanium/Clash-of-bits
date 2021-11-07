@@ -58,7 +58,7 @@ public class Referee extends AbstractReferee {
         botCount = getBotCount();
         long seed = gameManager.getSeed();
         Spawner spawner = new Spawner(seed, botCount, gameManager.getPlayerCount());
-        ArrayList<Point>[] spawns =  spawner.getSpawnsPosition(gameManager.getLeagueLevel());
+        ArrayList<Point>[] spawns =  spawner.getGridSpawnPositions(gameManager.getLeagueLevel());
         if (gameManager.getPlayerCount() != 2) {
             throw new IllegalArgumentException("matchs with more than 2 players are not implemented for now");
         }
@@ -67,7 +67,9 @@ public class Referee extends AbstractReferee {
         for (Player player : gameManager.getPlayers()) {
             player.initialize(seed);
             Set<Robot> team = new HashSet<>();
-            for (Point spawn : spawns[player.getIndex()]) {
+            ArrayList<Point> points = spawns[player.getIndex()];
+            for (int i = 0; i < points.size(); i++) {
+                Point spawn = points.get(i);
                 Robot robot = new Robot(spawn, RobotType.ASSAULT, player);
                 robotSet.add(robot);
                 gameEntitySet.add(robot);
@@ -339,14 +341,14 @@ public class Referee extends AbstractReferee {
         Function<Robot, Double> f = r -> r.getShield() + r.getHealth();
         Map<Integer, Integer> totalRankings = getRanksR(totalSorted, f);
 
-        List<Robot> borderDistSorted = new ArrayList<>(robotSet);
-        borderDistSorted.sort(Comparator.comparingDouble(Robot::getBoarderDist).thenComparingInt(Robot::getId));
-        Map<Integer, Integer> borderRankings = getRanksR(borderDistSorted, Robot::getBoarderDist);
+        List<InGameEntity> borderDistSorted = new ArrayList<>(gameEntitySet);
+        borderDistSorted.sort(Comparator.comparingDouble(InGameEntity::getBorderDist).thenComparingInt(InGameEntity::getId));
+        Map<Integer, Integer> borderRankings = getRanksR(borderDistSorted, InGameEntity::getBorderDist);
 
 
-        List<Robot> distEnSorted = new ArrayList<>(robotSet);
-        distEnSorted.sort(Comparator.comparingDouble((Robot r) -> r.getDist(r.getClosestEntity(new HashSet<>(enemyBots))))
-            .thenComparingInt(Robot::getId));
+        List<InGameEntity> distEnSorted = new ArrayList<>(gameEntitySet);
+        distEnSorted.sort(Comparator.comparingDouble((InGameEntity e) -> e.getDist(e.getClosestEntity(new HashSet<>(enemyBots))))
+            .thenComparingInt(InGameEntity::getId));
         Map<Integer, Integer> distEnRankings = getRanksR(distEnSorted,
                 r -> r.getDist(r.getClosestEntity(new HashSet<>(enemyBots))));
 
@@ -398,7 +400,7 @@ public class Referee extends AbstractReferee {
         }
     }
 
-    private Map<Integer, Integer> getRanksR(List<Robot> sortedList, Function<Robot, Double> evaluation) {
+    private <T extends InGameEntity> Map<Integer, Integer> getRanksR(List<T> sortedList, Function<T, Double> evaluation) {
         Map<Integer, Integer> rankings = new HashMap<>();
         if (sortedList.size() == 0) {
             return rankings;
@@ -407,36 +409,17 @@ public class Referee extends AbstractReferee {
         int accRank = 1;
         rankings.put(sortedList.get(0).getId(), 1);
         for (int i = 1; i < sortedList.size(); i++) {
-            Robot robot = sortedList.get(i);
-            if (evaluation.apply(robot) == accD) {
-                rankings.put(robot.getId(), accRank);
+            T entity = sortedList.get(i);
+            if (evaluation.apply(entity) == accD) {
+                rankings.put(entity.getId(), accRank);
             } else {
-                rankings.put(robot.getId(), ++accRank);
-                accD = evaluation.apply(robot);
+                rankings.put(entity.getId(), ++accRank);
+                accD = evaluation.apply(entity);
             }
         }
         return rankings;
     }
 
-    private Map<Integer, Integer> getRanksE(List<InGameEntity> sortedList, Function<InGameEntity, Double> evaluation) {
-        Map<Integer, Integer> rankings = new HashMap<>();
-        if (sortedList.size() == 0) {
-            return rankings;
-        }
-        double accD = evaluation.apply(sortedList.get(0));
-        int accRank = 1;
-        rankings.put(sortedList.get(0).getId(), 1);
-        for (int i = 1; i < sortedList.size(); i++) {
-            InGameEntity InGameEntity = sortedList.get(i);
-            if (evaluation.apply(InGameEntity) == accD) {
-                rankings.put(InGameEntity.getId(), accRank);
-            } else {
-                rankings.put(InGameEntity.getId(), ++accRank);
-                accD = evaluation.apply(InGameEntity);
-            }
-        }
-        return rankings;
-    }
 
     private Robot getController(Player player, String ctrlString) {
         int robotId;

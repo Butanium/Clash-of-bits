@@ -213,7 +213,7 @@
                         La distance entre 2 robots doit être d'au moins <strong>2 mètres</strong>
                     </li>
                     <li>
-                        La distance entre 2 robots d'équipes différentes doit être d'au moins <strong>9 mètres</strong>
+                        La distance entre 2 robots d'équipes différentes doit être d'au moins <strong>8.1 mètres</strong>
                     </li>
                 </ul>
                 <!-- END -->

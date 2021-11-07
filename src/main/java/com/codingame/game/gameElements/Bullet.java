@@ -71,10 +71,10 @@ public class Bullet extends CircularHitBox {
             if (!isInsideMap()) {
                 if (getX() >= 0 && MAP_SIZE.getX() - getX() > 0) {
                     int s = getY() < 0 ? 1 : -1;
-                    move(direction.multiply(s / direction.getY() * getBoarderDistOut()));
+                    move(direction.multiply(s / direction.getY() * getBorderDistOut()));
                 } else {
                     int s = getX() < 0 ? 1 : -1;
-                    move(direction.multiply(s / direction.getX() * getBoarderDistOut()));
+                    move(direction.multiply(s / direction.getX() * getBorderDistOut()));
                 }
                 hasExplode = true;
                 return true;

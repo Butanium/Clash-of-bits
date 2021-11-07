@@ -212,7 +212,7 @@
                         The distance between 2 bots has to be at least <strong>2 meters</strong>
                     </li>
                     <li>
-                        The distance between 2 bots of different team has to be at least <strong>9 meters</strong>
+                        The distance between 2 bots of different team has to be at least <strong>8.1 meters</strong>
                     </li>
                 </ul>
                 <!-- END -->

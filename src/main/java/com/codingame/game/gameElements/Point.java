@@ -1,7 +1,7 @@
 package com.codingame.game.gameElements;
 
 import com.codingame.game.Constants;
-import com.codingame.game.ZeroDivisionException;
+import com.codingame.game.exceptions.ZeroDivisionException;
 
 import java.util.*;
 
@@ -158,8 +158,12 @@ public class Point {
         return Math.acos(pointCos(pt));
     }
 
-
-    public boolean equals(Point pt) {
+    @Override
+    public boolean equals(Object obj) {
+        if (this.getClass() != obj.getClass()) {
+            return false;
+        }
+        Point pt = (Point) obj;
         return x == pt.x && y == pt.y;
     }
 
@@ -188,17 +192,17 @@ public class Point {
         return new Point(x, 2 * horizontal_y - y);
     }
 
-    public double getBoarderDist() {
+    public double getBorderDist() {
         double minX = Math.min(Math.abs(x), Math.abs(Constants.MAP_SIZE.x - x));
         double minY = Math.min(Math.abs(y), Math.abs(Constants.MAP_SIZE.y - y));
         return Math.min(minX, minY);
     }
 
-    public double getBoarderDiff() {
+    public double getBorderDiff() {
         return Math.min(Math.min(x, y), Math.min(Constants.MAP_SIZE.getX() - x, Constants.MAP_SIZE.getY() - y));
     }
 
-    public double getBoarderDistOut() {
+    public double getBorderDistOut() {
         return Math.abs(Arrays.stream(new double[]{x, y, Constants.MAP_SIZE.getX() - x, Constants.MAP_SIZE.getY() - y})
                 .filter(x -> x < 0).findFirst().getAsDouble());
     }

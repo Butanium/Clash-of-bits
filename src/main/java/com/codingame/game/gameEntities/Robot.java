@@ -274,7 +274,7 @@ public class Robot extends InGameEntity {
                 acc = Math.min(acc, getRange(enemy));
             }
             distEn = "" + acc;
-            borderDist = getRange(getBoarderDist()) + "";
+            borderDist = getRange(getBorderDist()) + "";
         }
         if (league > 2) {
             healthRank = shieldRank = totalRank = borderDistRank = distEnRank = "%d";
@@ -361,12 +361,7 @@ public class Robot extends InGameEntity {
         return 1;
     }
 
-    public InGameEntity getClosestEntity(Set<InGameEntity> entities) {
-        Set<InGameEntity> InGameEntitySet = new HashSet<>(entities);
-        InGameEntitySet.remove(this);
-        Optional<InGameEntity> res = InGameEntitySet.stream().min(Comparator.comparingDouble(this::getDist));
-        return res.orElse(this);
-    }
+
 
     public RobotType getRobotType() {
         return robotType;

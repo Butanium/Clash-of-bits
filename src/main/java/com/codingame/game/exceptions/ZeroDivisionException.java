@@ -1,4 +1,4 @@
-package com.codingame.game;
+package com.codingame.game.exceptions;
 
 public class ZeroDivisionException extends ArithmeticException {
     public ZeroDivisionException(){

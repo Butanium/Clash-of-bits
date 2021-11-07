@@ -1,6 +1,6 @@
 package view.entitiesSprites;
 
-import com.codingame.game.ZeroDivisionException;
+import com.codingame.game.exceptions.ZeroDivisionException;
 import com.codingame.game.gameEntities.Robot;
 import com.codingame.gameengine.module.entities.*;
 import view.UI.ProgressBar;
@@ -90,7 +90,8 @@ public class RobotSprite extends ViewPart {
         healthBar.getBarGroup().setX(healthBar.getBarGroup().getX() + 15)
                 .setY((int) (shieldBar.getBarGroup().getY() + HEALTH_BAR_HEIGHT * 1.5));
         //shieldBar.getBarGroup().setY(shieldBar.getBarGroup().getY()+10);
-        robotGroup.setRotation(Math.PI * (1 - robot.getTeam()));
+        int s = model.getY() > MAP_SIZE.getY()/2 ? 0 : 1;
+        robotGroup.setRotation(Math.PI * s);
 
         viewManager.tooltips.setTooltipText(robotGroup, getTooltip());
         this.model.setRobotSprite(this);

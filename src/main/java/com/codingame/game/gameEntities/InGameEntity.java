@@ -4,6 +4,9 @@ import com.codingame.game.gameElements.CircularHitBox;
 import com.codingame.game.Constants;
 import com.codingame.game.gameElements.Point;
 
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -88,6 +91,12 @@ public abstract class InGameEntity extends CircularHitBox {
         }
     }
 
+    public InGameEntity getClosestEntity(Set<InGameEntity> entities) {
+        Set<InGameEntity> InGameEntitySet = new HashSet<>(entities);
+        InGameEntitySet.remove(this);
+        Optional<InGameEntity> res = InGameEntitySet.stream().min(Comparator.comparingDouble(this::getDist));
+        return res.orElse(this);
+    }
 
 
     public abstract String giveInfo(int league, Robot asker, int distRank, Set<Robot> enemies);
