@@ -4,3 +4,5 @@ You can try it [here](https://www.codingame.com/contribute/view/6587dcc2e3a07bd4
 
 ![](src/main/resources/view/assets/background.png)
 ![](demo.gif)
+
+if (i>=30 and i <31)

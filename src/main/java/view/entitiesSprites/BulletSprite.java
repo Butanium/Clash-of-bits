@@ -1,6 +1,5 @@
 package view.entitiesSprites;
 
-import com.codingame.game.Constants;
 import com.codingame.game.gameElements.Bullet;
 import com.codingame.game.gameElements.Point;
 import com.codingame.gameengine.module.entities.Circle;
@@ -22,7 +21,7 @@ public class BulletSprite extends ViewPart {
 
     public BulletSprite(Bullet bullet, ViewManager viewManager, Point deviation) {
         this.viewManager = viewManager;
-        spriteSize = (int) (BULLET_SIZE * viewManager.sizeRatio);
+        spriteSize = (int) (viewManager.sizeToScreen(BULLET_SIZE));
         model = bullet;
         bulletSprite = viewManager.graphicEntityModule.createCircle()
                 .setRadius(spriteSize)
@@ -51,9 +50,9 @@ public class BulletSprite extends ViewPart {
         bulletSprite.setX(coordToScreen(model.getX()), LINEAR)
                 .setY(coordToScreen(model.getY()), LINEAR);
         if (!model.isActive() && !model.willHit()) {
-            Point spritePos = model.add(model.getDirection().multiply(Constants.PADDING));
-            bulletSprite.setX(coordToScreen(spritePos.getX()))
-                    .setY(coordToScreen(spritePos.getY()));
+//            Point spritePos = model.add(model.getDirection().multiply(Constants.PADDING));
+//            bulletSprite.setX(coordToScreen(spritePos.getX()))
+//                    .setY(coordToScreen(spritePos.getY()));
         }
         if (bulletSprite.getAlpha() != 1. && active) {
             bulletSprite.setAlpha(1., Curve.EASE_OUT);

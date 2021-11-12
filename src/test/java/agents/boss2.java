@@ -6,6 +6,7 @@ import java.util.*;
  * Control your bots in order to destroy the enemy team !
  **/
 @SuppressWarnings("InfiniteLoopStatement")
+public
 class boss2 {
 
     public static void main(String[] args) {

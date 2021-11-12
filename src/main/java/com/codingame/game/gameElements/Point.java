@@ -83,8 +83,16 @@ public class Point {
         return new Point(x + pt.x, y + pt.y);
     }
 
+    public Point add(double s) {
+        return new Point(x + s, y + s);
+    }
+
     public Point subtract(Point pt) {
         return new Point(x - pt.x, y - pt.y);
+    }
+
+    public Point subtract(double s) {
+        return new Point(x - s, y - s);
     }
 
     public Point divide(double d) {
@@ -202,9 +210,23 @@ public class Point {
         return Math.min(Math.min(x, y), Math.min(Constants.MAP_SIZE.getX() - x, Constants.MAP_SIZE.getY() - y));
     }
 
+    /**
+     * @return the distance to the border you're out, if you're out of the 2 border, return the distance to the
+     * vertical border
+     */
     public double getBorderDistOut() {
-        return Math.abs(Arrays.stream(new double[]{x, y, Constants.MAP_SIZE.getX() - x, Constants.MAP_SIZE.getY() - y})
-                .filter(x -> x < 0).findFirst().getAsDouble());
+
+        OptionalDouble rx = Arrays.stream(new double[]{x, Constants.MAP_SIZE.getX() - x})
+                .filter(x -> x < 0).findFirst();
+        if (rx.isPresent()) {
+            return Math.abs(rx.getAsDouble());
+        }
+        OptionalDouble ry = Arrays.stream(new double[]{y, Constants.MAP_SIZE.getY() - y})
+                .filter(y -> y < 0).findFirst();
+        if (ry.isPresent()) {
+            return Math.abs(ry.getAsDouble());
+        }
+        throw new IllegalArgumentException("cannot get border dist out if the point is in the arena");
     }
 
 }

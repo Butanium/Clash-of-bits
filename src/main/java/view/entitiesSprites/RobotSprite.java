@@ -33,7 +33,7 @@ public class RobotSprite extends ViewPart {
                 .setY(-7).setX(-7).setVisible(false).setZIndex(5);
         this.model = robot;
         GraphicEntityModule graphicEntityModule = viewManager.graphicEntityModule;
-        int size = (int) (robot.getSpriteSize() * viewManager.sizeRatio);
+        int size = (viewManager.sizeToScreen(robot.getSpriteSize()));
         int color = model.getOwner().getColorToken();
         robotGroup = graphicEntityModule.createGroup(
                 graphicEntityModule.createSprite().setImage(model.getRobotType().toString().charAt(0) + "B.png")
