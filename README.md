@@ -10,4 +10,4 @@ If you want to run it on your local machine,
 For more information, check the [codingame doc](https://www.codingame.com/playgrounds/25775/codingame-sdk-documentation/game-runner)
 
 ![](src/main/resources/view/assets/background.png)
-![](demo.mkv)
+![](demo.mov)
