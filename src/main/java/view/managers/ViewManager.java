@@ -22,6 +22,8 @@ import com.codingame.game.gameEntities.Robot;
 import com.codingame.gameengine.module.entities.*;
 import view.entitiesSprites.RobotSprite;
 import view.entitiesSprites.ViewPart;
+import view.fx.AnimationType;
+import view.fx.GraphicModuleAnimation;
 import view.modules.CameraModule;
 import view.modules.TooltipModule;
 
@@ -47,6 +49,7 @@ public class ViewManager {
     private final double sizeRatio;
     private boolean newObjectToCommit = false;
     private Group arena;
+    private GraphicModuleAnimation tesla2;
 
 
     public ViewManager(GraphicEntityModule graphicEntityModule, TooltipModule tooltipModule, CameraModule cameraModule) {
@@ -73,7 +76,7 @@ public class ViewManager {
 
 
     public void init(Set<Robot> robots) {
-        arena = createArena();
+        createArena();
         gameGroup.add(arena);
         //camera.setContainer(autoCameraArena, (int) (0.5 + fieldSize.getX()), (int) (0.5 + fieldSize.getY()));
         camera.setContainer(arena, 1920, 1080);
@@ -84,45 +87,56 @@ public class ViewManager {
 
         }
         camera.setCameraOffset(CAMERA_OFFSET * sizeRatio);
-        //graphicEntityModule.createSprite().setImage("bb.jpg").setZIndex(-3);
-        double scaleX = 1920 / 100., scaleY = 1080 / 100.;
-        graphicEntityModule.createTilingSprite().setImage(BACKGROUND_TILE_IMAGE)
-                .setScaleX(scaleX) // .add(WALL_THICKNESS)
+    }
+
+    private void createArena() {
+        this.arena = graphicEntityModule.createGroup()
+                .setX(X0)
+                .setY(Y0);
+
+        double scaleX = 3 * 1920 / 100., scaleY = 3 * 1150 / 100.;
+        arena.add(graphicEntityModule.createTilingSprite().setImage(BACKGROUND_TILE_IMAGE)
+                .setScaleX(scaleX)
                 .setTileScaleX(1 / scaleX * BACKGROUND_TILE_SCALE)
-                // because of round issue (1 pixel left black)
                 .setScaleY(scaleY)
                 .setTileScaleY(1 / scaleY * BACKGROUND_TILE_SCALE)
                 .setZIndex(-3)
-                .setX(-15);
-//                .setRotation(Math.PI / 6.)
-//                .setAnchor(.5)
-//                .setX(1920 / 2)
-//                .setY(1080 / 2);
-    }
+                .setAnchor(.5)
+                .setX(24));
+        new GraphicModuleAnimation(this, AnimationType.Tesla, -200, 400, 1, 1);
+        tesla2 = new GraphicModuleAnimation(this, AnimationType.Tesla, 1300, 730, 1, 1);
+        tesla2.getSprite().setPlaying(false);
+        arena.add(
+                graphicEntityModule.createSprite().setImage("prop_1.png")
+                        .setX(-250).setY(320).setAnchor(.5),
+                graphicEntityModule.createSprite().setImage("prop_1.png")
+                        .setX(1230).setY(800).setAnchor(.5).setZIndex(2),
+                graphicEntityModule.createSprite().setImage("prop_2.png")
+                        .setAnchor(.5).setX(-200).setY(900),
+                graphicEntityModule.createSprite().setImage("prop_2.png")
+                        .setAnchor(.5).setX(1350).setY(180)
 
-    private Group createArena() {
-        Group arena = graphicEntityModule.createGroup()
-                .setX(X0)
-                .setY(Y0);
+        );
         TilingSprite[] walls = new TilingSprite[4];
+        scaleX = sizeRatio * WALL_SIZE.getX() / 100.;
+        scaleY = sizeRatio * WALL_THICKNESS / 100.;
         for (int i = 0; i < 4; i++) {
-            double scaleX = sizeRatio * ARENA_SIZE.getX() / 100.;
-            double scaleY = sizeRatio * WALL_THICKNESS / 100.;
             walls[i] = graphicEntityModule.createTilingSprite().setImage("w.png").setY(0)
                     .setScaleX(scaleX)
                     .setTileScaleX(1. / scaleX * WALL_TILE_SCALE)
                     .setScaleY(scaleY)
-                    .setTileScaleY(1. / scaleY * WALL_TILE_SCALE);
-            //.setAlpha(.5);
+                    .setTileScaleY(1. / scaleY * WALL_TILE_SCALE)
+                    .setX(sizeToScreen(ARENA_PADDING))
+                    .setY(sizeToScreen(ARENA_PADDING));
             arena.add(walls[i]);
 
         }
         walls[0].setZIndex(-1).setTileX(31);
         walls[1].setRotation(Math.PI / 2).setX(walls[1].getX() + sizeToScreen(WALL_THICKNESS));
-        walls[2].setY(sizeToScreen(ARENA_SIZE.getY() - WALL_THICKNESS)).setTileX(-3);
-        walls[3].setRotation(Math.PI / 2).setX(sizeToScreen(ARENA_SIZE.getX()));
-        double scaleX = sizeRatio * MAP_SIZE.add(WALL_THICKNESS * .5).getX() / 100.;
-        double scaleY = sizeRatio * MAP_SIZE.add(WALL_THICKNESS * .5).getY() / 100.;
+        walls[2].setY(walls[2].getY() + sizeToScreen(WALL_SIZE.getY() - WALL_THICKNESS)).setTileX(-3);
+        walls[3].setRotation(Math.PI / 2).setX(walls[3].getX() + sizeToScreen(WALL_SIZE.getX()));
+        scaleX = sizeRatio * MAP_SIZE.add(WALL_THICKNESS * .5).getX() / 100.;
+        scaleY = sizeRatio * MAP_SIZE.add(WALL_THICKNESS * .5).getY() / 100.;
         TilingSprite background = graphicEntityModule.createTilingSprite().setImage(ARENA_TILE_IMAGE)
                 .setScaleX(scaleX) // .add(WALL_THICKNESS)
                 .setTileScaleX(1 / scaleX * ARENA_TILE_SCALE)
@@ -133,7 +147,6 @@ public class ViewManager {
         arena.add(background);
         background.setX(coordToScreen(0))
                 .setY(coordToScreen(0));
-        return arena;
     }
 
     public void instantiateBullet(Bullet bullet, Point deviation) {
@@ -168,7 +181,14 @@ public class ViewManager {
 
     }
 
-    public void update() {
+    private void updateBackground(int turn) {
+        if (turn == 2) {
+            tesla2.getSprite().setPlaying(true).setDuration(FRAME_DURATION * 8);
+        }
+    }
+
+    public void update(int turn) {
+        updateBackground(turn);
         applyCommits();
         bulletManager.updateBullets();
         updateViewParts(viewParts);
@@ -176,8 +196,10 @@ public class ViewManager {
 
     }
 
+
+
     public int coordToScreen(double pos) {
-        return (int) ((pos + WALL_THICKNESS) * sizeRatio);
+        return (int) ((pos + WALL_THICKNESS + ARENA_PADDING) * sizeRatio);
     }
 
     public int sizeToScreen(double size) {

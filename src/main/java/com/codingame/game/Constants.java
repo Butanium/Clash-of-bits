@@ -3,10 +3,11 @@ package com.codingame.game;
 import com.codingame.game.gameElements.Point;
 
 public class Constants {
+
+    //Game\\
     public static final double MOVE_PRECISION = 0.0001;
     public static final double MAX_BULLET_DEVIATION = 2;
     public static final double MIN_BULLET_DEVIATION = 0.5;
-    //Game\\
     public static final double SHORT_RANGE = 3;
     public static final double MEDIUM_RANGE = 8;
     public static final double LONG_RANGE = 15;
@@ -38,13 +39,13 @@ public class Constants {
     public static final double HITMARKER_RATIO = 1. / 1000.;
     public static final String ARENA_TILE_IMAGE = "s.png";
     public static final String BACKGROUND_TILE_IMAGE = "sb.png";
-    public static final double ARENA_TILE_SCALE = 3.2;//0.3; //s2 .02;//0.3;// s //s1 0.05; ;
+    public static final double ARENA_TILE_SCALE = 3.2;
     public static final double BACKGROUND_TILE_SCALE = 2;
-    public static final double WALL_TILE_SCALE = 0.5;//0.5;
+    public static final double WALL_TILE_SCALE = 0.5;
     public static final double WALL_THICKNESS = .3;
-    public static final Point ARENA_SIZE = MAP_SIZE.add(WALL_THICKNESS * 2);
-
-
+    public static final Point WALL_SIZE = MAP_SIZE.add(WALL_THICKNESS * 2);
+    public static final double ARENA_PADDING = 1;
+    public static final Point ARENA_SIZE = WALL_SIZE.add(ARENA_PADDING * 2);
     public static final int[] playerColors =
             new int[]{
                     0xff0000, // radical red

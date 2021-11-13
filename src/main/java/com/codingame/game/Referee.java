@@ -265,7 +265,7 @@ public class Referee extends AbstractReferee {
         for (Robot robot : robotSet) {
             robot.updateShield();
         }
-        viewManager.update();
+        viewManager.update(turn);
     }
 
     public Robot getRobot(int id) {

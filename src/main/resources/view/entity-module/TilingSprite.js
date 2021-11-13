@@ -14,7 +14,6 @@ export class TilingSprite extends SpriteBasedEntity {
   }
 
   initDisplay () {
-    console.log("hihihihi")
     super.initDisplay()
     this.graphics = new PIXI.TilingSprite(PIXI.Texture.EMPTY)
   }
