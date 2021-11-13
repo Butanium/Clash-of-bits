@@ -21,7 +21,7 @@ public class NormalGameTestCaseLeague3 {
 
       //  gameRunner.addAgent(outsider1.class);
         gameRunner.setLeagueLevel(3);
-        //gameRunner.setSeed(6751687691868870743L);
+        gameRunner.setSeed(-5095844187355000884L);
         gameRunner.start();
         // Another way to add a player
         //gameRunner.addAgent("python3 C:/Users/Clement/Documents/coding/codinGame/game-skeleton/src/test/java/basicStub.py3");

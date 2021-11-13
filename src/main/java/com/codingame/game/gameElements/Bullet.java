@@ -49,7 +49,7 @@ public class Bullet extends CircularHitBox {
         //Referee.debug(String.format("bullet fired at %f, %f ",getX(),getY()));
         if (!isInstanced) {
             viewManager.instantiateBullet(this,
-                    shooter.getDirection(target).multiply(shooter.getSize()));
+                    shooter.getDirection(target).multiply(shooter.getRobotType().getCanon_size()));
             isInstanced = true;
         }
         if (!target.checkActive()) {

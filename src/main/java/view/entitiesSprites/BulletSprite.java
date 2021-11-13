@@ -21,14 +21,14 @@ public class BulletSprite extends ViewPart {
 
     public BulletSprite(Bullet bullet, ViewManager viewManager, Point deviation) {
         this.viewManager = viewManager;
-        spriteSize = (int) (viewManager.sizeToScreen(BULLET_SIZE));
+        spriteSize = viewManager.sizeToScreen(BULLET_SIZE);
         model = bullet;
         bulletSprite = viewManager.graphicEntityModule.createCircle()
                 .setRadius(spriteSize)
                 .setFillColor(bullet.getOwner().getColorToken())
                 .setX(coordToScreen(model.getX() + deviation.getX()), Curve.IMMEDIATE)
                 .setY(coordToScreen(model.getY() + deviation.getY()), Curve.IMMEDIATE)
-                .setAlpha(0.2)
+               // .setAlpha(0.2)
                 .setZIndex(6);
         viewManager.addToArena(bulletSprite);
     }
@@ -40,7 +40,9 @@ public class BulletSprite extends ViewPart {
         bulletSprite.setFillColor(bullet.getOwner().getColorToken())
                 .setX(coordToScreen(model.getX() + deviation.getX()), Curve.IMMEDIATE)
                 .setY(coordToScreen(model.getY() + deviation.getY()), Curve.IMMEDIATE)
-                .setAlpha(0.2);
+                .setAlpha(1.)
+                ;
+    //.setAlpha(0.2);
         updateVisibility();
     }
 
@@ -49,11 +51,6 @@ public class BulletSprite extends ViewPart {
     public void update() {
         bulletSprite.setX(coordToScreen(model.getX()), LINEAR)
                 .setY(coordToScreen(model.getY()), LINEAR);
-        if (!model.isActive() && !model.willHit()) {
-//            Point spritePos = model.add(model.getDirection().multiply(Constants.PADDING));
-//            bulletSprite.setX(coordToScreen(spritePos.getX()))
-//                    .setY(coordToScreen(spritePos.getY()));
-        }
         if (bulletSprite.getAlpha() != 1. && active) {
             bulletSprite.setAlpha(1., Curve.EASE_OUT);
         }

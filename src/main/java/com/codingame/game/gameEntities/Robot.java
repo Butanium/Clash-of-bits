@@ -9,8 +9,6 @@ import java.util.*;
 
 
 public class Robot extends InGameEntity {
-    private RobotSprite sprite;
-
     /**
      * robot class parameters
      */
@@ -27,6 +25,8 @@ public class Robot extends InGameEntity {
     private final double shieldRegenPerFrame;
     private final Player owner;
     private final RobotType robotType;
+    private final Referee referee;
+    private RobotSprite sprite;
     /**
      * current state variables
      */
@@ -38,7 +38,6 @@ public class Robot extends InGameEntity {
     private Point currentSpeed;
     private String lastAction = "IDLE";
     private Set<InGameEntity> lastTargets = new HashSet<>(Collections.singletonList(this));
-    private final Referee referee;
 
     public Robot(double x, double y, RobotType type, Player owner, Referee referee) {
         super(x, y, type.getSize(), type.getSpeed());
@@ -367,7 +366,6 @@ public class Robot extends InGameEntity {
     }
 
 
-
     public RobotType getRobotType() {
         return robotType;
     }
@@ -400,7 +398,7 @@ public class Robot extends InGameEntity {
     public String getStringTargets() {
         List<String> targets = new ArrayList<>();
         for (InGameEntity InGameEntity : lastTargets) {
-            targets.add(InGameEntity.getId()+"");
+            targets.add(InGameEntity.getId() + "");
         }
         return String.join(";", targets);
     }
@@ -413,5 +411,7 @@ public class Robot extends InGameEntity {
         this.sprite = sprite;
     }
 
-    public RobotSprite getSprite() { return sprite; }
+    public RobotSprite getSprite() {
+        return sprite;
+    }
 }

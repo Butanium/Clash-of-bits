@@ -3,13 +3,14 @@ package com.codingame.game.gameEntities;
 import java.util.Arrays;
 
 public enum RobotType {
-    ASSAULT(5000, 3000, 1.2, 1.2, 2, new double[]{0.95, 0.55, 0.15, 0}, 3, 4, 2
+    ASSAULT(5000, 3000, 1.2, 1.2, .7, 2, new double[]{0.95, 0.55, 0.15, 0}, 3, 4, 2
             , 300, 12, 12, 7, 2);
 
     private final int maxHealth;
     private final int maxShield;
     private final double speed;
     private final double size;
+    private final double canon_size;
     private final double spriteSize;
     private final double[] shotRangeProb;
     private final int bulletPerShot;  // number of bullet fired per frame
@@ -22,12 +23,13 @@ public enum RobotType {
     private final int moveAnimLength;
 
 
-    RobotType(int health, int shield, double speed, double size, double spriteSize, double[] shotRangeProb, int bulletPerShot, int aimTime,
+    RobotType(int health, int shield, double speed, double size, double canon_size, double spriteSize, double[] shotRangeProb, int bulletPerShot, int aimTime,
               int shotTime, double damagePerBullet, int shieldRegenCooldown, int shieldRegenDuration, int attackAnimLength, int moveAnimLength) {
         this.maxHealth = health;
         this.maxShield = shield;
         this.speed = speed;
         this.size = size;
+        this.canon_size = canon_size;
         this.spriteSize = spriteSize;
         this.shotRangeProb = shotRangeProb;
         this.bulletPerShot = bulletPerShot;
@@ -82,6 +84,10 @@ public enum RobotType {
 
     public double getSize() {
         return size;
+    }
+
+    public double getCanon_size() {
+        return canon_size;
     }
 
     @Override
