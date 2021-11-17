@@ -39,8 +39,8 @@ public class Constants {
     public static final double HITMARKER_RATIO = 1. / 1000.;
     public static final String ARENA_TILE_IMAGE = "s.png";
     public static final String BACKGROUND_TILE_IMAGE = "sb.png";
-    public static final double ARENA_TILE_SCALE = 3.2;
-    public static final double BACKGROUND_TILE_SCALE = 2;
+    public static final double ARENA_TILE_SCALE = 3.2 * .2;
+    public static final double BACKGROUND_TILE_SCALE = 2*.2;
     public static final double WALL_TILE_SCALE = 0.5;
     public static final double WALL_THICKNESS = .3;
     public static final Point WALL_SIZE = MAP_SIZE.add(WALL_THICKNESS * 2);
