@@ -74,6 +74,20 @@ public class Point {
         return new Point((pt.x - x) / dist, (pt.y - y) / dist);
     }
 
+    /**
+     * @param pt the point you want the direction to go from the point
+     * @return the normalized vector indicating the direction to go if you want to go to pt or (0,0) if the
+     * distance is zero
+     */
+    public Point getDirectionNoEx(Point pt) {
+        double dist = getDist(pt);
+        if (dist == 0) {
+            return new Point();
+        }
+        return new Point((pt.x - x) / dist, (pt.y - y) / dist);
+    }
+
+
     public void move(Point direction) {
         x += direction.x;
         y += direction.y;

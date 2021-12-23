@@ -5,7 +5,9 @@ import com.codingame.game.Player;
 import com.codingame.game.gameEntities.Robot;
 import view.managers.ViewManager;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Random;
+import java.util.Set;
 
 import static com.codingame.game.Constants.MAP_SIZE;
 
@@ -28,7 +30,7 @@ public class Bullet extends CircularHitBox {
         super(shooter, 0, Constants.BULLET_SPEED);
         this.shooter = shooter;
         this.target = target;
-        direction = willHit ? shooter.getDirection(target) : getDeviation(target);
+        direction = willHit ? shooter.getDirectionNoEx(target) : getDeviation(target);
 
         this.willHit = willHit;
         this.damage = damage;
@@ -39,6 +41,9 @@ public class Bullet extends CircularHitBox {
     private Point getDeviation(CircularHitBox target) {
         int sign = random.nextBoolean() ? 1 : -1;
         double rnd = random.nextDouble();
+        if (getDist(target) == 0) {
+            return new Point();
+        }
         Point newTarget = target.add(getDirection(target).orthogonal().normalize().multiply(
                 target.getSize() * sign * (Constants.MAX_BULLET_DEVIATION * rnd +
                         (1 - rnd) * Constants.MIN_BULLET_DEVIATION)));
@@ -49,14 +54,14 @@ public class Bullet extends CircularHitBox {
         //Referee.debug(String.format("bullet fired at %f, %f ",getX(),getY()));
         if (!isInstanced) {
             viewManager.instantiateBullet(this,
-                    shooter.getDirection(target).multiply(shooter.getRobotType().getCanon_size()));
+                    shooter.getDirectionNoEx(target).multiply(shooter.getRobotType().getCanon_size()));
             isInstanced = true;
         }
         if (!target.checkActive()) {
             this.willHit = false;
         }
         if (willHit) {
-            direction = getDirection(target);
+            direction = getDirectionNoEx(target);
             if (getDist(target) < Constants.DELTA_TIME * Constants.BULLET_SPEED + target.getSize()) {
                 target.takeDamage(damage, owner);
                 hasExplode = true;
