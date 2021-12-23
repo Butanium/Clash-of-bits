@@ -1,6 +1,6 @@
 package Runners;
 
-import agents.Agent1;
+import agents.Agent1_1;
 import agents.boss1;
 import com.codingame.gameengine.runner.MultiplayerGameRunner;
 
@@ -12,7 +12,7 @@ public class NormalGameTestCaseLeague3 {
         // Adds as many player as you need to test your game
         //gameRunner.addAgent(Agent1.class);
         gameRunner.addAgent(boss1.class);
-        gameRunner.addAgent(Agent1.class);
+        gameRunner.addAgent(Agent1_1.class);
 
 
         //gameRunner.addAgent("js C:/Users/Clement/Documents/coding/codinGame/game-skeleton/src/test/java/testMaxime.js");

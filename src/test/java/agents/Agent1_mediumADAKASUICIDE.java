@@ -6,7 +6,8 @@ import java.util.*;
  * Control your bots in order to destroy the enemy team !
  **/
 @SuppressWarnings("InfiniteLoopStatement")
-class Agent3 {
+public
+class Agent1_mediumADAKASUICIDE {
 
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
@@ -73,6 +74,9 @@ class Agent3 {
                         System.err.printf("target ID : %d ", targetId);
                     }
                 }
+                if (shieldMap.get(selfId) <= 25 && accDist == 1) {
+                    result.append(selfId).append(" MOVE ").append(accId).append(";");
+                } else
                 if (targetDist < 3 && shieldMap.getOrDefault(targetId, 100) <25) {
                     result.append(selfId).append(" ATTACK ").append(targetId).append(";");
                     System.err.println("OK JE CONTINUE");

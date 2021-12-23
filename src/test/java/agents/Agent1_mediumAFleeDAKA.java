@@ -1,13 +1,13 @@
 package agents;
 
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * Control your bots in order to destroy the enemy team !
  **/
 @SuppressWarnings("InfiniteLoopStatement")
 public
-class Agent1 {
+class Agent1_mediumAFleeDAKA {
 
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
@@ -18,7 +18,9 @@ class Agent1 {
             StringBuilder result = new StringBuilder();
             int allyBotAlive = in.nextInt(); // the amount of your bot which are still alive
             int totalEntities = in.nextInt(); // the amount of entities in the arena
-            System.err.printf("%d allybots, %d entities", allyBotAlive, totalEntities);
+            Map<Integer, Integer> shieldMap = new HashMap<>();
+            Map<Integer, Set<Integer>> attackersMap = new HashMap<>();
+            Map<Integer, Integer> attackTargetMap = new HashMap<>();
             for (int i = 0; i < totalEntities; i++) {
                 int entId = in.nextInt(); // the unique entity id, stay the same for the whole game
                 String entType = in.next(); // the entity type in a string. It can be ALLY | ENEMY
@@ -33,12 +35,21 @@ class Agent1 {
                 int healthRank = in.nextInt(); // entities are sorted in ascendant order based on their amount of health, this is the rank of the current entity in the sorted list
                 int shieldRank = in.nextInt(); // entities are sorted in ascendant order based on their amount of shield
                 int totalRank = in.nextInt(); // entities are sorted in ascendant order based on their amount of health + shield
+                if (action.equals("ATTACK")) {
+                    Set<Integer> r = attackersMap.getOrDefault(Integer.parseInt(targets), new HashSet<>());
+                    r.add(entId);
+                    attackersMap.put(Integer.parseInt(targets), r);
+                    attackTargetMap.put(entId, Integer.parseInt(targets));
+                }
+                shieldMap.put(entId, shield);
             }
             for (int i = 0; i < allyBotAlive; i++) {
                 int accRank = totalEntities;
                 int accId = 0;
                 int accDist = 0;
                 int selfId = 0;
+                int targetId = -1;
+                int targetDist = 3;
                 for (int j = 0; j < totalEntities; j++) {
                     int entId = in.nextInt(); // the unique entity id
                     String entType = in.next(); // the entity type in a string. It can be SELF | ALLY | ENEMY
@@ -51,12 +62,26 @@ class Agent1 {
                         accId = entId;
                         accRank = distMeRank;
                         accDist = distMe;
+                        if (entId == targetId) {
+                            targetDist = distMe;
+                            System.err.printf("target dist : %d\n", targetDist);
+                        }
                     }
+
                     if (entType.equals("SELF")) {
                         selfId = entId;
+                        targetId =  attackTargetMap.getOrDefault(selfId, -1);
+                        System.err.printf("target ID : %d ", targetId);
                     }
                 }
-                if (accDist < 2) {
+                if (shieldMap.get(selfId) <= 25 && accDist < 2) {
+                    result.append(selfId).append(" FLEE ").append(accId).append(";");
+                } else
+                if (targetDist < 3 && shieldMap.getOrDefault(targetId, 100) <25) {
+                    result.append(selfId).append(" ATTACK ").append(targetId).append(";");
+                    System.err.println("OK JE CONTINUE");
+                }
+                else if (accDist < 2) {
                     result.append(selfId).append(" ATTACK ").append(accId).append(";");
                 }else {
                     result.append(selfId).append(" MOVE ").append(accId).append(";");

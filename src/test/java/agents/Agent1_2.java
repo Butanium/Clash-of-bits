@@ -8,7 +8,8 @@ import java.util.Scanner;
  * Control your bots in order to destroy the enemy team !
  **/
 @SuppressWarnings("InfiniteLoopStatement")
-class Agent2 {
+public
+class Agent1_2 {
 
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
