@@ -4,10 +4,7 @@ import com.codingame.game.gameElements.CircularHitBox;
 import com.codingame.game.Constants;
 import com.codingame.game.gameElements.Point;
 
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 /**
  *
@@ -99,9 +96,9 @@ public abstract class InGameEntity extends CircularHitBox {
     }
 
 
-    public abstract String giveInfo(int league, Robot asker, int distRank, Set<Robot> enemies);
+    public abstract String giveInfo(int league, Robot asker, int distRank);
 
-    public abstract String getSelfInfo(int league, Set<Robot> enemies, int playerId);
+    public abstract String getSelfInfo(int league, ArrayList<Robot> enemies, int playerId);
 
     public EntityType getType() { return type; }
 

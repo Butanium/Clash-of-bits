@@ -22,7 +22,7 @@ public class Referee extends AbstractReferee {
     private final Set<InGameEntity> gameEntitySet = new HashSet<>();
     private final Set<Robot> robotSet = new HashSet<>();
     private final Set<Bullet> bullets = new HashSet<>();
-    private final Map<Integer, Set<Robot>> playersTeam = new HashMap<>();
+    private final Map<Integer, ArrayList<Robot>> playersTeam = new HashMap<>();
 
     public Set<forcefield> forceFields = new HashSet<>();
     public Set<healthPack> healthPacks = new HashSet<>();
@@ -66,10 +66,9 @@ public class Referee extends AbstractReferee {
 
         for (Player player : gameManager.getPlayers()) {
             player.initialize(seed);
-            Set<Robot> team = new HashSet<>();
+            ArrayList<Robot> team = new ArrayList<>();
             ArrayList<Point> points = spawns[player.getIndex()];
-            for (int i = 0; i < points.size(); i++) {
-                Point spawn = points.get(i);
+            for (Point spawn : points) {
                 Robot robot = new Robot(spawn, RobotType.ASSAULT, player, this);
                 robotSet.add(robot);
                 gameEntitySet.add(robot);
@@ -312,8 +311,8 @@ public class Referee extends AbstractReferee {
             player.sendInputLine(botCount + "");
             player.sendInputLine(((int) Constants.MAP_SIZE.getX()) + "");
         }
-        Set<Robot> myBots = playersTeam.get(player.getIndex());
-        Set<Robot> enemyBots = new HashSet<>();
+        ArrayList<Robot> myBots = playersTeam.get(player.getIndex());
+        ArrayList<Robot> enemyBots = new ArrayList<>();
         for (int id : playersTeam.keySet()) {
             if (id == player.getIndex()) {
                 continue;
@@ -328,21 +327,21 @@ public class Referee extends AbstractReferee {
         int robotCount = robotSet.size();
 
         List<Robot> healthSorted = new ArrayList<>(robotSet);
-        healthSorted.sort(Comparator.comparingDouble(Robot::getHealth).thenComparingInt(Robot::getId));
+        healthSorted.sort(Comparator.comparingDouble(Robot::getHealth));
         Map<Integer, Integer> healthRankings = getRanks(healthSorted, Robot::getHealth);
 
         List<Robot> shieldSorted = new ArrayList<>(robotSet);
-        shieldSorted.sort(Comparator.comparingDouble(Robot::getShield).thenComparingInt(Robot::getId));
+        shieldSorted.sort(Comparator.comparingDouble(Robot::getShield));
         Map<Integer, Integer> shieldRankings = getRanks(shieldSorted, Robot::getShield);
 
 
         List<Robot> totalSorted = new ArrayList<>(robotSet);
-        totalSorted.sort(Comparator.comparingDouble(Robot::getTotVitals).thenComparingInt(Robot::getId));
+        totalSorted.sort(Comparator.comparingDouble(Robot::getTotVitals));
         Function<Robot, Double> f = r -> r.getShield() + r.getHealth();
         Map<Integer, Integer> totalRankings = getRanks(totalSorted, f);
 
         List<InGameEntity> borderDistSorted = new ArrayList<>(gameEntitySet);
-        borderDistSorted.sort(Comparator.comparingDouble(InGameEntity::getBorderDist).thenComparingInt(InGameEntity::getId));
+        borderDistSorted.sort(Comparator.comparingDouble(InGameEntity::getBorderDist)); // then comparing id useless here imo
         Map<Integer, Integer> borderRankings = getRanks(borderDistSorted, InGameEntity::getBorderDist);
 
 
@@ -369,23 +368,23 @@ public class Referee extends AbstractReferee {
         }
 
         for (Robot self : myBots) {
-            player.sendInputLine(self.giveInfo(league, self, 0, enemyBots));
+            player.sendInputLine(self.giveInfo(league, self, 0));
             List<InGameEntity> rangeSortedEntities = new ArrayList<>(gameEntitySet);
-            rangeSortedEntities.sort(Comparator.comparingDouble(r -> r.getDist(self)));
-            // on n'utilise pas de rank car on part du principe qu'il n'y aura pas d'égalité et dans le cas contraire
-            // c'est impossible à gérer
-            // Map<Integer, Integer> selfRangeRankings = getRanksE(rangeSortedEntities, r -> r.getDist(self));
+            rangeSortedEntities.removeIf(r -> r.getId() == self.getId());
+            rangeSortedEntities.sort(Comparator.comparingDouble((InGameEntity r) -> r.getDist(self))
+                    .thenComparingInt(InGameEntity::getId));
+            Map<Integer, Integer> selfRangeRankings = getRanks(rangeSortedEntities, r -> r.getDist(self));
             for (Robot ally : myBots) {
                 if (ally.getId() == self.getId()) {
                     continue;
                 }
-                String input = ally.giveInfo(league, self, rangeSortedEntities.indexOf(ally), enemyBots)
+                String input = ally.giveInfo(league, self, selfRangeRankings.get(ally.getId()))
                         .replaceAll("\\s+$", "");
 
                 player.sendInputLine(input);
             }
             for (Robot enemy : enemyBots) {
-                String input = enemy.giveInfo(league, self, rangeSortedEntities.indexOf(enemy), enemyBots)
+                String input = enemy.giveInfo(league, self, rangeSortedEntities.indexOf(enemy))
                         .replaceAll("\\s+$", "");
                 player.sendInputLine(input);
             }
@@ -393,7 +392,7 @@ public class Referee extends AbstractReferee {
                 if (InGameEntity.getType() == EntityType.ROBOT) {
                     continue;
                 }
-                String input = InGameEntity.giveInfo(league, self, rangeSortedEntities.indexOf(InGameEntity), enemyBots)
+                String input = InGameEntity.giveInfo(league, self, rangeSortedEntities.indexOf(InGameEntity))
                         .replaceAll("\\s+$", "");
                 player.sendInputLine(input);
             }

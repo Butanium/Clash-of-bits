@@ -239,7 +239,7 @@ public class Robot extends InGameEntity {
     }
 
     @Override
-    public String giveInfo(int league, Robot asker, int distRank, Set<Robot> enemies) {
+    public String giveInfo(int league, Robot asker, int distRank) {
         if (asker.equals(this)) {
             return getSelfSelfInfo(league);
         }
@@ -259,7 +259,7 @@ public class Robot extends InGameEntity {
     }
 
     @Override
-    public String getSelfInfo(int league, Set<Robot> enemies, int playerId) {
+    public String getSelfInfo(int league, ArrayList<Robot> enemies, int playerId) {
         String healthRank, shieldRank, distEn, distEnRank, totalRank; //ok
         String borderDist, borderDistRank;
         healthRank = shieldRank = distEn = distEnRank = totalRank = "0";

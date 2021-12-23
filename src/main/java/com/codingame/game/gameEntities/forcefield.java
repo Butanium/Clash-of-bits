@@ -1,6 +1,6 @@
 package com.codingame.game.gameEntities;
 
-import java.util.Set;
+import java.util.ArrayList;
 
 /**
  * 
@@ -14,12 +14,12 @@ public class forcefield extends InGameEntity {
     }
 
     @Override
-    public String giveInfo(int league, Robot asker, int distRank, Set<Robot> enemies) {
+    public String giveInfo(int league, Robot asker, int distRank) {
         return null;
     }
 
     @Override
-    public String getSelfInfo(int league, Set<Robot> enemies, int playerId) {
+    public String getSelfInfo(int league, ArrayList<Robot> enemies, int playerId) {
         return null;
     }
 
