@@ -48,7 +48,6 @@ class boss3 {
 
             }
             for (int i = 0; i < allyBotAlive; i++) {
-                int accRank = totalEntities;
                 int accId = 0;
                 int accDist = 3;
                 int selfId = 0;
