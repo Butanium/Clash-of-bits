@@ -6,8 +6,7 @@ import com.codingame.gameengine.module.entities.Circle;
 import com.codingame.gameengine.module.entities.Curve;
 import view.managers.ViewManager;
 
-import static com.codingame.game.Constants.BULLET_SIZE;
-import static com.codingame.game.Constants.getPlayerColor;
+import static com.codingame.game.Constants.*;
 import static com.codingame.gameengine.module.entities.Curve.EASE_IN;
 import static com.codingame.gameengine.module.entities.Curve.LINEAR;
 
@@ -29,7 +28,7 @@ public class BulletSprite extends ViewPart {
                 .setX(coordToScreen(model.getX() + deviation.getX()), Curve.IMMEDIATE)
                 .setY(coordToScreen(model.getY() + deviation.getY()), Curve.IMMEDIATE)
                // .setAlpha(0.2)
-                .setZIndex(6);
+                .setZIndex(Z_INDEX_BULLETS);
         viewManager.addToArena(bulletSprite);
     }
 

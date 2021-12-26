@@ -14,7 +14,7 @@ public class AnimationManager {
         this.viewManager = viewManager;
     }
 
-    public void createAnimation(AnimationType animType, int x, int y, int z, double scale) {
+    public void createAnimation(AnimationType animType, int x, int y, int z, double scale, double alpha) {
         int animId = animType.getAnimId();
         Set<GraphicModuleAnimation> availableAnim = availableAnimTable.getOrDefault(animId,
                 new HashSet<>());
@@ -25,7 +25,7 @@ public class AnimationManager {
                 anim.reInit(x, y, z, scale, animType);
                 addUsed(animId, anim);
             } else {
-                addUsed(animId, new GraphicModuleAnimation(viewManager, animType, x, y, z, scale));
+                addUsed(animId, new GraphicModuleAnimation(viewManager, animType, x, y, z, scale, alpha));
             }
         } else {
             GraphicModuleAnimation anim = availableAnim.stream().findFirst().get();

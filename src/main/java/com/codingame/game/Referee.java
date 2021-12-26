@@ -77,7 +77,7 @@ public class Referee extends AbstractReferee {
             playersTeam.put(player.getIndex(), team);
         }
 
-        viewManager = new ViewManager(graphicEntityModule, tooltips, cameraModule);
+        viewManager = new ViewManager(graphicEntityModule, tooltips, cameraModule, seed);
         viewManager.init(robotSet);
 
 //        viewportModule.createViewport(viewportGroup);

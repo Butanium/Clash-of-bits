@@ -15,6 +15,14 @@ import static com.codingame.gameengine.module.entities.Curve.*;
 
 
 public class RobotSprite extends ViewPart {
+    private final int Z_INDEX_BASE = 0;
+    private final int Z_INDEX_SURFACE = Z_INDEX_BASE + 1;
+    private final int Z_INDEX_MOVE = Z_INDEX_SURFACE + 1;
+    private final int Z_INDEX_CANON = Z_INDEX_MOVE + 1;
+    private final int Z_INDEX_HITMARKER = Z_INDEX_CANON + 1;
+    private final int Z_INDEX_UI0 = Z_INDEX_HITMARKER + 1;
+    private final int Z_INDEX_UI1 = Z_INDEX_UI0 + 1;
+
     private final Robot model;
     private final Group robotGroup;
     private final ProgressBar shieldBar;
@@ -29,8 +37,8 @@ public class RobotSprite extends ViewPart {
 
     public RobotSprite(Robot robot, Group playerField, ViewManager viewManager) {
         this.viewManager = viewManager;
-        hitMarker = viewManager.graphicEntityModule.createSprite().setImage("h.png").setScale(BULLET_SIZE)
-                .setY(-7).setX(-7).setVisible(false).setZIndex(5);
+        hitMarker = viewManager.graphicEntityModule.createSprite().setImage(HITMARKER_IMAGE).setScale(HITMARKER_SIZE)
+                .setAnchor(.5).setVisible(false).setRotation(HITMARKER_ANGLE);
         this.model = robot;
         GraphicEntityModule graphicEntityModule = viewManager.graphicEntityModule;
         int size = (viewManager.sizeToScreen(robot.getSpriteSize()));
@@ -41,12 +49,13 @@ public class RobotSprite extends ViewPart {
                         .setBaseWidth(size)
                         .setBaseHeight(size)
                         .setAlpha(1.0)
-                        .setTint(color)).setZIndex(1);
+                        .setZIndex(Z_INDEX_BASE)
+                        .setTint(color)).setZIndex(Z_INDEX_ROBOTS);
         robotGroup.add(graphicEntityModule.createSprite().setImage(model.getRobotType().toString().charAt(0) + "R.png")
                 .setAnchor(0.5)
                 .setBaseWidth(size)
                 .setBaseHeight(size)
-                .setAlpha(1.0).setZIndex(2));
+                .setAlpha(1.0).setZIndex(Z_INDEX_SURFACE));
 
         int animAttackLength = model.getRobotType().getAttackAnimLength();
         Sprite[] canonSprites = new Sprite[animAttackLength];
@@ -57,7 +66,7 @@ public class RobotSprite extends ViewPart {
                     .setBaseWidth(size)
                     .setBaseHeight(size)
                     .setAlpha(i == 0 ? 1.0 : 0)
-                    .setZIndex(4)
+                    .setZIndex(Z_INDEX_CANON)
             );//.setTint(0));
             canonSprites[i] = canon;
         }
@@ -73,7 +82,7 @@ public class RobotSprite extends ViewPart {
                     .setBaseHeight(size)
                     .setAlpha(i == 0 ? 1.0 : 0)
                     .setTint(0x00FFFF, Curve.IMMEDIATE)
-                    .setZIndex(3)
+                    .setZIndex(Z_INDEX_MOVE)
             );//.setTint(0));
             moveSprites[i] = animFrame;
         }
@@ -85,7 +94,7 @@ public class RobotSprite extends ViewPart {
         robotGroup.setY(viewManager.coordToScreen(robot.getY()));
         shieldBar = new ProgressBar(0x00E1F5, graphicEntityModule);
         healthBar = new ProgressBar(0xAB0098, graphicEntityModule);
-        robotGroup.add(shieldBar.getBarGroup(), healthBar.getBarGroup(), hitMarker);
+        robotGroup.add(shieldBar.getBarGroup(), healthBar.getBarGroup(), hitMarker.setZIndex(Z_INDEX_HITMARKER));
         shieldBar.getBarGroup().setX(shieldBar.getBarGroup().getX() + 15);
         healthBar.getBarGroup().setX(healthBar.getBarGroup().getX() + 15)
                 .setY((int) (shieldBar.getBarGroup().getY() + HEALTH_BAR_HEIGHT * 1.5));
@@ -148,8 +157,9 @@ public class RobotSprite extends ViewPart {
         setVisible(false);
         updateVisibility();
         viewManager.camera.removeTrackedEntity(robotGroup);
-        viewManager.getAnimManager().createAnimation(AnimationType.Explosion, robotGroup.getX(), robotGroup.getY(), 2,
-                0.5);
+        viewManager.getAnimManager().createAnimation(AnimationType.Explosion, robotGroup.getX(), robotGroup.getY(), Z_INDEX_EXPLOSIONS,
+                0.5, 0.8);
+        viewManager.addCrater(model, model.getSpriteSize());
 
     }
 

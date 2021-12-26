@@ -12,10 +12,10 @@ public class GraphicModuleAnimation extends ViewPart {
     private ViewManager viewManager;
     private AnimationType animType;
 
-    public GraphicModuleAnimation(ViewManager viewManager, AnimationType animType, int x, int y, int z, double scale) {
+    public GraphicModuleAnimation(ViewManager viewManager, AnimationType animType, int x, int y, int z, double scale, double alpha) {
         this.viewManager = viewManager;
         this.animType = animType;
-        init(x, y, z, scale, animType);
+        init(x, y, z, scale, alpha, animType);
     }
 
     public void reInit(int x, int y, int z, double scale, AnimationType animType) {
@@ -29,7 +29,7 @@ public class GraphicModuleAnimation extends ViewPart {
     }
 
 
-    private void init(int x, int y, int z, double scale, AnimationType animType) {
+    private void init(int x, int y, int z, double scale, double alpha, AnimationType animType) {
         state = 0;
         anim = viewManager.graphicEntityModule.createSpriteAnimation()
                 .setImages(animType.getImages())
@@ -37,7 +37,8 @@ public class GraphicModuleAnimation extends ViewPart {
                 .setY(y)
                 .setAnchor(.5)
                 .setDuration(animType.getDuration())
-                .setZIndex(z).setScale(scale).reset().setLoop(animType.getLoop());
+                .setZIndex(z).setScale(scale).reset().setLoop(animType.getLoop())
+                .setAlpha(alpha);
         viewManager.addToArena(anim);
     }
 
