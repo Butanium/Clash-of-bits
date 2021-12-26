@@ -56,7 +56,10 @@ class Agent1_1 {
                         selfId = entId;
                     }
                 }
-                if (accDist < 2) {
+                if (allyBotAlive == 1) {
+                    result.append(selfId).append(" FLEE ").append(accId).append(";");
+                }
+                else if (accDist <= 1) {
                     result.append(selfId).append(" ATTACK ").append(accId).append(";");
                 }else {
                     result.append(selfId).append(" MOVE ").append(accId).append(";");

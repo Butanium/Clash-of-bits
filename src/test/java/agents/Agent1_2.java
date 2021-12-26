@@ -67,8 +67,8 @@ class Agent1_2 {
                 }
                 if (shieldMap.get(selfId) <= 25 && accDist < 3 && attackMap.getOrDefault(selfId, 0) > 0) {
                     result.append(selfId).append(" FLEE ").append(accId).append(";");
-                } else if (accDist < 2 || accDist < 3 &&
-                        (attackMap.getOrDefault(selfId, 0) > 0 || shieldMap.get(selfId) <= 50)) {
+                } else if (accDist < 2 || (accDist < 3 &&
+                        (attackMap.getOrDefault(selfId, 0) > 0 || shieldMap.get(selfId) <= 50))) {
                     result.append(selfId).append(" ATTACK ").append(accId).append(";");
                 } else {
                     result.append(selfId).append(" MOVE ").append(accId).append(";");

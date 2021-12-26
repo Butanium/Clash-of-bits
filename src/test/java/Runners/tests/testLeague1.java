@@ -1,17 +1,17 @@
-package Runners;
+package Runners.tests;
 
-import agents.Agent1_mediumADAKASUICIDE;
+import agents.Agent1_test_overlap;
 import com.codingame.gameengine.runner.MultiplayerGameRunner;
 
-public class NormalGameTestCaseLeague1 {
+public class testLeague1 {
     public static void main(String[] args) {
         /* Multiplayer Game */
         MultiplayerGameRunner gameRunner = new MultiplayerGameRunner();
 
         // Adds as many player as you need to test your game
         //gameRunner.addAgent(Agent1.class);
-        gameRunner.addAgent(Agent1_mediumADAKASUICIDE.class);
-        gameRunner.addAgent(Agent1_mediumADAKASUICIDE.class);
+        gameRunner.addAgent(Agent1_test_overlap.class);
+        gameRunner.addAgent(Agent1_test_overlap.class);
 
 
         //gameRunner.addAgent("js C:/Users/Clement/Documents/coding/codinGame/game-skeleton/src/test/java/testMaxime.js");

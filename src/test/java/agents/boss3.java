@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
  * Control your bots in order to destroy the enemy team !
  **/
 @SuppressWarnings("InfiniteLoopStatement")
+public
 class boss3 {
 
     public static void main(String[] args) {
@@ -51,6 +52,8 @@ class boss3 {
                 int accId = 0;
                 int accDist = 3;
                 int selfId = 0;
+                int accClosest = 3;
+                int accClosestId = 0;
                 int accShieldRank = totalEntities;
                 for (int j = 0; j < totalEntities; j++) {
                     int entId = in.nextInt(); // the unique entity id
@@ -66,6 +69,11 @@ class boss3 {
                             accShieldRank = shieldRankings.get(entId);
                             accDist = distMe;
                         }
+
+                    }
+                    if (accClosest >= distMe && entType.equals("ENEMY")) {
+                        accClosestId = entId;
+                        accClosest = distMe;
                     }
                     if (entType.equals("SELF")) {
                             selfId = entId;
@@ -77,7 +85,10 @@ class boss3 {
                 } else if (accDist < 2 || accDist < 3 &&
                         (attackersMap.getOrDefault(selfId, new HashSet<>()).size() > 0 || shieldMap.get(selfId) <= 50)) {
                     result.append(selfId).append(" ATTACK ").append(accId).append(";");
+                } else if (accClosest <= 1) {
+                    result.append(selfId).append(" ATTACK ").append(accClosestId).append(";");
                 } else {
+                    System.err.printf("moving, acc dist : %d\n", accClosest);
                     result.append(selfId).append(" MOVE ").append(accId).append(";");
                 }
             }

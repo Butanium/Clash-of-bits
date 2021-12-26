@@ -1,10 +1,10 @@
-package Runners;
+package Runners.normalgames;
 
 import agents.Agent1_1;
 import agents.boss1;
 import com.codingame.gameengine.runner.MultiplayerGameRunner;
 
-public class NormalGameTestCaseLeague2 {
+public class League2 {
     public static void main(String[] args) {
         /* Multiplayer Game */
         MultiplayerGameRunner gameRunner = new MultiplayerGameRunner();
