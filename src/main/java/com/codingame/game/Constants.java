@@ -50,9 +50,14 @@ public class Constants {
     public static final int HEALTH_BAR_HEIGHT = 5;
     public static final int CAMERA_OFFSET = 8;
     public static final double HITMARKER_RATIO = 1 / 1000.;
+/*  h3 params :
     public static final String HITMARKER_IMAGE = "h3.png";
-    public static final double HITMARKER_SIZE = .5; // 0/1 for default
+    public static final double HITMARKER_SIZE = .5;
     public static final double HITMARKER_ANGLE = Math.PI / 4;
+*/
+    public static final String HITMARKER_IMAGE = "h.png";
+    public static final double HITMARKER_SIZE = .1; // 0/1 for default
+    public static final double HITMARKER_ANGLE = 0;
 
     // Arena settings
     public static final String ARENA_TILE_IMAGE = "s.png";
