@@ -12,6 +12,8 @@ public abstract class ViewPart {
 
     public abstract Entity getSprite();
 
+    public abstract Entity getDebugSprite();
+
     public boolean isVisible() {
         return visible;
     }

@@ -75,5 +75,9 @@ public class DebugOnHoverModule implements Module {
         setDebugHover(entity, Arrays.stream(debugEntities).map(Entity::getId).toArray(Integer[]::new));
     }
 
+    public void stopTracking(Entity<?> entity) {
+        newRegistration.put(entity.getId(), new Integer[]{});
+    }
+
 
 }

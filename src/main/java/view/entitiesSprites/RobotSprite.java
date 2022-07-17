@@ -4,9 +4,9 @@ import com.codingame.game.exceptions.ZeroDivisionException;
 import com.codingame.game.gameEntities.Robot;
 import com.codingame.gameengine.module.entities.*;
 import view.UI.ProgressBar;
+import view.fx.Animation;
 import view.fx.AnimationType;
 import view.managers.ViewManager;
-import view.fx.Animation;
 
 import java.util.Objects;
 
@@ -19,12 +19,12 @@ public class RobotSprite extends ViewPart {
     private final int Z_INDEX_SURFACE = Z_INDEX_BASE + 1;
     private final int Z_INDEX_MOVE = Z_INDEX_SURFACE + 1;
     private final int Z_INDEX_CANON = Z_INDEX_MOVE + 1;
-    private final int Z_INDEX_HITMARKER = Z_INDEX_CANON + 1;
-    private final int Z_INDEX_UI0 = Z_INDEX_HITMARKER + 1;
-    private final int Z_INDEX_UI1 = Z_INDEX_UI0 + 1;
-
+    private final int Z_INDEX_DEBUG = Z_INDEX_CANON + 1;
     private final Robot model;
     private final Group robotGroup;
+    private final Group robotSprite;
+    private final Group debugGroup;
+    private final Circle mouseHitbox;
     private final ProgressBar shieldBar;
     private final ProgressBar healthBar;
     private final Curve curve = LINEAR;
@@ -37,31 +37,30 @@ public class RobotSprite extends ViewPart {
 
     public RobotSprite(Robot robot, Group playerField, ViewManager viewManager) {
         this.viewManager = viewManager;
-        hitMarker = viewManager.graphicEntityModule.createSprite().setImage(HITMARKER_IMAGE).setScale(HITMARKER_SIZE)
-                .setAnchor(.5).setVisible(false).setRotation(HITMARKER_ANGLE);
         this.model = robot;
         GraphicEntityModule graphicEntityModule = viewManager.graphicEntityModule;
         int size = (viewManager.sizeToScreen(robot.getSpriteSize()));
         int color = model.getOwner().getColorToken();
-        robotGroup = graphicEntityModule.createGroup(
+        robotGroup = graphicEntityModule.createGroup().setZIndex(Z_INDEX_ROBOTS);
+        robotSprite = graphicEntityModule.createGroup(
                 graphicEntityModule.createSprite().setImage(model.getRobotType().toString().charAt(0) + "B.png")
                         .setAnchor(0.5)
                         .setBaseWidth(size)
                         .setBaseHeight(size)
                         .setAlpha(1.0)
                         .setZIndex(Z_INDEX_BASE)
-                        .setTint(color)).setZIndex(Z_INDEX_ROBOTS);
-        robotGroup.add(graphicEntityModule.createSprite().setImage(model.getRobotType().toString().charAt(0) + "R.png")
+                        .setTint(color));
+        robotSprite.add(graphicEntityModule.createSprite().setImage(model.getRobotType().toString().charAt(0) + "R.png")
                 .setAnchor(0.5)
                 .setBaseWidth(size)
                 .setBaseHeight(size)
                 .setAlpha(1.0).setZIndex(Z_INDEX_SURFACE));
-
+        robotGroup.add(robotSprite);
         int animAttackLength = model.getRobotType().getAttackAnimLength();
         Sprite[] canonSprites = new Sprite[animAttackLength];
         for (int i = 0; i < animAttackLength; i++) {
             Sprite canon;
-            robotGroup.add(canon = graphicEntityModule.createSprite().setImage(model.getRobotType().toString().charAt(0) + "A" + (i + 1) + ".png")
+            robotSprite.add(canon = graphicEntityModule.createSprite().setImage(model.getRobotType().toString().charAt(0) + "A" + (i + 1) + ".png")
                     .setAnchor(0.5)
                     .setBaseWidth(size)
                     .setBaseHeight(size)
@@ -76,7 +75,7 @@ public class RobotSprite extends ViewPart {
         Sprite[] moveSprites = new Sprite[animMoveLength];
         for (int i = 0; i < animMoveLength; i++) {
             Sprite animFrame;
-            robotGroup.add(animFrame = graphicEntityModule.createSprite().setImage(model.getRobotType().toString().charAt(0) + "M" + (i + 1) + ".png")
+            robotSprite.add(animFrame = graphicEntityModule.createSprite().setImage(model.getRobotType().toString().charAt(0) + "M" + (i + 1) + ".png")
                     .setAnchor(0.5)
                     .setBaseWidth(size)
                     .setBaseHeight(size)
@@ -88,22 +87,49 @@ public class RobotSprite extends ViewPart {
         }
 
         moveAnim = new Animation(moveSprites, curve).setLooping(true);//.setFrameLength(3);
-
         playerField.add(robotGroup);
         robotGroup.setX(viewManager.coordToScreen(robot.getX()));
         robotGroup.setY(viewManager.coordToScreen(robot.getY()));
+
+        // Init UI
         shieldBar = new ProgressBar(0x00E1F5, graphicEntityModule);
         healthBar = new ProgressBar(0xAB0098, graphicEntityModule);
-        robotGroup.add(shieldBar.getBarGroup(), healthBar.getBarGroup(), hitMarker.setZIndex(Z_INDEX_HITMARKER));
-        shieldBar.getBarGroup().setX(shieldBar.getBarGroup().getX() + 15);
-        healthBar.getBarGroup().setX(healthBar.getBarGroup().getX() + 15)
-                .setY((int) (shieldBar.getBarGroup().getY() + HEALTH_BAR_HEIGHT * 1.5));
-        //shieldBar.getBarGroup().setY(shieldBar.getBarGroup().getY()+10);
-        int s = model.getY() > MAP_SIZE.getY() / 2 ? 0 : 1;
-        robotGroup.setRotation(Math.PI * s);
+        hitMarker = viewManager.graphicEntityModule.createSprite().setImage(HITMARKER_IMAGE).setScale(HITMARKER_SIZE)
+                .setAnchor(.5).setVisible(false).setRotation(HITMARKER_ANGLE).setZIndex(Z_INDEX_UI0);
+        viewManager.addToArena(hitMarker);
+        viewManager.addToArena(shieldBar.getBarGroup());
+        viewManager.addToArena(healthBar.getBarGroup());
+        viewManager.followEntityModule.followEntity(healthBar.getBarGroup(), robotGroup, 15, 0);
+        viewManager.followEntityModule.followEntity(shieldBar.getBarGroup(), robotGroup, 15, HEALTH_BAR_HEIGHT * 1.5);
+        viewManager.followEntityModule.followEntity(hitMarker, robotGroup);
 
+        int s = (model.getY() > MAP_SIZE.getY() / 2) ? 0 : 1;
+        robotGroup.setRotation(Math.PI * s);
+        debugGroup = viewManager.graphicEntityModule.createGroup();
+        Group rangeGroup = viewManager.graphicEntityModule.createGroup();
         viewManager.tooltips.setTooltipText(robotGroup, getTooltip());
         this.model.setRobotSprite(this);
+
+        // Init debug
+        mouseHitbox = graphicEntityModule.createCircle().setRadius(size * 2 / 3).setFillColor(0xFF0000)
+                .setZIndex(Z_INDEX_DEBUG).setLineColor(0x000000).setVisible(true).setAlpha(0);
+        // Ranges
+        for (double range : RANGES) {
+            rangeGroup.add(graphicEntityModule.createCircle().setRadius(viewManager.sizeToScreen(range))
+                    .setFillColor(0x0000FF).setFillAlpha(0.1).setLineColor(0x00008D));
+        }
+        rangeGroup.setZIndex(Z_INDEX_RANGES).setVisible(false);
+        viewManager.addToArena(rangeGroup);
+        viewManager.followEntityModule.followEntity(rangeGroup, robotGroup);
+        // Debug mode
+        Circle debug_circle = graphicEntityModule.createCircle().setRadius(size / 3).setFillColor(color)
+                .setZIndex(Z_INDEX_BASE).setLineColor(0x000000).setVisible(true);
+        debugGroup.add(debug_circle);
+        viewManager.debugOnHoverModule.setDebugHover(mouseHitbox, rangeGroup);
+        robotGroup.add(debugGroup, mouseHitbox);
+        viewManager.addDebug(debugGroup);
+        viewManager.removeForDebug(robotSprite);
+
     }
 
     private String getTooltip() {
@@ -160,12 +186,20 @@ public class RobotSprite extends ViewPart {
         viewManager.getAnimManager().createAnimation(AnimationType.Explosion, robotGroup.getX(), robotGroup.getY(), Z_INDEX_EXPLOSIONS,
                 0.5, 0.8);
         viewManager.addCrater(model, model.getSpriteSize());
-
+        shieldBar.remove();
+        healthBar.remove();
+        hitMarker.setVisible(false);
+        viewManager.debugOnHoverModule.stopTracking(mouseHitbox);
     }
 
     @Override
     public Group getSprite() {
         return robotGroup;
+    }
+
+    @Override
+    public Entity getDebugSprite() {
+        return debugGroup;
     }
 
 }

@@ -48,6 +48,7 @@ public class CraterManager {
                 .setAlpha(CRATER_ALPHA);
         vM.addToArena(sprite);
         newCrater.setSprite(sprite);
+        vM.removeForDebug(sprite);
         craters.add(newCrater);
     }
 

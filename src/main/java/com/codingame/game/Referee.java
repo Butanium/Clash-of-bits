@@ -10,10 +10,13 @@ import com.codingame.gameengine.core.AbstractReferee;
 import com.codingame.gameengine.core.MultiplayerGameManager;
 import com.codingame.gameengine.module.endscreen.EndScreenModule;
 import com.codingame.gameengine.module.entities.GraphicEntityModule;
+import com.codingame.gameengine.module.toggle.ToggleModule;
 import com.google.common.base.Function;
 import com.google.inject.Inject;
 import view.managers.ViewManager;
 import view.modules.CameraModule;
+import view.modules.DebugOnHoverModule;
+import view.modules.FollowEntityModule;
 import view.modules.TooltipModule;
 
 import java.util.*;
@@ -26,19 +29,24 @@ public class Referee extends AbstractReferee {
 
     public Set<forcefield> forceFields = new HashSet<>();
     public Set<healthPack> healthPacks = new HashSet<>();
-//    @Inject
-//    ViewportModule viewportModule;
-    @Inject
-    private MultiplayerGameManager<Player> gameManager;
-    @Inject
-    private GraphicEntityModule graphicEntityModule;
     @Inject
     TooltipModule tooltips;
     @Inject
     EndScreenModule endScreenModule;
     @Inject
     CameraModule cameraModule;
-
+    @Inject
+    ToggleModule toggleModule;
+    //    @Inject
+//    ViewportModule viewportModule;
+    @Inject
+    FollowEntityModule followEntityModule;
+    @Inject
+    DebugOnHoverModule debugOnHoverModule;
+    @Inject
+    private MultiplayerGameManager<Player> gameManager;
+    @Inject
+    private GraphicEntityModule graphicEntityModule;
     private int botCount;
     private ViewManager viewManager;
 
@@ -58,7 +66,7 @@ public class Referee extends AbstractReferee {
         botCount = getBotCount();
         long seed = gameManager.getSeed();
         Spawner spawner = new Spawner(seed, botCount, gameManager.getPlayerCount());
-        ArrayList<Point>[] spawns =  spawner.getGridSpawnPositions(gameManager.getLeagueLevel());
+        ArrayList<Point>[] spawns = spawner.getGridSpawnPositions(gameManager.getLeagueLevel());
         if (gameManager.getPlayerCount() != 2) {
             throw new IllegalArgumentException("matchs with more than 2 players are not implemented for now");
         }
@@ -77,7 +85,8 @@ public class Referee extends AbstractReferee {
             playersTeam.put(player.getIndex(), team);
         }
 
-        viewManager = new ViewManager(graphicEntityModule, tooltips, cameraModule, seed);
+        viewManager = new ViewManager(graphicEntityModule, tooltips, cameraModule, seed, toggleModule,
+                followEntityModule, debugOnHoverModule);
         viewManager.init(robotSet);
 
 //        viewportModule.createViewport(viewportGroup);
@@ -251,7 +260,7 @@ public class Referee extends AbstractReferee {
             } else {
                 Player player = action.getExecutor().getPlayer();
                 player.deactivate(String.format("$%d tried to perform 2 action in the same turn for robot %d",
-                                player.getIndex(), action.getExecutor().getId()));
+                        player.getIndex(), action.getExecutor().getId()));
             }
         }
         for (Robot robot : robotSet) {
@@ -293,7 +302,6 @@ public class Referee extends AbstractReferee {
     private int getBotCount() {
         return Constants.BOT_PER_PLAYER;
     }
-
 
 
 //    public Set<Robot> getPlayerBots(int playerId) {  useless for now
@@ -347,7 +355,7 @@ public class Referee extends AbstractReferee {
 
         List<InGameEntity> distEnSorted = new ArrayList<>(gameEntitySet);
         distEnSorted.sort(Comparator.comparingDouble((InGameEntity e) -> e.getDist(e.getClosestEntity(new HashSet<>(enemyBots))))
-            .thenComparingInt(InGameEntity::getId));
+                .thenComparingInt(InGameEntity::getId));
         Map<Integer, Integer> distEnRankings = getRanks(distEnSorted,
                 r -> r.getDist(r.getClosestEntity(new HashSet<>(enemyBots))));
 
@@ -500,7 +508,6 @@ public class Referee extends AbstractReferee {
     public void addToGameSummary(Player player, String message) {
         gameManager.addTooltip(player, message);
     }
-
 
 
 }

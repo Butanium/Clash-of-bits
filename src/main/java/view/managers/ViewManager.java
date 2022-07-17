@@ -20,12 +20,18 @@ package view.managers;
 import com.codingame.game.gameElements.Bullet;
 import com.codingame.game.gameElements.Point;
 import com.codingame.game.gameEntities.Robot;
-import com.codingame.gameengine.module.entities.*;
+import com.codingame.gameengine.module.entities.Entity;
+import com.codingame.gameengine.module.entities.GraphicEntityModule;
+import com.codingame.gameengine.module.entities.Group;
+import com.codingame.gameengine.module.entities.TilingSprite;
+import com.codingame.gameengine.module.toggle.ToggleModule;
 import view.entitiesSprites.RobotSprite;
 import view.entitiesSprites.ViewPart;
 import view.fx.AnimationType;
 import view.fx.GraphicModuleAnimation;
 import view.modules.CameraModule;
+import view.modules.DebugOnHoverModule;
+import view.modules.FollowEntityModule;
 import view.modules.TooltipModule;
 
 import java.util.HashSet;
@@ -38,10 +44,13 @@ import static com.codingame.game.Constants.*;
 public class ViewManager {
     public final TooltipModule tooltips;
     public final GraphicEntityModule graphicEntityModule;
+    public final ToggleModule toggleModule;
+    public final FollowEntityModule followEntityModule;
     public final CameraModule camera;
+    public final DebugOnHoverModule debugOnHoverModule;
     private final int X0;
     private final int Y0;
-//    private final Set<ViewPart> priorityViewParts = new HashSet<>();
+    //    private final Set<ViewPart> priorityViewParts = new HashSet<>();
     private final Set<ViewPart> viewParts = new HashSet<>();
     private final Group gameGroup;
     private final BulletManager bulletManager;
@@ -54,9 +63,11 @@ public class ViewManager {
     private GraphicModuleAnimation tesla2;
 
 
-
     public ViewManager(GraphicEntityModule graphicEntityModule, TooltipModule tooltipModule, CameraModule cameraModule
-           , long seed) {
+            , long seed, ToggleModule toggleModule, FollowEntityModule followEntityModule, DebugOnHoverModule debugOnHoverModule) {
+        this.toggleModule = toggleModule;
+        this.debugOnHoverModule = debugOnHoverModule;
+        this.followEntityModule = followEntityModule;
         random = new Random(seed);
         this.graphicEntityModule = graphicEntityModule;
         double xRatio = 1920 / ARENA_SIZE.getX();
@@ -157,7 +168,7 @@ public class ViewManager {
     }
 
     public void addCrater(Point position, double size) {
-      craterManager.addCrater(position, size);
+        craterManager.addCrater(position, size);
     }
 
     public void instantiateBullet(Bullet bullet, Point deviation) {
@@ -207,6 +218,13 @@ public class ViewManager {
 
     }
 
+    public void removeForDebug(Entity entity) {
+        toggleModule.displayOnToggleState(entity, "debug", false);
+    }
+
+    public void addDebug(Entity entity) {
+        toggleModule.displayOnToggleState(entity, "debug", true);
+    }
 
     public int coordToScreen(double pos) {
         return (int) ((pos + WALL_THICKNESS + ARENA_PADDING) * sizeRatio);

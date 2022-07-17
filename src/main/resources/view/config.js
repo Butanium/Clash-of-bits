@@ -3,7 +3,9 @@ import {TooltipModule} from "./modules/TooltipModule.js";
 import {EndScreenModule} from './endscreen-module/EndScreenModule.js';
 import {CameraModule} from "./modules/CameraModule.js";
 import {CameraToggleModule} from './modules/CameraToggleModule.js';
-
+import {ToggleModule} from './toggle-module/ToggleModule.js'
+import {FollowEntityModule} from './modules/FollowEntityModule.js';
+import {DebugOnHoverModule} from "./modules/DebugOnHoverModule.js";
 
 // List of viewer modules that you want to use in your game
 export const modules = [
@@ -11,7 +13,10 @@ export const modules = [
     TooltipModule,
     CameraModule,
     EndScreenModule,
-    CameraToggleModule
+    CameraToggleModule,
+    ToggleModule,
+    FollowEntityModule,
+    DebugOnHoverModule
 
 ];
 export const playerColors = [
@@ -39,6 +44,18 @@ export const options = [
         },
         // Default value of your toggle
         default: true
+    }), ToggleModule.defineToggle({
+        // The name of the toggle
+        toggle: 'debug',
+        // The text displayed over the toggle
+        title: 'DEBUG OVERLAY',
+        // The labels for the on/off states of your toggle
+        values: {
+            'ON': true,
+            'OFF': false
+        },
+        // Default value of your toggle
+        default: false
     })
 ]
 

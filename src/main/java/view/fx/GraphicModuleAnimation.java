@@ -9,7 +9,7 @@ public class GraphicModuleAnimation extends ViewPart {
     private boolean active = true;
     private int state = 0;
     private SpriteAnimation anim;
-    private ViewManager viewManager;
+    private final ViewManager viewManager;
     private AnimationType animType;
 
     public GraphicModuleAnimation(ViewManager viewManager, AnimationType animType, int x, int y, int z, double scale, double alpha) {
@@ -39,6 +39,7 @@ public class GraphicModuleAnimation extends ViewPart {
                 .setDuration(animType.getDuration())
                 .setZIndex(z).setScale(scale).reset().setLoop(animType.getLoop())
                 .setAlpha(alpha);
+        viewManager.removeForDebug(anim);
         viewManager.addToArena(anim);
     }
 
@@ -71,4 +72,7 @@ public class GraphicModuleAnimation extends ViewPart {
     public SpriteAnimation getSprite() {
         return anim;
     }
+
+    @Override
+    public SpriteAnimation getDebugSprite() {return  getSprite();}
 }

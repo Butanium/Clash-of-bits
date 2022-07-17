@@ -71,7 +71,7 @@ export class CameraModule {
             const position = {x: 0, y: 0}
             this.oldCameraState = {boundSize, position}
         }
-
+        // todo check if the first position isn't breaking the reload of the scene
         if (this.lastFrame !== currentData.number && isActive) {
             this.oldCameraState = {...this.currentCameraState}
             let maxX, minX, minY, maxY;

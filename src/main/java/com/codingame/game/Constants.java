@@ -11,6 +11,9 @@ public class Constants {
     public static final double SHORT_RANGE = 3;
     public static final double MEDIUM_RANGE = 8;
     public static final double LONG_RANGE = 15;
+    public static final double[] RANGES = new double[] {
+            SHORT_RANGE, MEDIUM_RANGE, LONG_RANGE
+    };
     public static final double DELTA_TIME = 0.25;
     public static final int FRAME_DURATION = (int) (Constants.DELTA_TIME * 1000 / 2);
     public static final Point MAP_SIZE = new Point(40, 40);
@@ -76,9 +79,12 @@ public class Constants {
     public static final int Z_INDEX_CRATER = Z_INDEX_ARENA_FLOOR + 1;
     public static final int Z_INDEX_WALL0 = Z_INDEX_CRATER + 1;
     public static final int Z_INDEX_WALLS = Z_INDEX_WALL0 + 1;
-    public static final int Z_INDEX_ROBOTS = Z_INDEX_WALLS + 1;
+    public static final int Z_INDEX_RANGES = Z_INDEX_WALLS + 1;
+    public static final int Z_INDEX_ROBOTS = Z_INDEX_RANGES + 1;
     public static final int Z_INDEX_EXPLOSIONS = Z_INDEX_ROBOTS + 1;
     public static final int Z_INDEX_BULLETS = Z_INDEX_EXPLOSIONS + 1;
+    public static final int Z_INDEX_UI0 = Z_INDEX_BULLETS + 1;
+    public static final int Z_INDEX_UI1 = Z_INDEX_UI0 + 1;
 
 
     // Utils

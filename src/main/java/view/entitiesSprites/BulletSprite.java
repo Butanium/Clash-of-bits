@@ -27,7 +27,7 @@ public class BulletSprite extends ViewPart {
                 .setFillColor(bullet.getOwner().getColorToken())
                 .setX(coordToScreen(model.getX() + deviation.getX()), Curve.IMMEDIATE)
                 .setY(coordToScreen(model.getY() + deviation.getY()), Curve.IMMEDIATE)
-               // .setAlpha(0.2)
+                // .setAlpha(0.2)
                 .setZIndex(Z_INDEX_BULLETS);
         viewManager.addToArena(bulletSprite);
     }
@@ -40,8 +40,8 @@ public class BulletSprite extends ViewPart {
                 .setX(coordToScreen(model.getX() + deviation.getX()), Curve.IMMEDIATE)
                 .setY(coordToScreen(model.getY() + deviation.getY()), Curve.IMMEDIATE)
                 .setAlpha(1.)
-                ;
-    //.setAlpha(0.2);
+        ;
+        //.setAlpha(0.2);
         updateVisibility();
     }
 
@@ -79,6 +79,11 @@ public class BulletSprite extends ViewPart {
     @Override
     public Circle getSprite() {
         return bulletSprite;
+    }
+
+    @Override
+    public Circle getDebugSprite() {
+        return getSprite();
     }
 
 
