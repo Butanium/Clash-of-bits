@@ -3,17 +3,6 @@
 import {api as entityModule} from '../entity-module/GraphicEntityModule.js'
 
 /* global PIXI */
-
-function getSpriteMouseMoveFunc(entity, module) {
-    return function (event) {
-        if (entity.graphics.containsPoint(event.data.global)) {
-            module.inside[entity.id] = true
-        } else {
-            delete module.inside[entity.id]
-        }
-    }
-}
-
 function getMouseOverFunc(id, module) {
     return function () {
         module.inside[id] = true
@@ -22,10 +11,9 @@ function getMouseOverFunc(id, module) {
 
 function getMouseOutFunc(id, module) {
     return function () {
-        console.log("mouse out : ", id);
         delete module.inside[id]
-        if (module.currently_debugged.includes(id)) {
-            delete module.currently_debugged[id]
+        if (module.currently_debugged.has(id)) {
+            module.currently_debugged.delete(id)
             for (let debug_id of module.currentFrame.registered[id]) {
                 const debug_entity = entityModule.entities.get(debug_id)
                 debug_entity.container.visible = false
@@ -76,24 +64,38 @@ function getMouseMoveFunc(module) {
                 for (let show of showing) {
                     const entity = entityModule.entities.get(show)
                     const state = getEntityState(entity, module.currentFrame.number)
-                    if (state !== null) {
-                        module.currently_debugged.push(show)
+                    if (state !== null && module.currentFrame.registered[id] !== null) {
+                        module.currently_debugged.add(show)
                         for (let debug_id of module.currentFrame.registered[show]) {
                             const debug_entity = entityModule.entities.get(debug_id)
-                            debug_entity.graphics.visible = true
+                            debug_entity.container.visible = true
                         }
                     }
                 }
             } else {
-                const available = showing.filter(id =>
-                    getEntityState(entityModule.entities.get(id), module.currentFrame.number) !== null)
-                if (available.length) {
-                    const min = Math.min(...available)
-                    module.currently_debugged.push(min)
-                    for (let debug_id of module.currentFrame.registered[min]) {
-                        const debug_entity = entityModule.entities.get(debug_id)
-                        debug_entity.container.visible = true
-                        console.log("displaying : ", debug_id, debug_entity);
+                console.log("debugged : ", module.currently_debugged, module.currentFrame.registered[module.currently_debugged[0]])
+                const to_remove = []
+                for (let id of module.currently_debugged) {
+                    const register = module.currentFrame.registered[id]
+                    if (register.length === 0){
+                        to_remove.push(id)
+                        delete module.inside[id]
+                    }
+                }
+                for (let id of to_remove) {
+                    module.currently_debugged.delete(id)
+                }
+                if (module.currently_debugged.size === 0) {
+                    const available = showing.filter(id =>
+                        getEntityState(entityModule.entities.get(id), module.currentFrame.number) !== null
+                            && module.currentFrame.registered[id] !== null)
+                    if (available.length) {
+                        const min = Math.min(...available)
+                        module.currently_debugged.add(min)
+                        for (let debug_id of module.currentFrame.registered[min]) {
+                            const debug_entity = entityModule.entities.get(debug_id)
+                            debug_entity.container.visible = true
+                        }
                     }
                 }
             }
@@ -108,7 +110,7 @@ export class DebugOnHoverModule {
             registered: {}
         }
         this.inside = {}
-        this.currently_debugged = []
+        this.currently_debugged = new Set()
         this.lastProgress = 1
         this.lastFrame = 0
     }
@@ -120,6 +122,12 @@ export class DebugOnHoverModule {
     updateScene(previousData, currentData, progress) {
         this.currentFrame = currentData
         this.currentProgress = progress
+        for (let id of this.currently_debugged) {
+            for (let debug_id of this.currentFrame.registered[id]) {
+                const debug_entity = entityModule.entities.get(debug_id)
+                debug_entity.container.visible = true
+            }
+        }
     }
 
     handleFrameData(frameInfo, data = []) {
@@ -141,12 +149,8 @@ export class DebugOnHoverModule {
         entityModule.entities.forEach(entity => {
             if (this.interactive[entity.id]) {
                 entity.container.interactive = true
-                // if (typeof (entity.graphics && entity.graphics.containsPoint) === 'function') {
-                    entity.container.mousemove = getSpriteMouseMoveFunc(entity, this)
-                // } else {
-                    entity.container.mouseover = getMouseOverFunc(entity.id, this)
-                    entity.container.mouseout = getMouseOutFunc(entity.id, this)
-                // }
+                entity.container.mouseover = getMouseOverFunc(entity.id, this)
+                entity.container.mouseout = getMouseOutFunc(entity.id, this)
             }
         })
         this.container = container
