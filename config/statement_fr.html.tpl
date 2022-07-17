@@ -24,10 +24,10 @@
             <span>But du jeu</span>
         </h1>
         <div class="statement-goal-content">
-            Dans ce jeu, le but et de détruire l'équipe ennemie tout en gardant au moins l'un de ses robots en vie.
+            Dans ce jeu, le but est de détruire l'équipe ennemie tout en gardant au moins l'un de ses robots en vie.
             <br>
-            Malheureusement, vos robots ne sont pas très malin et ne peuvent pas vous fournir des informations
-            aussi précise que les coordonnées cartésiennes des robots ennemies ou leur nombre de point de vies exacte.
+            Malheureusement, vos robots ne sont pas très malins et ne peuvent pas vous fournir des informations
+            aussi précises que les coordonnées cartésiennes des robots ennemies ou leur nombre de point de vie exacte.
             Vous allez donc devoir exploiter le peu d'informations qu'ils pourront vous donner...
             <br>
             Mais ne vous inquiétez pas, vos robots deviendront plus intelligents et pourront vous donner plus
@@ -45,7 +45,7 @@
             <div class="statement-rules-content">
                 Vous commencez la partie avec un certain nombre de robots
                 <br>
-                Beaucoup d'informations sont des distance entre plusieurs entités.
+                Beaucoup d'informations sont des distances entre plusieurs entités.
                 Le jeu utilise 4 différentes <b>portées</b> :
                 <ul>
                     <li>0 : Courte portée (dist <=
@@ -80,21 +80,21 @@
                 L'arène est un carré dont les robots ne peuvent sortir
                 <ul>
                     <li>Les objets présents sur la carte sont appelés <b>entités</b>. Pour l'instant il n'y a que les
-                        robots
+                        robots.
                     </li>
                 </ul>
                 <br>
                 Vos robots ont 2 barres de vie :
                 <ul>
                     <li>
-                        Une bleu pour leur bouclier. Si un robot ne prends pas de dégâts pendant 12 tours de jeu, son
-                        bouclier commencer à se régénérer. Un bouclier complètement vide met 12 tours sans dégâts pour
-                        se recharger
+                        Une bleue pour leur bouclier. Si un robot ne prend pas de dégâts pendant 12 tours de jeu, son
+                        bouclier commence à se régénérer. Un bouclier complètement vide met 12 tours sans dégâts pour
+                        se recharger.
                     </li>
                 </ul>
                 <ul>
                     <li>
-                        Un violet qui pour leurs points de vie. Les points de vie ne se régènerent pas mais ne baissent
+                        Un violet pour leurs points de vie. Les points de vie ne se régènerent pas mais ne baissent
                         que si le bouclier est vide.
                     </li>
                 </ul>
@@ -152,12 +152,12 @@
                     <li>
                         <b>ATTACK</b> pour attaquer un robot ennemi. Les dégâts infligés dépendent de la <b>portée</b>
                         à laquelle vous tirez (courte, moyenne ou longue). Les dégâts étant maximum à courte portée.
-                        Notez qu'attaquer un ennemi hors de portée ne va faire aucun dégât. Pour plus de détails,
+                        Notez qu'attaquer un ennemi hors de portée n'inflige aucun dégât. Pour plus de détails,
                         consulter les règles experts.
                     </li>
 
                     <li>
-                        <b>MOVE</b> pour se déplacer vers un groupe d'entités, ce qui fait bouger votre robot
+                        <b>MOVE</b> pour se déplacer vers un groupe d'entités. Votre robot se déplacera
                         vers la position moyenne du groupe. Si un groupe n'est composé que d'une seule entité,
                         le robot se déplacera donc dans la direction de ladite entité.
                     </li>
@@ -180,7 +180,7 @@
                 Vous <strong>perdez</strong> si :
                 <ul>
                     <li>Tous vos robots sont détruits</li>
-                    <li>Votre ennemi a détruits plus de robots que vous à la fin de la partie</li>
+                    <li>Votre ennemi a détruit plus de robots que vous à la fin de la partie</li>
                     <li>
                         Vous envoyez des ordres invalides à vos robots, faisant ainsi exploser le cerveau positronique.
                         <br>
@@ -237,15 +237,17 @@
                     <b>temps de tir</b> tours.
                 </li>
                 <li>
-                    A l'instant où une balle est tirée, le moteur de jeu détermine si elle va touchée sa cible ou non en
+                    A l'instant où une balle est tirée, le moteur de jeu détermine si elle va toucher sa cible ou non en
                     fonction
                     de sa portée <b>actuelle</b> avec une probabilité de <b>précision [portée de la cible]</b>.
-                    N'oubliez pas qu'attaquer une cible hors dep portée ne peut pas toucher.
+                    N'oubliez pas qu'attaquer une cible hors de portée ne peut pas toucher.
                 </li>
                 <li>
                     Le jeu est "déterministe", même s'il y a de l'aléatoire dans les tirs, les deux équipes ont la
-                    même "seed" de random pour savoir si les tirs vont toucher. Un match entre 2 équipe identique
-                    sera <b>toujours</b> un match nul.
+                    même "seed" de random pour savoir si les tirs vont toucher. A chaque fois qu'un robot tire, il 
+					prend la prochaine valeur de la seed de son équipe pour savoir s'il touche.
+					<br>
+					Un match entre 2 équipe identique sera donc <b>toujours</b> un match nul - sauf si vous ou votre adversaire utilisez l'ID des robots dans vos décisions.
                 </li>
 
 
@@ -309,7 +311,7 @@
                 </table>
             </div>
             <br>
-            Vous pouvez consulter le code source du jeu sur mon <a href="https://github.com/Butanium/Clash-of-bots">dépôt
+            Vous pouvez consulter le code source du jeu sur mon <a href="https://github.com/Butanium/Clash-of-bits">dépôt
             github</a>
         </div>
     </div>
@@ -335,12 +337,12 @@
                 <h1>D'où est ce que vient cette idée ?</h1>
                 <div class="story-text">
                     <strong>
-                        Ce challenge est très pourtement inspiré du jeu "GLADIABOTS".
+                        Ce challenge est très fortement inspiré du jeu "GLADIABOTS".
                         <br>
                         On se rapproche en réalité plus de la copie que de l'inspiration, c'est pour cela que j'ai
                         demandé la permission de son développeur indépendant GFX47. Si le jeu vous intrigue où que vous
                         cherchez de nouvelles stratégie à expérimenter, n'hésitez pas à y
-                        <a href="https://gladiabots.com/">jeter un coup d'oeil</a>
+                        <a href="https://gladiabots.com/">jeter un coup d'oeil</a> !
                     </strong>
                     <br> <br>
                 </div>
@@ -358,9 +360,9 @@
             <div class="title">Entrées d'initialisation</div>
             <div class="text">
                 <span class="statement-ligneno"> Ligne 1: </span> un nombre entier <var>botPerPlayer</var>,
-                le nombre de bot contrôlé par joueur au début de la partie
+                le nombre de bots contrôlés par joueur au début de la partie
                 <br>
-                <span class="statement-ligneno"> ligne 2: </span> un nombre entier <var>mapSize</var>,
+                <span class="statement-ligneno"> Ligne 2: </span> un nombre entier <var>mapSize</var>,
                 la taille de la carte en mètre. C'est ici au cas où la taille de la carte vienne à changer
                 durant le challenge.
                 <br>
@@ -419,11 +421,11 @@
                     </li>
 
                 </ul>
-                <var>health</var>, <var>shield</var> pour la senté et le bouclier approximatif de l'entité
+                <var>health</var>, <var>shield</var> pour la santé et le bouclier approximatif de l'entité
                 si c'est un robot, 0 sinon.
                 <br>
                 <br>
-                <var>action</var> indique l'action réalisé par le robot au tour précédent (
+                <var>action</var> indique l'action réalisée par le robot au tour précédent (
                 <const>NONE</const>
                 si l'entité n'est pas un robot). Les différentes valeurs possibles sont :
                 <const>"ATTACK"</const>
@@ -505,11 +507,11 @@
                 Donc <var>entType</var> est
                 <const> "SELF"</const>
                 <i>comme ça vous pouvez facilment récupérer l'id du robot<strong> actif</strong></i>.
-                Ensuite le robot vous envoie les informations sur chaque ennemi.
+                Ensuite le robot vous envoie les informations sur chaque entité.
                 <br>
                 <br><var>entId</var> est l'id unique de l'entité.
                 <br><br> <var>entType</var>
-                indicates the type of entity. The value can be:
+                indique le type de l'entité. Cela peut être : 
                 <ul style="padding-bottom: 0;">
                     <li>
                         <const>"ALLY"</const>
@@ -630,8 +632,9 @@
                             <del> Cela vous permet de faire réfléchir vos robots au sens de la vie</del>
                         </li>
                     </ul>
-                    Si vous envoyez 2 ordres différents s'adressant au même robot, vous perdrez la partie car votre
-                    robot sera à cours de mémoire vive (┬┬﹏┬┬)
+                    Si vous envoyez 2 ordres différents s'adressant au même robot, vous perdrez la partie car 
+					votre robot subira le même sort que <a href = "https://asimov.fandom.com/wiki/R._Jander_Panell">R. Jander Panell </a>, 
+					entraînant dans sa chute toute votre équipe.
                     <br> Si vous n'envoyez pas de sortie, tous vos bots feront l'action
                     <action>IDLE</action>
                     . Si vous n'envoyez pas d'ordre à un ou plusieurs robots, ils effectueront
