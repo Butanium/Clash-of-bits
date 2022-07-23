@@ -125,7 +125,7 @@ public class RobotSprite extends ViewPart {
         Circle debug_circle = graphicEntityModule.createCircle().setRadius(size / 3).setFillColor(color)
                 .setZIndex(Z_INDEX_BASE).setLineColor(0x000000).setVisible(true);
         debugGroup.add(debug_circle);
-        viewManager.debugOnHoverModule.setDebugHover(mouseHitbox, rangeGroup);
+        viewManager.displayOnHoverModule.setDisplayHover(mouseHitbox, rangeGroup);
         robotGroup.add(debugGroup, mouseHitbox);
         viewManager.addDebug(debugGroup);
         viewManager.removeForDebug(robotSprite);
@@ -189,7 +189,7 @@ public class RobotSprite extends ViewPart {
         shieldBar.remove();
         healthBar.remove();
         hitMarker.setVisible(false);
-        viewManager.debugOnHoverModule.stopTracking(mouseHitbox);
+        viewManager.displayOnHoverModule.untrack(mouseHitbox);
     }
 
     @Override
