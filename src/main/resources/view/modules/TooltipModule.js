@@ -1,6 +1,5 @@
 import {WIDTH, HEIGHT} from '../core/constants.js'
 import {api as entityModule} from '../entity-module/GraphicEntityModule.js'
-
 /* global PIXI */
 
 function getSpriteMouseMoveFunc(entity, tooltip) {

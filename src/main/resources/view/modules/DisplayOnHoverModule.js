@@ -47,7 +47,7 @@ function getMouseMoveFunc(module) {
     return function (ev) {
         const showing = []
         const ids = Object.keys(module.inside).map(n => +n)
-        // console.log("ids : ", ids, "inside : ", module.inside)
+        console.log("ids : ", ids, "inside : ", module.inside)
         for (let id of ids) {
             if (module.inside[id]) {
                 const entity = entityModule.entities.get(id)
@@ -60,11 +60,11 @@ function getMouseMoveFunc(module) {
             }
         }
         if (showing.length) {
-            if (DebugOnHoverModule.allow_multiple_debug) {
+            if (DisplayOnHoverModule.allow_multiple_debug) {
                 for (let show of showing) {
                     const entity = entityModule.entities.get(show)
                     const state = getEntityState(entity, module.currentFrame.number)
-                    if (state !== null && module.currentFrame.registered[id] !== null) {
+                    if (state !== null && module.currentFrame.registered[show] !== null) {
                         module.currently_debugged.add(show)
                         for (let debug_id of module.currentFrame.registered[show]) {
                             const debug_entity = entityModule.entities.get(debug_id)
@@ -103,7 +103,7 @@ function getMouseMoveFunc(module) {
     }
 }
 
-export class DebugOnHoverModule {
+export class DisplayOnHoverModule {
     constructor(assets) {
         this.interactive = {}
         this.previousFrame = {
@@ -160,4 +160,4 @@ export class DebugOnHoverModule {
 
 }
 
-DebugOnHoverModule.allow_multiple_debug = false
+DisplayOnHoverModule.allow_multiple_debug = false

@@ -15,7 +15,7 @@ import com.google.common.base.Function;
 import com.google.inject.Inject;
 import view.managers.ViewManager;
 import view.modules.CameraModule;
-import view.modules.DebugOnHoverModule;
+import view.modules.DisplayOnHoverModule;
 import view.modules.FollowEntityModule;
 import view.modules.TooltipModule;
 
@@ -42,7 +42,7 @@ public class Referee extends AbstractReferee {
     @Inject
     FollowEntityModule followEntityModule;
     @Inject
-    DebugOnHoverModule debugOnHoverModule;
+    DisplayOnHoverModule displayOnHoverModule;
     @Inject
     private MultiplayerGameManager<Player> gameManager;
     @Inject
@@ -86,7 +86,7 @@ public class Referee extends AbstractReferee {
         }
 
         viewManager = new ViewManager(graphicEntityModule, tooltips, cameraModule, seed, toggleModule,
-                followEntityModule, debugOnHoverModule);
+                followEntityModule, displayOnHoverModule);
         viewManager.init(robotSet);
 
 //        viewportModule.createViewport(viewportGroup);
