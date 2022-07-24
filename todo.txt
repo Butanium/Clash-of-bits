@@ -1,0 +1,45 @@
+BUG HUNT
+todo : multiple tooltip at once not working
+todo :  fixe / dynamique toggle not working at the beginning of the game
+todo? : camera broken during scene reinit
+
+
+STATEMENT
+todo : update en statement avec les barres de vies d'hp et les hitmarkers, le lien vers le code source et les crédits à euler
+todo : fix tableau dans le statement trop gros
+todo : image ranges
+todo : rewrite statement avec récapitulatif des nouveautés
+
+DEBUG
+todo? : debug action comme dans gladiabots
+todo : thanks Euler, GFX47 in statement
+todo? : attack line instead of bullets in debug mode
+todo : chaner le fond pour le mode debug
+todo : toggle for tooltips and ranges
+todo : tooltip bug du multi tooltip
+
+MISC
+todo : add starter folder with contribute.md
+todo : fix images that says clash of bots
+
+GRAPHICS
+todo? : rework shield ui avec un tile sprite
+todo? : meilleure animation de balle touchant en commitant à un t différent (en fonction de la distance parcourue)
+todo?? : Cacher les sprites non utilisés par une animation : faire une fonction qui cache les sprites non utilisés au lieu de les reset
+todo?? : rework SpriteAnimation pour ajouter la fonction reverse() pour rework les animations des robots
+todo?? : add robot ghost on destroy
+
+done : motif de sol + background
+done : Spawn aléatoire
+done : add to game summary bot destruction
+done : fix balles qui spawnent loin des robots
+done : Cancel les histoires de padding et adapter la taille des hitboxes plutôt...
+done : check si la league 1 est symétrique
+done : use zindex constants for everything and set the base one to 0
+done : clean Zindex (les balles passent au dessus des robots si leur Zindex est 1 car le zindex est relatif au parent)
+done : debug ranges dans un module debug : quand on clique sur une entité ça affiche le debug
+done : toggle module for debug mode (life explosion etc)
+done : hitmarkers position with the followEntityModule (related to scale)
+
+
+aborted : fix overlapping craters
