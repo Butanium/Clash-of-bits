@@ -11,6 +11,7 @@ import com.google.inject.Singleton;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * The TooltipModule takes care of displaying tooltips under the mouse cursor when an element has a linked tooltip text.
@@ -55,9 +56,7 @@ public class TooltipModule implements Module {
     }
 
     private boolean stringEquals(String a, String b) {
-        if (a == b) {
-            return true;
-        } else return a != null && a.equals(b);
+        return Objects.equals(a, b);
     }
 
     /**
