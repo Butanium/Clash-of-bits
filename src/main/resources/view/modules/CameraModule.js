@@ -2,6 +2,8 @@ import {WIDTH, HEIGHT} from '../core/constants.js'
 import {api as entityModule} from '../entity-module/GraphicEntityModule.js'
 import {easeOut} from '../core/transitions.js'
 import {lerpPosition} from '../core/utils.js'
+// If bug are detected try to use .container instead of .graphics
+
 
 export class CameraModule {
     constructor(assets) {
