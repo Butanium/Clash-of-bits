@@ -1,0 +1,2 @@
+le fixe / dynamique pas à jour au tour 0
+desynchro de la position des sprites de robots par rapport à l'action en cours

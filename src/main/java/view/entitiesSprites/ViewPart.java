@@ -18,6 +18,14 @@ public abstract class ViewPart {
         return visible;
     }
 
+    public boolean isRobot(){
+        return false;
+    }
+
+    public boolean isBullet(){
+        return false;
+    }
+
     public void setVisible(boolean visible) {
         this.visible = visible;
     }

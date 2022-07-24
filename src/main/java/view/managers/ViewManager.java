@@ -23,6 +23,7 @@ import com.codingame.game.gameEntities.Robot;
 import com.codingame.gameengine.module.entities.Entity;
 import com.codingame.gameengine.module.entities.GraphicEntityModule;
 import com.codingame.gameengine.module.entities.Group;
+import com.codingame.gameengine.module.entities.Line;
 import com.codingame.gameengine.module.entities.TilingSprite;
 import com.codingame.gameengine.module.toggle.ToggleModule;
 import view.entitiesSprites.RobotSprite;
@@ -34,8 +35,12 @@ import view.modules.DebugOnHoverModule;
 import view.modules.FollowEntityModule;
 import view.modules.TooltipModule;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
@@ -61,6 +66,8 @@ public class ViewManager {
     private boolean newObjectToCommit = false;
     private Group arena;
     private GraphicModuleAnimation tesla2;
+
+    private Map<String, Line> vectorMap;
 
 
     public ViewManager(GraphicEntityModule graphicEntityModule, TooltipModule tooltipModule, CameraModule cameraModule
@@ -100,7 +107,9 @@ public class ViewManager {
             camera.addTrackedEntity(robotSprite.getSprite());
 
         }
-        camera.setCameraOffset(CAMERA_OFFSET * sizeRatio);
+        
+        camera.setCameraOffset(CAMERA_OFFSET * sizeRatio);   
+        initVectors(viewParts);     
     }
 
     private void createArena() {
@@ -215,14 +224,113 @@ public class ViewManager {
         bulletManager.updateBullets();
         updateViewParts(viewParts);
         animManager.updateAnimations();
-
+        updateVectors();
     }
 
-    public void removeForDebug(Entity entity) {
+    public void updateVectors(){
+
+        // create a hashMap with all Robots
+
+        Map<Integer, Robot> robots = new HashMap<Integer, Robot>();
+
+        for(ViewPart viewPart : viewParts){
+
+            if(viewPart.isRobot() && viewPart.isActive()){
+
+                Robot robot = ((RobotSprite) viewPart).getRobot();
+                
+                robots.put(robot.getId(), robot);
+            }
+        }
+
+        // update all existing vectors
+
+        for(String vectorKey : this.vectorMap.keySet()){
+
+            Line vector = vectorMap.get(vectorKey);
+
+            Robot robot_Team_0 = robots.get(Integer.parseInt(vectorKey.split(":")[0]));
+            Robot robot_Team_1 = robots.get(Integer.parseInt(vectorKey.split(":")[1]));
+
+            if(robot_Team_0 == null || robot_Team_1 == null){ // it means than one of the two / or the robots have been deactivated, so we hide the existing vector
+                vector.setVisible(false);
+            }
+            else{ // the two robots are still active, so we update the vector coords
+
+                vector
+
+                .setX(coordToScreen(robot_Team_0.getX()))
+                .setY(coordToScreen(robot_Team_0.getY()))
+                .setX2(coordToScreen(robot_Team_1.getX()))
+                .setY2(coordToScreen(robot_Team_1.getY()));
+
+                //addDebug(vector);
+            }
+        }        
+    }
+
+    public void initVectors(Set<ViewPart> viewParts){
+
+        this.vectorMap = new HashMap<String, Line>();
+
+        // create a hashMap with all robots by team
+
+        Map<Integer, List<Robot>> robotMap = new HashMap<Integer, List<Robot>>();
+
+        robotMap.put(0, new ArrayList<Robot>());
+        robotMap.put(1, new ArrayList<Robot>());
+        
+        for(ViewPart viewPart : viewParts){
+
+            if(viewPart.isRobot() && viewPart.isActive()){
+
+                Robot robot = ((RobotSprite) viewPart).getRobot();
+                robotMap.get(robot.getTeam()).add(robot);
+            }
+        }
+
+        // create lines bewtween all robots 
+
+        for(Robot robot_Team_0 : robotMap.get(0)){
+
+            double x0 = robot_Team_0.getX();
+            double y0 = robot_Team_0.getY();
+
+            for(Robot robot_Team_1 : robotMap.get(1)){
+
+                String vectorKey = String.format("%s:%s", robot_Team_0.getId(), robot_Team_1.getId());
+
+                double x1 = robot_Team_1.getX();
+                double y1 = robot_Team_1.getY();
+
+                Line vector = graphicEntityModule.createLine();
+
+                vector
+                .setVisible(true)
+
+                .setX(coordToScreen(x0))
+                .setY(coordToScreen(y0))
+                .setX2(coordToScreen(x1))
+                .setY2(coordToScreen(y1))
+
+                .setZIndex(Z_INDEX_ARENA_FLOOR + 1)
+
+                .setLineWidth(1)
+                .setLineColor(0xf70000);
+
+                addToArena(vector);
+                addDebug(vector);
+
+                this.vectorMap.put(vectorKey, vector);
+            }
+        }        
+    }
+
+    public void removeForDebug(Entity<?> entity) {
         toggleModule.displayOnToggleState(entity, "debug", false);
     }
 
-    public void addDebug(Entity entity) {
+    public void addDebug(Entity<?> entity) {
         toggleModule.displayOnToggleState(entity, "debug", true);
     }
 
@@ -233,7 +341,6 @@ public class ViewManager {
     public int sizeToScreen(double size) {
         return (int) (size * sizeRatio);
     }
-
 
     public void addToArena(Entity<?> entity) {
         arena.add(entity);

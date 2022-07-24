@@ -132,6 +132,11 @@ public class RobotSprite extends ViewPart {
 
     }
 
+    @Override
+    public boolean isRobot(){
+        return true;
+    }
+
     private String getTooltip() {
         return String.format("%d %s %s %s %s %s", model.getId(),
                 model.getHealth() == model.getMaxHealth() ? "M" : model.getHealth() + "",
@@ -200,6 +205,10 @@ public class RobotSprite extends ViewPart {
     @Override
     public Entity getDebugSprite() {
         return debugGroup;
+    }
+
+    public Robot getRobot(){
+        return this.model;
     }
 
 }

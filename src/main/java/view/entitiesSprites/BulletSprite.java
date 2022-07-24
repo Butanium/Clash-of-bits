@@ -18,6 +18,11 @@ public class BulletSprite extends ViewPart {
     private Bullet model;
     private boolean active = true;
 
+    @Override
+    public boolean isBullet(){
+        return true;
+    }       
+
     public BulletSprite(Bullet bullet, ViewManager viewManager, Point deviation) {
         this.viewManager = viewManager;
         spriteSize = viewManager.sizeToScreen(BULLET_SIZE);
