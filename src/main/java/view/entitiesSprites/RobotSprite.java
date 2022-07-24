@@ -96,11 +96,11 @@ public class RobotSprite extends ViewPart {
         healthBar = new ProgressBar(0xAB0098, graphicEntityModule);
         hitMarker = viewManager.graphicEntityModule.createSprite().setImage(HITMARKER_IMAGE).setScale(HITMARKER_SIZE)
                 .setAnchor(.5).setVisible(false).setRotation(HITMARKER_ANGLE).setZIndex(Z_INDEX_UI0);
-        viewManager.addToArena(hitMarker);
         viewManager.addToArena(shieldBar.getBarGroup());
         viewManager.addToArena(healthBar.getBarGroup());
         viewManager.followEntityModule.followEntity(healthBar.getBarGroup(), robotGroup, 15, 0);
         viewManager.followEntityModule.followEntity(shieldBar.getBarGroup(), robotGroup, 15, HEALTH_BAR_HEIGHT * 1.5);
+        viewManager.addToArena(hitMarker);
         viewManager.followEntityModule.followEntity(hitMarker, robotGroup);
 
         int s = (model.getY() > MAP_SIZE.getY() / 2) ? 0 : 1;
@@ -198,7 +198,7 @@ public class RobotSprite extends ViewPart {
     }
 
     @Override
-    public Entity getDebugSprite() {
+    public Entity<?> getDebugSprite() {
         return debugGroup;
     }
 
