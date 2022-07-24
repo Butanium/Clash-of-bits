@@ -47,7 +47,7 @@ function getMouseMoveFunc(module) {
     return function (ev) {
         const showing = []
         const ids = Object.keys(module.inside).map(n => +n)
-        console.log("ids : ", ids, "inside : ", module.inside)
+        // console.log("ids : ", ids, "inside : ", module.inside)
         for (let id of ids) {
             if (module.inside[id]) {
                 const entity = entityModule.entities.get(id)
@@ -73,7 +73,7 @@ function getMouseMoveFunc(module) {
                     }
                 }
             } else {
-                console.log("debugged : ", module.currently_debugged, module.currentFrame.registered[module.currently_debugged[0]])
+                // console.log("debugged : ", module.currently_debugged, module.currentFrame.registered[module.currently_debugged[0]])
                 const to_remove = []
                 for (let id of module.currently_debugged) {
                     const register = module.currentFrame.registered[id]
