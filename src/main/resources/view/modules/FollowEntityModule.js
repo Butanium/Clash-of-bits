@@ -26,7 +26,7 @@ export class FollowEntityModule {
             const to_follow = entityModule.entities.get(instruction[0])
             const offsetx = instruction[1]
             const offsety = instruction[2]
-            entity.graphics.position = {
+            entity.container.position = {
                 'x': to_follow.currentState.x + offsetx,
                 'y': to_follow.currentState.y + offsety
             }
