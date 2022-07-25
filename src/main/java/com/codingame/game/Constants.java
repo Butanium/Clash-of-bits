@@ -43,9 +43,7 @@ public class Constants {
     public static final double CRATER_ALPHA = 0.8;
     public static final double CRATER_SIZE = 1;
     public static final double CRATER_HITBOX_SIZE = .6;
-    public static final double CRATER_SMALL_HITBOX_SIZE = .0;
-    public static final String CRATER_IMAGE = "c4.png";
-    public static final String SMALL_CRATER_IMAGE = "c3.png";
+    public static final String CRATER_IMAGE = "c.png";
 
 
     // UI settings

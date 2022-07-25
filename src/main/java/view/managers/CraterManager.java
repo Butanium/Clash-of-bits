@@ -28,20 +28,10 @@ public class CraterManager {
         Crater newCrater = new Crater(position, hitBoxSize);
 
         Optional<Crater> closest = craters.stream().min(Comparator.comparingDouble(c -> c.getDist(newCrater)));
-        String img = CRATER_IMAGE;
-        if (closest.isPresent() && AVOID_CRATER_OVERLAP){
-            Crater conflict = closest.get();
-            double dist = conflict.getDist(newCrater);
-            if (dist < conflict.getSize() + size * CRATER_SMALL_HITBOX_SIZE) {
-                return;
-            } else if (dist < conflict.getSize() + size * CRATER_HITBOX_SIZE) {
-                img = SMALL_CRATER_IMAGE;
-            }
-        }
         int screenSize = (int) (vM.sizeToScreen(size) * CRATER_SIZE);
         int x = vM.coordToScreen(position.getX());
         int y = vM.coordToScreen(position.getY());
-        Sprite sprite = vM.graphicEntityModule.createSprite().setImage(img).setBaseHeight(screenSize)
+        Sprite sprite = vM.graphicEntityModule.createSprite().setImage(CRATER_IMAGE).setBaseHeight(screenSize)
                 .setBaseWidth(screenSize)
                 .setX(x, Curve.IMMEDIATE).setY(y, Curve.IMMEDIATE).setZIndex(Z_INDEX_CRATER).setAnchor(.5)
                 .setRotation(Math.PI * 2 * random.nextDouble())
