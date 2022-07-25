@@ -116,141 +116,11 @@ public class Referee extends AbstractReferee {
             gameManager.endGame();
             return;
         }
-        List<Action> actionList = new ArrayList<>();
         for (Player player : gameManager.getActivePlayers()) {
             sendPlayerInput(player, turn, gameManager.getLeagueLevel());
             player.execute();
         }
-
-        for (Player player : gameManager.getActivePlayers()) {
-            robotSet.removeIf(robot -> !robot.checkActive());
-            gameEntitySet.removeIf(entity -> !entity.checkActive());
-            try {
-                List<String> outputs = player.getOutputs();
-                String output = outputs.get(0);
-                String[] orders = output.split(";");
-                if (output.equals("")) {
-                    continue;
-                }
-                Set<Integer> executingRobots = new HashSet<>();
-                for (String order : orders) {
-
-                    String[] splitedOrder = order.split(" ");
-                    if (splitedOrder.length < 2) {
-                        player.deactivate(String.format("%s is not a proper action !", order));
-                        gameManager.addToGameSummary(String.format("$%d sent invalid input", player.getIndex()));
-                        player.setScore(-1);
-                        break;
-                    }
-                    boolean move = false;
-                    switch (splitedOrder[1]) {
-                        case "IDLE":
-                            try {
-                                Robot controlled = getController(player, splitedOrder[0]);
-                                actionList.add(new Idle(controlled));
-                            } catch (IllegalArgumentException ignored) {
-                            }
-                            break;
-                        case "ATTACK":
-                            if (splitedOrder.length < 3) {
-                                player.deactivate(String.format("%s is not a proper action !", order));
-                                gameManager.addToGameSummary(String.format("$%d sent invalid input", player.getIndex()));
-                                player.setScore(-1);
-                                break;
-                            }
-                            Robot controlled;
-                            try {
-                                controlled = getController(player, splitedOrder[0]);
-                            } catch (IllegalArgumentException e) {
-                                break;
-                            }
-                            Set<InGameEntity> targets;
-                            try {
-                                targets = getTargets(player, splitedOrder[2]);
-                                if (targets.size() != 1) {
-                                    player.deactivate(String.format("%s is not a proper action, " +
-                                            "you can't attack more than 1 bot or 0 bot !", order));
-                                    gameManager.addToGameSummary(String.format("$%d sent invalid input", player.getIndex()));
-                                    player.setScore(-1);
-                                    throw new IllegalArgumentException();
-                                }
-                                InGameEntity target = targets.stream().findFirst().orElse(null);
-                                if (target.getType() != EntityType.ROBOT) {
-                                    player.deactivate(String.format("you tried to attack id : %d," +
-                                            " you can't attack a %s !", target.getId(), target.getType()));
-                                    gameManager.addToGameSummary(String.format("$%d sent invalid input", player.getIndex()));
-                                    player.setScore(-1);
-                                    throw new IllegalArgumentException();
-                                }
-                                Robot targetRobot = (Robot) target;
-                                if (targetRobot.getTeam() == player.getIndex()) {
-                                    player.deactivate(String.format("you tried to attack : %d, " +
-                                            "you can't attack your allies !", target.getId()));
-                                    gameManager.addToGameSummary(String.format("$%d sent invalid input", player.getIndex()));
-                                    player.setScore(-1);
-                                    throw new IllegalArgumentException();
-                                }
-                                actionList.add(new Attack(controlled, targetRobot));
-                            } catch (IllegalArgumentException ignored) {
-                            }
-                            break;
-                        case "MOVE":
-                            move = true;
-                        case "FLEE":
-                            if (splitedOrder.length < 3) {
-                                player.deactivate(String.format("%s is not a proper action !", order));
-                                gameManager.addToGameSummary(String.format("$%d sent invalid input", player.getIndex()));
-                                player.setScore(-1);
-                                break;
-                            }
-                            Robot executor;
-                            try {
-                                executor = getController(player, splitedOrder[0]);
-                            } catch (IllegalArgumentException e) {
-                                break;
-                            }
-                            Set<InGameEntity> moveTargets;
-                            try {
-                                moveTargets = getTargets(player, splitedOrder[2]);
-                                if (moveTargets.size() == 0) {
-                                    player.deactivate(String.format("%s is not a proper action, " +
-                                            "you need to chose a target !", order));
-                                    gameManager.addToGameSummary(String.format("$%d sent invalid input", player.getIndex()));
-                                    player.setScore(-1);
-                                    throw new IllegalArgumentException();
-                                }
-                                if (moveTargets.size() == 1 && moveTargets.stream().findAny().orElse(null)
-                                        .getId() == executor.getId()) {
-                                    String err = String.format("%s is not a proper action, " +
-                                            "you can't move/flee to yourself !", order);
-                                    player.deactivate(err);
-                                    gameManager.addToGameSummary(String.format("$%d sent invalid input : ", player.getIndex()));
-                                    gameManager.addToGameSummary(err);
-                                    player.setScore(-1);
-                                    throw new IllegalArgumentException();
-                                }
-                                if (move) {
-                                    actionList.add(new Move(executor, moveTargets));
-                                } else {
-                                    actionList.add(new Flee(executor, moveTargets));
-                                }
-                            } catch (IllegalArgumentException ignored) {
-                            }
-                            break;
-                        default:
-                            player.deactivate(String.format("%s is not a proper action", splitedOrder[1]));
-                            gameManager.addToGameSummary(String.format("$%d sent invalid input", player.getIndex()));
-                            player.setScore(-1);
-                            break;
-                    }
-                }
-
-            } catch (TimeoutException e) {
-                gameManager.addToGameSummary(String.format("$%d timeout!", player.getIndex()));
-                player.deactivate(String.format("$%d timeout!", player.getIndex()));
-                player.setScore(-1);
-            }
-        }
+        List<Action> actionList = getPlayerActions();
         actionList.sort(Comparator.comparingInt(Action::getPriority).thenComparingInt(a -> a.getExecutor().getId()));
         Collections.reverse(actionList);
         Set<Robot> updatedBots = new HashSet<>();
@@ -268,11 +138,11 @@ public class Referee extends AbstractReferee {
                 robot.IDLE();
             }
         }
-        // System.out.printf("%d bullets on the map", Bullet.bulletSet.size());
         Bullet.bulletSet.removeIf(bullet -> bullet.updatePos(viewManager));
         for (Robot robot : robotSet) {
             robot.updateShield();
         }
+
         viewManager.update(turn);
     }
 
@@ -405,6 +275,140 @@ public class Referee extends AbstractReferee {
                 player.sendInputLine(input);
             }
         }
+    }
+
+    private List<Action> getPlayerActions() {
+        List<Action> actionList = new ArrayList<>();
+        for (Player player : gameManager.getActivePlayers()) {
+            robotSet.removeIf(robot -> !robot.checkActive());
+            gameEntitySet.removeIf(entity -> !entity.checkActive());
+            try {
+                List<String> outputs = player.getOutputs();
+                String output = outputs.get(0);
+                String[] orders = output.split(";");
+                if (output.equals("")) {
+                    continue;
+                }
+                Set<Integer> executingRobots = new HashSet<>();
+                for (String order : orders) {
+
+                    String[] splitedOrder = order.split(" ");
+                    if (splitedOrder.length < 2) {
+                        player.deactivate(String.format("%s is not a proper action !", order));
+                        gameManager.addToGameSummary(String.format("$%d sent invalid input", player.getIndex()));
+                        player.setScore(-1);
+                        break;
+                    }
+                    boolean move = false;
+                    switch (splitedOrder[1]) {
+                        case "IDLE":
+                            try {
+                                Robot controlled = getController(player, splitedOrder[0]);
+                                actionList.add(new Idle(controlled));
+                            } catch (IllegalArgumentException ignored) {
+                            }
+                            break;
+                        case "ATTACK":
+                            if (splitedOrder.length < 3) {
+                                player.deactivate(String.format("%s is not a proper action !", order));
+                                gameManager.addToGameSummary(String.format("$%d sent invalid input", player.getIndex()));
+                                player.setScore(-1);
+                                break;
+                            }
+                            Robot controlled;
+                            try {
+                                controlled = getController(player, splitedOrder[0]);
+                            } catch (IllegalArgumentException e) {
+                                break;
+                            }
+                            Set<InGameEntity> targets;
+                            try {
+                                targets = getTargets(player, splitedOrder[2]);
+                                if (targets.size() != 1) {
+                                    player.deactivate(String.format("%s is not a proper action, " +
+                                            "you can't attack more than 1 bot or 0 bot !", order));
+                                    gameManager.addToGameSummary(String.format("$%d sent invalid input", player.getIndex()));
+                                    player.setScore(-1);
+                                    throw new IllegalArgumentException();
+                                }
+                                InGameEntity target = targets.stream().findFirst().orElse(null);
+                                if (target.getType() != EntityType.ROBOT) {
+                                    player.deactivate(String.format("you tried to attack id : %d," +
+                                            " you can't attack a %s !", target.getId(), target.getType()));
+                                    gameManager.addToGameSummary(String.format("$%d sent invalid input", player.getIndex()));
+                                    player.setScore(-1);
+                                    throw new IllegalArgumentException();
+                                }
+                                Robot targetRobot = (Robot) target;
+                                if (targetRobot.getTeam() == player.getIndex()) {
+                                    player.deactivate(String.format("you tried to attack : %d, " +
+                                            "you can't attack your allies !", target.getId()));
+                                    gameManager.addToGameSummary(String.format("$%d sent invalid input", player.getIndex()));
+                                    player.setScore(-1);
+                                    throw new IllegalArgumentException();
+                                }
+                                actionList.add(new Attack(controlled, targetRobot));
+                            } catch (IllegalArgumentException ignored) {
+                            }
+                            break;
+                        case "MOVE":
+                            move = true;
+                        case "FLEE":
+                            if (splitedOrder.length < 3) {
+                                player.deactivate(String.format("%s is not a proper action !", order));
+                                gameManager.addToGameSummary(String.format("$%d sent invalid input", player.getIndex()));
+                                player.setScore(-1);
+                                break;
+                            }
+                            Robot executor;
+                            try {
+                                executor = getController(player, splitedOrder[0]);
+                            } catch (IllegalArgumentException e) {
+                                break;
+                            }
+                            Set<InGameEntity> moveTargets;
+                            try {
+                                moveTargets = getTargets(player, splitedOrder[2]);
+                                if (moveTargets.size() == 0) {
+                                    player.deactivate(String.format("%s is not a proper action, " +
+                                            "you need to chose a target !", order));
+                                    gameManager.addToGameSummary(String.format("$%d sent invalid input", player.getIndex()));
+                                    player.setScore(-1);
+                                    throw new IllegalArgumentException();
+                                }
+                                if (moveTargets.size() == 1 && moveTargets.stream().findAny().orElse(null)
+                                        .getId() == executor.getId()) {
+                                    String err = String.format("%s is not a proper action, " +
+                                            "you can't move/flee to yourself !", order);
+                                    player.deactivate(err);
+                                    gameManager.addToGameSummary(String.format("$%d sent invalid input : ", player.getIndex()));
+                                    gameManager.addToGameSummary(err);
+                                    player.setScore(-1);
+                                    throw new IllegalArgumentException();
+                                }
+                                if (move) {
+                                    actionList.add(new Move(executor, moveTargets));
+                                } else {
+                                    actionList.add(new Flee(executor, moveTargets));
+                                }
+                            } catch (IllegalArgumentException ignored) {
+                            }
+                            break;
+                        default:
+                            player.deactivate(String.format("%s is not a proper action", splitedOrder[1]));
+                            gameManager.addToGameSummary(String.format("$%d sent invalid input", player.getIndex()));
+                            player.setScore(-1);
+                            break;
+                    }
+                }
+
+            } catch (TimeoutException e) {
+                gameManager.addToGameSummary(String.format("$%d timeout!", player.getIndex()));
+                player.deactivate(String.format("$%d timeout!", player.getIndex()));
+                player.setScore(-1);
+            }
+        }
+        return actionList;
     }
 
     private <T extends InGameEntity> Map<Integer, Integer> getRanks(List<T> sortedList, Function<T, Double> evaluation) {
