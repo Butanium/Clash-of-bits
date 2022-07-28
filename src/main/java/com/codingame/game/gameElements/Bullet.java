@@ -15,7 +15,7 @@ import static com.codingame.game.Constants.MAP_SIZE;
  *
  */
 public class Bullet extends CircularHitBox {
-    private static final Random random = new Random();
+    private static final Random random = new Random(Constants.BULLET_SEED);
     public static Set<Bullet> bulletSet = new HashSet<>();
     private final Player owner;
     private final Robot shooter;
