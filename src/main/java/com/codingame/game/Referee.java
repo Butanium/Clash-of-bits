@@ -149,12 +149,12 @@ public class Referee extends AbstractReferee {
         updateRobotPositions();
         CollisionManager.performCollisions(robotSet.toArray(new Robot[0]));
         adjustRobotPositions();
+        viewManager.update(turn);
         // League 19 is debug league
         if (gameManager.getLeagueLevel() == 19) {
             System.err.println("turn : " + turn);
             SymmetryAssert.assertActionSymmetry(playersTeam.get(0), playersTeam.get(1));
             SymmetryAssert.assertShieldHealthSymmetry(playersTeam.get(0), playersTeam.get(1));
-            viewManager.update(turn);
         }
     }
 
