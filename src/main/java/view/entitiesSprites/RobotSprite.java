@@ -8,6 +8,8 @@ import view.fx.Animation;
 import view.fx.AnimationType;
 import view.managers.ViewManager;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Objects;
 
 import static com.codingame.game.Constants.*;
@@ -24,10 +26,14 @@ public class RobotSprite extends ViewPart {
     private final Group robotGroup;
     private final Group robotSprite;
     private final Group debugGroup;
+    private final Sprite attackSprite;
+    private final Sprite moveSprite;
+    private final Sprite idleSprite;
+
+    private final HashMap<String, Sprite> debugActionSpriteMap = new HashMap<>();
     private final Circle mouseHitbox;
     private final ProgressBar shieldBar;
     private final ProgressBar healthBar;
-    private final Curve curve = LINEAR;
     private final Animation attackAnim;
     private final Animation moveAnim;
     private final Sprite hitMarker;
@@ -39,21 +45,22 @@ public class RobotSprite extends ViewPart {
         this.viewManager = viewManager;
         this.model = robot;
         GraphicEntityModule graphicEntityModule = viewManager.graphicEntityModule;
-        int size = (viewManager.sizeToScreen(robot.getSpriteSize()));
+        int spriteSize = (viewManager.sizeToScreen(robot.getSpriteSize()));
+        int robotSize = (viewManager.sizeToScreen(robot.getSize()));
         int color = model.getOwner().getColorToken();
         robotGroup = graphicEntityModule.createGroup().setZIndex(Z_INDEX_ROBOTS);
         robotSprite = graphicEntityModule.createGroup(
                 graphicEntityModule.createSprite().setImage(model.getRobotType().toString().charAt(0) + "B.png")
                         .setAnchor(0.5)
-                        .setBaseWidth(size)
-                        .setBaseHeight(size)
+                        .setBaseWidth(spriteSize)
+                        .setBaseHeight(spriteSize)
                         .setAlpha(1.0)
                         .setZIndex(Z_INDEX_BASE)
                         .setTint(color));
         robotSprite.add(graphicEntityModule.createSprite().setImage(model.getRobotType().toString().charAt(0) + "R.png")
                 .setAnchor(0.5)
-                .setBaseWidth(size)
-                .setBaseHeight(size)
+                .setBaseWidth(spriteSize)
+                .setBaseHeight(spriteSize)
                 .setAlpha(1.0).setZIndex(Z_INDEX_SURFACE));
         robotGroup.add(robotSprite);
         int animAttackLength = model.getRobotType().getAttackAnimLength();
@@ -62,8 +69,8 @@ public class RobotSprite extends ViewPart {
             Sprite canon;
             robotSprite.add(canon = graphicEntityModule.createSprite().setImage(model.getRobotType().toString().charAt(0) + "A" + (i + 1) + ".png")
                     .setAnchor(0.5)
-                    .setBaseWidth(size)
-                    .setBaseHeight(size)
+                    .setBaseWidth(spriteSize)
+                    .setBaseHeight(spriteSize)
                     .setAlpha(i == 0 ? 1.0 : 0)
                     .setZIndex(Z_INDEX_CANON)
             );//.setTint(0));
@@ -77,8 +84,8 @@ public class RobotSprite extends ViewPart {
             Sprite animFrame;
             robotSprite.add(animFrame = graphicEntityModule.createSprite().setImage(model.getRobotType().toString().charAt(0) + "M" + (i + 1) + ".png")
                     .setAnchor(0.5)
-                    .setBaseWidth(size)
-                    .setBaseHeight(size)
+                    .setBaseWidth(spriteSize)
+                    .setBaseHeight(spriteSize)
                     .setAlpha(i == 0 ? 1.0 : 0)
                     .setTint(0x00FFFF, Curve.IMMEDIATE)
                     .setZIndex(Z_INDEX_MOVE)
@@ -86,7 +93,7 @@ public class RobotSprite extends ViewPart {
             moveSprites[i] = animFrame;
         }
 
-        moveAnim = new Animation(moveSprites, curve).setLooping(true);//.setFrameLength(3);
+        moveAnim = new Animation(moveSprites, LINEAR).setLooping(true);//.setFrameLength(3);
         playerField.add(robotGroup);
         robotGroup.setX(viewManager.coordToScreen(robot.getX()));
         robotGroup.setY(viewManager.coordToScreen(robot.getY()));
@@ -110,8 +117,8 @@ public class RobotSprite extends ViewPart {
         viewManager.tooltips.setTooltipText(robotGroup, getTooltip());
         this.model.setRobotSprite(this);
 
-        // Init debug
-        mouseHitbox = graphicEntityModule.createCircle().setRadius(size * 2 / 3).setFillColor(0xFF0000)
+        // Hitbox for mouse interaction
+        mouseHitbox = graphicEntityModule.createCircle().setRadius(spriteSize * 2 / 3).setFillColor(0xFF0000)
                 .setZIndex(Z_INDEX_DEBUG).setLineColor(0x000000).setVisible(true).setAlpha(0);
         // Ranges
         for (double range : RANGES) {
@@ -122,9 +129,19 @@ public class RobotSprite extends ViewPart {
         viewManager.addToArena(rangeGroup);
         viewManager.followEntityModule.followEntity(rangeGroup, robotGroup);
         // Debug mode
-        Circle debug_circle = graphicEntityModule.createCircle().setRadius(size / 3).setFillColor(color)
+        Circle debug_circle = graphicEntityModule.createCircle().setRadius(robotSize).setFillColor(color)
                 .setZIndex(Z_INDEX_BASE).setLineColor(0x000000).setVisible(true);
-        debugGroup.add(debug_circle);
+        idleSprite = graphicEntityModule.createSprite().setImage("idle.png").setAnchor(0.5)
+                .setBaseWidth(spriteSize).setBaseHeight(spriteSize).setZIndex(Z_INDEX_SURFACE);
+        attackSprite = graphicEntityModule.createSprite().setImage("attack.png").setAnchor(0.5)
+                .setBaseWidth(spriteSize).setBaseHeight(spriteSize).setZIndex(Z_INDEX_SURFACE).setVisible(false);
+        moveSprite = graphicEntityModule.createSprite().setImage("arrow.png").setAnchor(0.5).setBaseWidth(spriteSize)
+                .setBaseHeight(spriteSize).setZIndex(Z_INDEX_SURFACE).setVisible(false);
+        debugGroup.add(debug_circle, idleSprite, moveSprite, attackSprite);
+        debugActionSpriteMap.put("IDLE", idleSprite);
+        debugActionSpriteMap.put("MOVE", moveSprite);
+        debugActionSpriteMap.put("ATTACK", attackSprite);
+        debugActionSpriteMap.put("FLEE", moveSprite);
         viewManager.displayOnHoverModule.setDisplayHover(mouseHitbox, rangeGroup);
         robotGroup.add(debugGroup, mouseHitbox);
         viewManager.addDebug(debugGroup);
@@ -144,7 +161,7 @@ public class RobotSprite extends ViewPart {
     @Override
     public void update() {
         try {
-            robotGroup.setRotation(Math.PI / 2 + model.getDirection(model.getAveragePoint(model.getTargets())).getRotation(), EASE_OUT);
+            robotGroup.setRotation(Math.PI / 2 + model.getDirection(model.getAveragePoint(new HashSet<>(model.getTargets()))).getRotation(), EASE_OUT);
         } catch (ZeroDivisionException ignored) {
         }
         robotGroup.setX(viewManager.coordToScreen(model.getX()), LINEAR);
@@ -154,13 +171,22 @@ public class RobotSprite extends ViewPart {
         if (!Objects.equals(viewManager.tooltips.getTooltipText(robotGroup), getTooltip())) {
             viewManager.tooltips.setTooltipText(robotGroup, getTooltip());
         }
-
+        debugActionSpriteMap.forEach((action, sprite) -> {
+            sprite.setVisible(model.getLastAction().equals(action));
+        });
+        if (model.getLastAction().equals("MOVE")) {
+            moveSprite.setRotation(0);
+            moveSprite.setVisible(true);
+        }
+        if (model.getLastAction().equals("FLEE")){
+            moveSprite.setRotation(Math.PI);
+        }
         attackAnim.update(!model.getLastAction().equals("ATTACK"));
         moveAnim.setActive(!model.getLastAction().equals("ATTACK") && !model.getLastAction().equals("IDLE"));
         moveAnim.update();
         if (damageTaken > 0) {
-            double t = Math.min(1, damageTaken * HITMARKER_RATIO);
-            Curve hit_curve = hitMarker.isVisible() ? EASE_OUT : IMMEDIATE;
+//            double t = Math.min(1, damageTaken * HITMARKER_RATIO);
+//            Curve hit_curve = hitMarker.isVisible() ? EASE_OUT : IMMEDIATE;
             hitMarker.setVisible(true);
             damageTaken = 0;
         } else {
