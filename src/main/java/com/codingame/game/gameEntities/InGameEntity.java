@@ -51,7 +51,6 @@ public abstract class InGameEntity extends CircularHitBox {
     }
 
 
-
     private final int id;
     private EntityType type;
     private boolean isActive = true;
@@ -68,9 +67,16 @@ public abstract class InGameEntity extends CircularHitBox {
         this.isActive = a;
     }
 
-    public boolean equals(InGameEntity gameEntity) {
+    @Override
+    public boolean equals(Object obj) {
+        if (this.getClass() != obj.getClass()) {
+            return false;
+        }
+        InGameEntity gameEntity = (InGameEntity) obj;
         return id == gameEntity.getId();
+
     }
+
 
     public int getRange(Point point) {
         return getRange(getDist(point));
@@ -95,12 +101,39 @@ public abstract class InGameEntity extends CircularHitBox {
         return res.orElse(this);
     }
 
+    private int round(double x) {
+        int s = x < 0 ? -1 : 1;
+        return s * (int) Math.round(s * x);
+    }
+
+    private int truncate(double xy) {
+        double roundedX = round(xy);
+        if (Math.abs(roundedX - xy) < Constants.MOVE_PRECISION) {
+            return (int) roundedX;
+        }
+
+        return (int) (xy < 0 ? Math.ceil(xy) : Math.floor(xy));
+    }
+
+    public void adjustPosition() {
+        // Trying to make the games symmetric
+        double dx = Constants.MAP_SIZE.getX() / 2;
+        double dy = Constants.MAP_SIZE.getY() / 2;
+        double x2 = getX() - dx;
+        double y2 = getY() - dy;
+        double f = Constants.INVERSE_MOVE_PRECISION;
+        this.setXY(new Point(truncate(x2 * f) / f + dx, truncate(y2 * f) / f + dy));
+
+    }
+
 
     public abstract String giveInfo(int league, Robot asker, int distRank);
 
     public abstract String getSelfInfo(int league, ArrayList<Robot> enemies, int playerId);
 
-    public EntityType getType() { return type; }
+    public EntityType getType() {
+        return type;
+    }
 
     public void setType(EntityType newType) {
         type = newType;

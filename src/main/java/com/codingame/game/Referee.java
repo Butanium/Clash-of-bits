@@ -142,8 +142,32 @@ public class Referee extends AbstractReferee {
         for (Robot robot : robotSet) {
             robot.updateShield();
         }
+        onEndTurn(turn);
+    }
 
-        viewManager.update(turn);
+    private void onEndTurn(int turn) {
+        updateRobotPositions();
+        CollisionManager.performCollisions(robotSet.toArray(new Robot[0]));
+        adjustRobotPositions();
+        // League 19 is debug league
+        if (gameManager.getLeagueLevel() == 19) {
+            System.err.println("turn : " + turn);
+            SymmetryAssert.assertActionSymmetry(playersTeam.get(0), playersTeam.get(1));
+            SymmetryAssert.assertShieldHealthSymmetry(playersTeam.get(0), playersTeam.get(1));
+            viewManager.update(turn);
+        }
+    }
+
+    private void updateRobotPositions() {
+        for (Robot robot : robotSet) {
+            robot.updatePosition();
+        }
+    }
+
+    private void adjustRobotPositions() {
+        for (Robot robot : robotSet) {
+            robot.adjustPosition();
+        }
     }
 
     public Robot getRobot(int id) {

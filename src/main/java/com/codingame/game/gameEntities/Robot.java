@@ -38,9 +38,11 @@ public class Robot extends InGameEntity {
     private Point currentSpeed;
     private String lastAction = "IDLE";
     private Set<InGameEntity> lastTargets = new HashSet<>(Collections.singletonList(this));
+    private Point nextPosition;
 
     public Robot(double x, double y, RobotType type, Player owner, Referee referee) {
         super(x, y, type.getSize(), type.getSpeed());
+        nextPosition = new Point(x, y);
         this.owner = owner;
         this.referee = referee;
         spriteSize = type.getSpriteSize();
@@ -113,6 +115,7 @@ public class Robot extends InGameEntity {
                 }
             }
         }
+        nextPosition = this;
         attackTarget = target;
         lastTargets.clear();
         lastTargets.add(target);
@@ -130,8 +133,8 @@ public class Robot extends InGameEntity {
         if (this.getDist(target) == 0) {
             return;
         }
-        updatePos(getDirection(target).multiply(-1), getSpeed() * Constants.DELTA_TIME);
-        restAttack();
+        moveInDirectionNextPos(getDirection(target).multiply(-1), getSpeed() * Constants.DELTA_TIME);
+        resetAttack();
     }
 
     /**
@@ -146,47 +149,55 @@ public class Robot extends InGameEntity {
         double frameDist = Constants.DELTA_TIME * getSpeed();
         if (getDist(target) >= frameDist) {
             Point dir = getDirection(target);
-            updatePos(dir, frameDist);
+            moveInDirectionNextPos(dir, frameDist);
         } else if (getDist(target) > Constants.MOVE_PRECISION) {
-            setXY(clampToMap(target));
+            nextPosition = clampToMap(target);
         }
     }
 
     public void IDLE() {
-        restAttack();
+        resetAttack();
         currentSpeed = new Point();
         lastAction = "IDLE";
         lastTargets.clear();
         lastTargets.add(this);
+        nextPosition = this;
     }
 
 
-    private void restAttack() {
+    private void resetAttack() {
         shotState = aimTime + shotTime;
         attackTarget = null;
     }
 
-    public void updatePos(Point direction, double amount) {
+    public void moveInDirection(Point direction, double amount) {
         setXY(clampToMap(add(direction.multiply(amount))));
     }
-
-    public boolean performCollision(Robot robot) {
-        if (checkCollide(robot) && !equals(robot)) {
-            Point dir = robot.add(this.multiply(-1)).normalize();
-            if (currentSpeed.isZero() == robot.currentSpeed.isZero()) {
-                double amount = (getSize() + robot.getSize()) / 2;
-                updatePos(dir, -amount);
-                robot.updatePos(dir, amount);
-            } else if (currentSpeed.isZero()) {
-                robot.updatePos(dir, getSize() + robot.getSize() - getDist(robot));
-            } else if (robot.currentSpeed.isZero()) {
-                updatePos(dir, getDist(robot) - getSize() - robot.getSize());
-            }
-            return true;
-        } else {
-            return false;
-        }
+    public void moveInDirectionNextPos(Point direction, double amount) {
+        nextPosition = clampToMap(add(direction.multiply(amount)));
     }
+
+    public void updatePosition() {
+        setXY(nextPosition);
+    }
+
+//    public boolean performCollision(Robot robot) {
+//        if (checkCollide(robot) && !equals(robot)) {
+//            Point dir = getDirection(robot);
+//            if (currentSpeed.isZero() == robot.currentSpeed.isZero()) {
+//                double amount = (getSize() + robot.getSize()) / 2;
+//                updatePos(dir, -amount);
+//                robot.updatePos(dir, amount);
+//            } else if (currentSpeed.isZero()) {
+//                robot.updatePos(dir, getSize() + robot.getSize() - getDist(robot));
+//            } else if (robot.currentSpeed.isZero()) {
+//                updatePos(dir, getDist(robot) - getSize() - robot.getSize());
+//            }
+//            return true;
+//        } else {
+//            return false;
+//        }
+//    }
 
     /**
      * @param amount : amount of damage taken
@@ -378,7 +389,7 @@ public class Robot extends InGameEntity {
         return spriteSize;
     }
 
-    public Set<Point> getTargets() {
+    public Set<InGameEntity> getTargets() {
         return new HashSet<>(lastTargets);
     }
 
@@ -413,5 +424,9 @@ public class Robot extends InGameEntity {
 
     public RobotSprite getSprite() {
         return sprite;
+    }
+
+    public String toString() {
+        return "Robot " + getId() % Constants.BOT_PER_PLAYER + " of " + getPlayer().getIndex() + " at : " + super.toString() + " with " + health + " health and " + shieldHealth + " shield";
     }
 }

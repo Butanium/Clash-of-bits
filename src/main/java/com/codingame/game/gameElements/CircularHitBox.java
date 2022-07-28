@@ -54,7 +54,7 @@ public class CircularHitBox extends Point {
     }
 
     public boolean checkCollide(CircularHitBox point) {
-        return this.getDist(point) < this.hitBoxSize + point.hitBoxSize;
+        return this.getDist(point) < this.hitBoxSize + point.hitBoxSize - Constants.COLLISION_PRECISION;
     }
 
     public Point clampToMap(Point point) {

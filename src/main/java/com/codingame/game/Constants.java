@@ -5,7 +5,10 @@ import com.codingame.game.gameElements.Point;
 public class Constants {
 
     //Game\\
+    public static final int BULLET_SEED = 0xC0FFEE;
     public static final double MOVE_PRECISION = 0.0001;
+    public static final double INVERSE_MOVE_PRECISION = 1 / MOVE_PRECISION;
+    public static final double COLLISION_PRECISION = MOVE_PRECISION;
     public static final double MAX_BULLET_DEVIATION = 2;
     public static final double MIN_BULLET_DEVIATION = 0.5;
     public static final double SHORT_RANGE = 3;
@@ -16,7 +19,7 @@ public class Constants {
     };
     public static final double DELTA_TIME = 0.25;
     public static final int FRAME_DURATION = (int) (Constants.DELTA_TIME * 1000 / 2);
-    public static final Point MAP_SIZE = new Point(40, 40);
+    public static final Point MAP_SIZE = new Point(40);
     public static final double BULLET_SPEED = 20;
 
     //Spawn\\
@@ -27,8 +30,8 @@ public class Constants {
     public static final Point GRID_SIZE = new Point(10, 10);
     public static final Point INNER_GRID_SIZE = new Point(6.8, 6.8);
     public static final Point GRID_PADDING = GRID_SIZE.subtract(INNER_GRID_SIZE);
-    public static final int GRID_X_COUNT = 4;
-    public static final int GRID_Y_COUNT = 4;
+    public static final int GRID_X_COUNT = (int) (MAP_SIZE.getX() / GRID_SIZE.getX());
+    public static final int GRID_Y_COUNT = (int) (MAP_SIZE.getY() / GRID_SIZE.getY());
     public static final int TOTAL_GRID_COUNT = GRID_X_COUNT * GRID_Y_COUNT;
     public static final Point[] GRIDS = getGrids();
     public static final int GRID_PER_TEAM = 3;
