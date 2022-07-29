@@ -41,6 +41,12 @@ public class Constants {
     //View\\
     // viewParts settings
     public static final double BULLET_SIZE = 0.1;
+    public static final double BULLET_SCALE = 0.3;
+
+    public static final String BULLET_SPRITE = "bbr.png";
+
+    public static final String ATTACK_TARGET_SPRITE = "sword.png";
+    public static final int BULLET_ANIMATION_DURATION = 25; // ms
     // crater
     public static final boolean AVOID_CRATER_OVERLAP = false;
     public static final double CRATER_ALPHA = 0.8;
@@ -54,12 +60,14 @@ public class Constants {
     public static final int HEALTH_BAR_HEIGHT = 5;
     public static final int CAMERA_OFFSET = 8;
     public static final double HITMARKER_RATIO = 1 / 1000.;
+    public static final double TARGET_TILE_SCALE = 0.1/1.5; // 150 px size
+    public static final double TARGET_THICKNESS = 0.1;
 /*  h3 params :
     public static final String HITMARKER_IMAGE = "h3.png";
     public static final double HITMARKER_SIZE = .5;
     public static final double HITMARKER_ANGLE = Math.PI / 4;
 */
-    public static final String HITMARKER_IMAGE = "h.png";
+    public static final String HITMARKER_IMAGE = "hb.png";
     public static final double HITMARKER_SIZE = .1; // 0/1 for default
     public static final double HITMARKER_ANGLE = 0;
 
@@ -81,11 +89,13 @@ public class Constants {
     public static final int Z_INDEX_WALL0 = Z_INDEX_CRATER + 1;
     public static final int Z_INDEX_WALLS = Z_INDEX_WALL0 + 1;
     public static final int Z_INDEX_RANGES = Z_INDEX_WALLS + 1;
-    public static final int Z_INDEX_ROBOTS = Z_INDEX_RANGES + 1;
+    public static final int Z_INDEX_TARGETS = Z_INDEX_RANGES + 1;
+    public static final int Z_INDEX_ROBOTS = Z_INDEX_TARGETS + 1;
     public static final int Z_INDEX_EXPLOSIONS = Z_INDEX_ROBOTS + 1;
     public static final int Z_INDEX_BULLETS = Z_INDEX_EXPLOSIONS + 1;
-    public static final int Z_INDEX_UI0 = Z_INDEX_BULLETS + 1;
-    public static final int Z_INDEX_UI1 = Z_INDEX_UI0 + 1;
+    public static final int Z_INDEX_HITMARKER = Z_INDEX_BULLETS + 1;
+    public static final int Z_INDEX_ID = Z_INDEX_HITMARKER + 1;
+    public static final int Z_INDEX_BARS = Z_INDEX_ID + 1;
 
 
     // Utils

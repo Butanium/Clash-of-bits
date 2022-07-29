@@ -2,8 +2,7 @@ package view.entitiesSprites;
 
 import com.codingame.game.gameElements.Bullet;
 import com.codingame.game.gameElements.Point;
-import com.codingame.gameengine.module.entities.Circle;
-import com.codingame.gameengine.module.entities.Curve;
+import com.codingame.gameengine.module.entities.*;
 import view.managers.ViewManager;
 
 import static com.codingame.game.Constants.*;
@@ -13,8 +12,11 @@ import static com.codingame.gameengine.module.entities.Curve.LINEAR;
 
 public class BulletSprite extends ViewPart {
     private final ViewManager viewManager;
-    private final Circle bulletSprite;
+    private final Group bulletGroup;
     private final int spriteSize;
+    private final Sprite bulletSprite;
+    private final Circle debugCircle;
+    private final SpriteAnimation trail;
     private Bullet model;
     private boolean active = true;
 
@@ -22,36 +24,59 @@ public class BulletSprite extends ViewPart {
         this.viewManager = viewManager;
         spriteSize = viewManager.sizeToScreen(BULLET_SIZE);
         model = bullet;
-        bulletSprite = viewManager.graphicEntityModule.createCircle()
+        int color = bullet.getOwner().getColorToken();
+        bulletSprite = viewManager.graphicEntityModule.createSprite().setImage(BULLET_SPRITE)
+                .setTint(color).setAnchor(0.5).setScale(BULLET_SCALE);
+        trail = viewManager.graphicEntityModule.createSpriteAnimation().setLoop(true).
+                setImages("b1.png", "b2.png", "b3.png").setDuration(BULLET_ANIMATION_DURATION)
+                .setTint(color).setAnchor(0.5).setScale(BULLET_SCALE);
+        debugCircle = viewManager.graphicEntityModule.createCircle()
                 .setRadius(spriteSize)
-                .setFillColor(bullet.getOwner().getColorToken())
+                .setFillColor(color);
+        viewManager.addDebug(debugCircle);
+        viewManager.removeForDebug(bulletSprite);
+        viewManager.removeForDebug(trail);
+        bulletGroup = viewManager.graphicEntityModule.createGroup(trail, bulletSprite, debugCircle)
                 .setX(coordToScreen(model.getX() + deviation.getX()), Curve.IMMEDIATE)
                 .setY(coordToScreen(model.getY() + deviation.getY()), Curve.IMMEDIATE)
-                // .setAlpha(0.2)
-                .setZIndex(Z_INDEX_BULLETS);
-        viewManager.addToArena(bulletSprite);
+                .setZIndex(Z_INDEX_BULLETS).setRotation(model.getDirection().getRotation() + Math.PI / 2);
+        viewManager.addToArena(bulletGroup);
+        if (!model.willHit()) {
+            viewManager.removeForDebug(bulletGroup);
+        } else {
+            viewManager.addDebug(bulletGroup);
+        }
     }
 
     public void reset(Bullet bullet, Point deviation) {
         active = true;
         this.setVisible(true);
         this.model = bullet;
-        bulletSprite.setFillColor(bullet.getOwner().getColorToken())
-                .setX(coordToScreen(model.getX() + deviation.getX()), Curve.IMMEDIATE)
-                .setY(coordToScreen(model.getY() + deviation.getY()), Curve.IMMEDIATE)
-                .setAlpha(1.)
+        int color = bullet.getOwner().getColorToken();
+        bulletSprite.setTint(color);
+        trail.setTint(color);
+        debugCircle.setFillColor(color);
+        bulletGroup.setX(coordToScreen(model.getX() + deviation.getX()), Curve.IMMEDIATE)
+                .setY(coordToScreen(model.getY() + deviation.getY()), Curve.IMMEDIATE).setAlpha(1)
+                .setRotation(model.getDirection().getRotation() + Math.PI / 2);
+
         ;
         //.setAlpha(0.2);
         updateVisibility();
+        if (!model.willHit()) {
+            viewManager.removeForDebug(bulletGroup);
+        } else {
+            viewManager.addDebug(bulletGroup);
+        }
     }
 
 
     @Override
     public void update() {
-        bulletSprite.setX(coordToScreen(model.getX()), LINEAR)
+        bulletGroup.setX(coordToScreen(model.getX()), LINEAR)
                 .setY(coordToScreen(model.getY()), LINEAR);
-        if (bulletSprite.getAlpha() != 1. && active) {
-            bulletSprite.setAlpha(1., Curve.EASE_OUT);
+        if (bulletGroup.getAlpha() != 1. && active) {
+            bulletGroup.setAlpha(1., Curve.EASE_OUT);
         }
     }
 
@@ -59,7 +84,7 @@ public class BulletSprite extends ViewPart {
     public boolean isActive() {
         if (!model.isActive() && active) {
             active = false;
-            bulletSprite.setAlpha(0., EASE_IN);
+            bulletGroup.setAlpha(0., EASE_IN);
             if (model.willHit()) {
                 int playerColor = getPlayerColor(model.getOwner().getIndex());
                 model.getTarget().getSprite().takeDamage(model.getDamage(), playerColor);
@@ -77,12 +102,12 @@ public class BulletSprite extends ViewPart {
     }
 
     @Override
-    public Circle getSprite() {
-        return bulletSprite;
+    public Group getSprite() {
+        return bulletGroup;
     }
 
     @Override
-    public Circle getDebugSprite() {
+    public Group getDebugSprite() {
         return getSprite();
     }
 
