@@ -9,14 +9,10 @@ todo : update en statement avec les barres de vies d'hp et les hitmarkers, le li
 todo : fix tableau dans le statement trop gros
 todo : image ranges
 todo : rewrite statement avec récapitulatif des nouveautés
+todo : thanks Euler, GFX47 in statement
 
 DEBUG
-todo? : debug action comme dans gladiabots
-todo : thanks Euler, GFX47 in statement
-todo? : attack line instead of bullets in debug mode
-todo : chaner le fond pour le mode debug
-todo : toggle for tooltips and ranges
-todo : tooltip bug du multi tooltip
+todo : changer le fond pour le mode debug
 
 MISC
 todo : add starter folder with contribute.md
@@ -27,7 +23,7 @@ todo? : rework shield ui avec un tile sprite
 todo? : meilleure animation de balle touchant en commitant à un t différent (en fonction de la distance parcourue)
 todo?? : Cacher les sprites non utilisés par une animation : faire une fonction qui cache les sprites non utilisés au lieu de les reset
 todo?? : rework SpriteAnimation pour ajouter la fonction reverse() pour rework les animations des robots
-todo?? : add robot ghost on destroy
+todo??? : add robot ghost on destroy
 
 done : motif de sol + background
 done : Spawn aléatoire
@@ -40,6 +36,9 @@ done : clean Zindex (les balles passent au dessus des robots si leur Zindex est 
 done : debug ranges dans un module debug : quand on clique sur une entité ça affiche le debug
 done : toggle module for debug mode (life explosion etc)
 done : hitmarkers position with the followEntityModule (related to scale)
+done : meilleur sprite pour balles
+done : debug action comme dans gladiabots
 
 
 aborted : fix overlapping craters
+aborted : toggle for tooltips and ranges
