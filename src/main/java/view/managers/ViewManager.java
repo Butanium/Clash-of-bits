@@ -234,6 +234,10 @@ public class ViewManager {
         return (int) (size * sizeRatio);
     }
 
+    public double getSizeRatio() {
+        return sizeRatio;
+    }
+
 
     public void addToArena(Entity<?> entity) {
         arena.add(entity);

@@ -14,7 +14,7 @@ public class ProgressBar {
         bar = graphicEntityModule.createRectangle().setFillColor(color).setLineWidth(0).setAlpha(0.8)
                 .setWidth(HEALTH_BAR_WIDTH).setHeight(HEALTH_BAR_HEIGHT);
         Group group = graphicEntityModule.createGroup(graphicEntityModule.createRectangle().setFillColor(0x777777).setAlpha(.5)
-                .setWidth(HEALTH_BAR_WIDTH).setHeight(HEALTH_BAR_HEIGHT), bar).setZIndex(Z_INDEX_UI1);
+                .setWidth(HEALTH_BAR_WIDTH).setHeight(HEALTH_BAR_HEIGHT), bar).setZIndex(Z_INDEX_BARS);
         for (int i = 0; i < 5; i++) {
             group.add(graphicEntityModule.createRectangle().setHeight(HEALTH_BAR_HEIGHT).setWidth(2)
                     .setX(group.getX() + i * HEALTH_BAR_WIDTH / 4).setFillColor(0).setAlpha(0.5).setZIndex(8));

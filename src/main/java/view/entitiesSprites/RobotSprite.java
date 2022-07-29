@@ -1,6 +1,7 @@
 package view.entitiesSprites;
 
 import com.codingame.game.exceptions.ZeroDivisionException;
+import com.codingame.game.gameElements.Point;
 import com.codingame.game.gameEntities.Robot;
 import com.codingame.gameengine.module.entities.*;
 import view.UI.ProgressBar;
@@ -29,7 +30,10 @@ public class RobotSprite extends ViewPart {
     private final Sprite attackSprite;
     private final Sprite moveSprite;
     private final Sprite idleSprite;
+    private final Sprite fleeSprite;
 
+    private final Text idText;
+    private final TilingSprite targetSprite;
     private final HashMap<String, Sprite> debugActionSpriteMap = new HashMap<>();
     private final Circle mouseHitbox;
     private final ProgressBar shieldBar;
@@ -102,7 +106,7 @@ public class RobotSprite extends ViewPart {
         shieldBar = new ProgressBar(0x00E1F5, graphicEntityModule);
         healthBar = new ProgressBar(0xAB0098, graphicEntityModule);
         hitMarker = viewManager.graphicEntityModule.createSprite().setImage(HITMARKER_IMAGE).setScale(HITMARKER_SIZE)
-                .setAnchor(.5).setVisible(false).setRotation(HITMARKER_ANGLE).setZIndex(Z_INDEX_UI0);
+                .setAnchor(.5).setVisible(false).setRotation(HITMARKER_ANGLE).setZIndex(Z_INDEX_HITMARKER);
         viewManager.addToArena(shieldBar.getBarGroup());
         viewManager.addToArena(healthBar.getBarGroup());
         viewManager.followEntityModule.followEntity(healthBar.getBarGroup(), robotGroup, 15, 0);
@@ -131,22 +135,34 @@ public class RobotSprite extends ViewPart {
         // Debug mode
         Circle debug_circle = graphicEntityModule.createCircle().setRadius(robotSize).setFillColor(color)
                 .setZIndex(Z_INDEX_BASE).setLineColor(0x000000).setVisible(true);
+        idText = viewManager.graphicEntityModule.createText(model.getId() + "").setZIndex(Z_INDEX_ID).setAnchor(0.5);
+        viewManager.followEntityModule.followEntity(idText, robotGroup);
+        viewManager.addToArena(idText);
+        viewManager.addDebug(idText);
         idleSprite = graphicEntityModule.createSprite().setImage("idle.png").setAnchor(0.5)
                 .setBaseWidth(spriteSize).setBaseHeight(spriteSize).setZIndex(Z_INDEX_SURFACE);
         attackSprite = graphicEntityModule.createSprite().setImage("attack.png").setAnchor(0.5)
                 .setBaseWidth(spriteSize).setBaseHeight(spriteSize).setZIndex(Z_INDEX_SURFACE).setVisible(false);
         moveSprite = graphicEntityModule.createSprite().setImage("arrow.png").setAnchor(0.5).setBaseWidth(spriteSize)
                 .setBaseHeight(spriteSize).setZIndex(Z_INDEX_SURFACE).setVisible(false);
-        debugGroup.add(debug_circle, idleSprite, moveSprite, attackSprite);
+        fleeSprite = graphicEntityModule.createSprite().setImage("flee.png").setAnchor(0.5).setBaseWidth(spriteSize)
+                .setBaseHeight(spriteSize).setZIndex(Z_INDEX_SURFACE).setVisible(false);
+        debugGroup.add(debug_circle, idleSprite, moveSprite, attackSprite, fleeSprite);
         debugActionSpriteMap.put("IDLE", idleSprite);
         debugActionSpriteMap.put("MOVE", moveSprite);
         debugActionSpriteMap.put("ATTACK", attackSprite);
-        debugActionSpriteMap.put("FLEE", moveSprite);
-        viewManager.displayOnHoverModule.setDisplayHover(mouseHitbox, rangeGroup);
+        debugActionSpriteMap.put("FLEE", fleeSprite);
         robotGroup.add(debugGroup, mouseHitbox);
         viewManager.addDebug(debugGroup);
         viewManager.removeForDebug(robotSprite);
-
+        double scaleX = TARGET_THICKNESS;
+        targetSprite = graphicEntityModule.createTilingSprite().setAnchor(0.5)
+                .setZIndex(Z_INDEX_TARGETS).setTint(color)//.setAlpha(0.5)
+                .setScaleX(scaleX)
+                .setTileScaleX(1. / scaleX * TARGET_TILE_SCALE).setVisible(false);
+        viewManager.addToArena(targetSprite);
+        viewManager.addDebug(targetSprite);
+        viewManager.displayOnHoverModule.setDisplayHover(mouseHitbox, new Entity[]{targetSprite, rangeGroup});
     }
 
     private String getTooltip() {
@@ -160,10 +176,8 @@ public class RobotSprite extends ViewPart {
 
     @Override
     public void update() {
-        try {
-            robotGroup.setRotation(Math.PI / 2 + model.getDirection(model.getAveragePoint(new HashSet<>(model.getTargets()))).getRotation(), EASE_OUT);
-        } catch (ZeroDivisionException ignored) {
-        }
+        Point target = model.getAveragePoint(new HashSet<>(model.getTargets()));
+
         robotGroup.setX(viewManager.coordToScreen(model.getX()), LINEAR);
         robotGroup.setY(viewManager.coordToScreen(model.getY()), LINEAR);
         shieldBar.setBar(Math.max(0, model.getShieldRatio()));
@@ -174,16 +188,39 @@ public class RobotSprite extends ViewPart {
         debugActionSpriteMap.forEach((action, sprite) -> {
             sprite.setVisible(model.getLastAction().equals(action));
         });
-        if (model.getLastAction().equals("MOVE")) {
-            moveSprite.setRotation(0);
-            moveSprite.setVisible(true);
-        }
-        if (model.getLastAction().equals("FLEE")){
-            moveSprite.setRotation(Math.PI);
-        }
+
         attackAnim.update(!model.getLastAction().equals("ATTACK"));
         moveAnim.setActive(!model.getLastAction().equals("ATTACK") && !model.getLastAction().equals("IDLE"));
         moveAnim.update();
+        Curve curve = IMMEDIATE;
+        try {
+            Point pos = target.add(model).divide(2);
+            double rotation = Math.PI / 2 + model.getDirection(target).getRotation();
+            robotGroup.setRotation(rotation, EASE_OUT);
+            double scale = viewManager.getSizeRatio() * (model.getDist(target) / 100.);
+            targetSprite.setX(viewManager.coordToScreen(pos.getX()), curve)
+                    .setY(viewManager.coordToScreen(pos.getY()), curve)
+                    .setScaleY(scale, curve)
+                    .setTileScaleY(1. / scale * TARGET_TILE_SCALE, curve)
+                    // .setScaleY(scale, curve).setTileScaleY(1. / scale)
+                    .setRotation(rotation, curve);
+            if (model.getLastAction().equals("MOVE")) {
+                targetSprite.setImage("arrowtile.png");
+            }
+            if (model.getLastAction().equals("FLEE")) {
+                targetSprite.setRotation(rotation + Math.PI, curve);
+                targetSprite.setImage("arrowtile.png");
+            }
+            if (model.getLastAction().equals("ATTACK")) {
+                targetSprite.setImage(ATTACK_TARGET_SPRITE);
+            }
+        } catch (ZeroDivisionException ignored) {
+            targetSprite.setTileScaleY(0, curve);
+        }
+        if (model.getLastAction().equals("IDLE")) {
+            targetSprite.setTileScaleY(0, curve);
+        }
+
         if (damageTaken > 0) {
 //            double t = Math.min(1, damageTaken * HITMARKER_RATIO);
 //            Curve hit_curve = hitMarker.isVisible() ? EASE_OUT : IMMEDIATE;
@@ -215,7 +252,9 @@ public class RobotSprite extends ViewPart {
         shieldBar.remove();
         healthBar.remove();
         hitMarker.setVisible(false);
+        targetSprite.setVisible(false);
         viewManager.displayOnHoverModule.untrack(mouseHitbox);
+        idText.setVisible(false);
     }
 
     @Override
