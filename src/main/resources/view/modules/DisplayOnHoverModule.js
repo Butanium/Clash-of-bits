@@ -84,7 +84,6 @@ function getMouseClickFunc(id, module) {
 
 function getResetOnClickFunc(module) {
     return function (ev) {
-        console.log("reset done")
         const mouseEvent = ev.data.originalEvent
         if (mouseEvent instanceof MouseEvent) {
             if (mouseEvent.altKey) {
