@@ -13,6 +13,7 @@ todo : thanks Euler, GFX47 in statement
 
 DEBUG
 todo : changer le fond pour le mode debug
+todo : ajouter un petit truc pour montrer où est l'avant du robot
 
 MISC
 todo : add starter folder with contribute.md
