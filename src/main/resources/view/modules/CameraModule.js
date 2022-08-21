@@ -6,7 +6,7 @@ import {lerpPosition} from '../core/utils.js'
 
 
 export class CameraModule {
-    constructor(assets) {
+    constructor(_assets) {
         CameraModule.instance = this
         this.container = {id: -1, sizeX: -1, sizeY: -1}
         this.cameraOffset = 0
@@ -21,7 +21,6 @@ export class CameraModule {
         this.oldCameraState = {scale: {x: -1, y: -1}, position: {x: 0, y: 0}}
         this.currentCameraState = {scale: {x: -1, y: -1}, position: {x: 0, y: 0}}
         this.previousUpdateData = this.currentUpdateFrame = this.currentUpdateProgress = undefined
-        this.viewerActive = true
         this.active = true
 
     }
@@ -30,11 +29,12 @@ export class CameraModule {
         return 'c'
     }
 
-    setActive(active) {
-        this.viewerActive = active
-        this.lastFrame = -2
-        if (this.previousUpdateData !== undefined) {
-            this.updateScene(this.previousUpdateData, this.currentUpdateFrame, this.currentUpdateProgress || 1)
+    static setActive(active) {
+        CameraModule.viewerActive = active
+        const module = CameraModule.instance
+        module.lastFrame = -2
+        if (module.previousUpdateData !== undefined) {
+            module.updateScene(module.previousUpdateData, module.currentUpdateFrame, module.currentUpdateProgress || 1)
         }
     }
 
@@ -61,7 +61,7 @@ export class CameraModule {
         this.currentUpdateProgress = progress
         this.previousUpdateData = previousData
         const isActive = (currentData.registered.size !== 0) && (currentData.container.entity !== null)
-        if (!(currentData.active && this.viewerActive)) {
+        if (!(currentData.active && CameraModule.viewerActive)) {
             if (isActive) {
                 currentData.container.entity.graphics.scale = {x: 1, y: 1}
                 currentData.container.entity.graphics.position = {x: 0, y: 0}
@@ -188,3 +188,4 @@ export class CameraModule {
     }
 
 }
+CameraModule.viewerActive = true

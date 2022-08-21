@@ -2,16 +2,16 @@ import {CameraModule} from './CameraModule.js';
 
 export class CameraToggleModule {
 
-    constructor(assets) {
+    constructor(_assets) {
         this.previousFrame = {}
         this.missingToggles = {}
         this.d = false
         CameraToggleModule.refreshContent = () => {
             this.d = !this.d
             if (CameraToggleModule.toggles.cameraMode) {
-                CameraModule.instance.setActive(true)
+                CameraModule.setActive(true)
             } else {
-                CameraModule.instance.setActive(false)
+                CameraModule.setActive(false)
             }
         }
     }
@@ -48,7 +48,7 @@ export class CameraToggleModule {
     handleFrameData(frameInfo, data) {
     }
 
-    reinitScene(container, canvasData) {
+    reinitScene(_container, _canvasData) {
         CameraToggleModule.refreshContent()
     }
 }
