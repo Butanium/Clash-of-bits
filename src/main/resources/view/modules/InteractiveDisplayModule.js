@@ -82,7 +82,6 @@ function performTransformation(entity, parameters) {
 function revertTransformation(entity, parameters) {
     const infos = parameters.split(',')
     const interaction = infos[0]
-    const params = infos[2]
     switch (interaction) {
         case DISPLAY:
             entity.container.visible = entity.currentState.visible
