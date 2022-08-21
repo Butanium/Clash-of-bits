@@ -170,7 +170,6 @@ public class RobotSprite extends ViewPart {
                 .setTileScaleX(1. / scaleX * TARGET_TILE_SCALE).setVisible(false);
         viewManager.addToArena(targetSprite);
         viewManager.addDebug(targetSprite);
-        viewManager.interactiveDisplayModule.addResize(robotGroup, 2., InteractiveDisplayModule.HOVER_ONLY);
         viewManager.interactiveDisplayModule.addDisplay(mouseHitbox, targetSprite);
         viewManager.interactiveDisplayModule.addDisplay(mouseHitbox, rangeGroup, InteractiveDisplayModule.HOVER_ONLY);
     }

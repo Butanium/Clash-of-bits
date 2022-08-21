@@ -85,7 +85,7 @@ function revertTransformation(entity, parameters) {
     const params = infos[2]
     switch (interaction) {
         case DISPLAY:
-            entity.container.visible = false
+            entity.container.visible = entity.currentStat.visible
             return
         case RESIZE:
             resetScale(entity)
@@ -96,7 +96,11 @@ function revertTransformation(entity, parameters) {
 }
 
 function getInteractionMode(params) {
-    return params.split(",")[1]
+    if (typeof params.split === 'function') {
+        return params.split(",")[1]
+    } else {
+        return undefined
+    }
 }
 
 
