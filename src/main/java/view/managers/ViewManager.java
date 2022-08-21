@@ -30,7 +30,7 @@ import view.entitiesSprites.ViewPart;
 import view.fx.AnimationType;
 import view.fx.GraphicModuleAnimation;
 import view.modules.CameraModule;
-import view.modules.DisplayOnHoverModule;
+import view.modules.InteractiveDisplayModule;
 import view.modules.FollowEntityModule;
 import view.modules.TooltipModule;
 
@@ -47,7 +47,7 @@ public class ViewManager {
     public final ToggleModule toggleModule;
     public final FollowEntityModule followEntityModule;
     public final CameraModule camera;
-    public final DisplayOnHoverModule displayOnHoverModule;
+    public final InteractiveDisplayModule interactiveDisplayModule;
     private final int X0;
     private final int Y0;
     //    private final Set<ViewPart> priorityViewParts = new HashSet<>();
@@ -64,9 +64,9 @@ public class ViewManager {
 
 
     public ViewManager(GraphicEntityModule graphicEntityModule, TooltipModule tooltipModule, CameraModule cameraModule
-            , long seed, ToggleModule toggleModule, FollowEntityModule followEntityModule, DisplayOnHoverModule displayOnHoverModule) {
+            , long seed, ToggleModule toggleModule, FollowEntityModule followEntityModule, InteractiveDisplayModule interactiveDisplayModule) {
         this.toggleModule = toggleModule;
-        this.displayOnHoverModule = displayOnHoverModule;
+        this.interactiveDisplayModule = interactiveDisplayModule;
         this.followEntityModule = followEntityModule;
         random = new Random(seed);
         this.graphicEntityModule = graphicEntityModule;
@@ -218,11 +218,11 @@ public class ViewManager {
 
     }
 
-    public void removeForDebug(Entity entity) {
+    public void removeForDebug(Entity<?> entity) {
         toggleModule.displayOnToggleState(entity, "debug", false);
     }
 
-    public void addDebug(Entity entity) {
+    public void addDebug(Entity<?> entity) {
         toggleModule.displayOnToggleState(entity, "debug", true);
     }
 

@@ -15,7 +15,7 @@ import com.google.common.base.Function;
 import com.google.inject.Inject;
 import view.managers.ViewManager;
 import view.modules.CameraModule;
-import view.modules.DisplayOnHoverModule;
+import view.modules.InteractiveDisplayModule;
 import view.modules.FollowEntityModule;
 import view.modules.TooltipModule;
 
@@ -42,7 +42,7 @@ public class Referee extends AbstractReferee {
     @Inject
     FollowEntityModule followEntityModule;
     @Inject
-    DisplayOnHoverModule displayOnHoverModule;
+    InteractiveDisplayModule interactiveDisplayModule;
     @Inject
     private MultiplayerGameManager<Player> gameManager;
     @Inject
@@ -86,7 +86,7 @@ public class Referee extends AbstractReferee {
         }
 
         viewManager = new ViewManager(graphicEntityModule, tooltips, cameraModule, seed, toggleModule,
-                followEntityModule, displayOnHoverModule);
+                followEntityModule, interactiveDisplayModule);
         viewManager.init(robotSet);
 
 //        viewportModule.createViewport(viewportGroup);
@@ -226,7 +226,6 @@ public class Referee extends AbstractReferee {
         player.sendInputLine(allyBotAlive + "");
         int entityCount = gameEntitySet.size();
         player.sendInputLine(entityCount + "");
-        int robotCount = robotSet.size();
 
         List<Robot> healthSorted = new ArrayList<>(robotSet);
         healthSorted.sort(Comparator.comparingDouble(Robot::getHealth));
@@ -313,9 +312,7 @@ public class Referee extends AbstractReferee {
                 if (output.equals("")) {
                     continue;
                 }
-                Set<Integer> executingRobots = new HashSet<>();
                 for (String order : orders) {
-
                     String[] splitedOrder = order.split(" ");
                     if (splitedOrder.length < 2) {
                         player.deactivate(String.format("%s is not a proper action !", order));
@@ -537,5 +534,7 @@ public class Referee extends AbstractReferee {
         gameManager.addTooltip(player, message);
     }
 
-
+    public long getSeed() {
+        return gameManager.getSeed();
+    }
 }

@@ -5,7 +5,10 @@ import com.codingame.game.gameElements.Point;
 public class Constants {
 
     //Game\\
-    public static final int BULLET_SEED = 0xC0FFEE;
+    public static final String Attack = "ATTACK";
+    public static final String Idle = "IDLE";
+    public static final String Flee = "FLEE";
+    public static final String Move = "MOVE";
     public static final double MOVE_PRECISION = 0.0001;
     public static final double INVERSE_MOVE_PRECISION = 1 / MOVE_PRECISION;
     public static final double COLLISION_PRECISION = MOVE_PRECISION;
@@ -14,7 +17,7 @@ public class Constants {
     public static final double SHORT_RANGE = 3;
     public static final double MEDIUM_RANGE = 8;
     public static final double LONG_RANGE = 15;
-    public static final double[] RANGES = new double[] {
+    public static final double[] RANGES = new double[]{
             SHORT_RANGE, MEDIUM_RANGE, LONG_RANGE
     };
     public static final double DELTA_TIME = 0.25;
@@ -48,7 +51,6 @@ public class Constants {
     public static final String ATTACK_TARGET_SPRITE = "sword.png";
     public static final int BULLET_ANIMATION_DURATION = 25; // ms
     // crater
-    public static final boolean AVOID_CRATER_OVERLAP = false;
     public static final double CRATER_ALPHA = 0.8;
     public static final double CRATER_SIZE = 1;
     public static final double CRATER_HITBOX_SIZE = .6;
@@ -59,14 +61,13 @@ public class Constants {
     public static final int HEALTH_BAR_WIDTH = 20;
     public static final int HEALTH_BAR_HEIGHT = 5;
     public static final int CAMERA_OFFSET = 8;
-    public static final double HITMARKER_RATIO = 1 / 1000.;
-    public static final double TARGET_TILE_SCALE = 0.1/1.5; // 150 px size
+    public static final double TARGET_TILE_SCALE = 0.1 / 1.5; // 150 px size
     public static final double TARGET_THICKNESS = 0.1;
-/*  h3 params :
-    public static final String HITMARKER_IMAGE = "h3.png";
-    public static final double HITMARKER_SIZE = .5;
-    public static final double HITMARKER_ANGLE = Math.PI / 4;
-*/
+    /*  h3 params :
+        public static final String HITMARKER_IMAGE = "h3.png";
+        public static final double HITMARKER_SIZE = .5;
+        public static final double HITMARKER_ANGLE = Math.PI / 4;
+    */
     public static final String HITMARKER_IMAGE = "hb.png";
     public static final double HITMARKER_SIZE = .1; // 0/1 for default
     public static final double HITMARKER_ANGLE = 0;
@@ -75,7 +76,7 @@ public class Constants {
     public static final String ARENA_TILE_IMAGE = "s.png";
     public static final String BACKGROUND_TILE_IMAGE = "sb.png";
     public static final double ARENA_TILE_SCALE = 3.2 * .2;
-    public static final double BACKGROUND_TILE_SCALE = 2*.2;
+    public static final double BACKGROUND_TILE_SCALE = 2 * .2;
     public static final double WALL_TILE_SCALE = 0.5;
     public static final double WALL_THICKNESS = .3;
     public static final Point WALL_SIZE = MAP_SIZE.add(WALL_THICKNESS * 2);

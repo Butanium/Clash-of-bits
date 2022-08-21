@@ -15,7 +15,7 @@ import static com.codingame.game.Constants.MAP_SIZE;
  *
  */
 public class Bullet extends CircularHitBox {
-    private static final Random random = new Random(Constants.BULLET_SEED);
+    private final Random random;
     public static Set<Bullet> bulletSet = new HashSet<>();
     private final Player owner;
     private final Robot shooter;
@@ -26,12 +26,12 @@ public class Bullet extends CircularHitBox {
     private boolean willHit;
     private Point direction;
 
-    public Bullet(Robot shooter, Robot target, boolean willHit, double damage) {
+    public Bullet(Robot shooter, Robot target, boolean willHit, double damage, long seed) {
         super(shooter, 0, Constants.BULLET_SPEED);
+        random = new Random(seed);
         this.shooter = shooter;
         this.target = target;
         direction = willHit ? shooter.getDirectionNoEx(target) : getDeviation(target);
-
         this.willHit = willHit;
         this.damage = damage;
         owner = shooter.getOwner();

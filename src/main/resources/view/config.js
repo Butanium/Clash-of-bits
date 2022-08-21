@@ -5,7 +5,7 @@ import {CameraModule} from "./modules/CameraModule.js";
 import {CameraToggleModule} from './modules/CameraToggleModule.js';
 import {ToggleModule} from './toggle-module/ToggleModule.js'
 import {FollowEntityModule} from './modules/FollowEntityModule.js';
-import {DisplayOnHoverModule} from "./modules/DisplayOnHoverModule.js";
+import {InteractiveDisplayModule} from "./modules/InteractiveDisplayModule.js";
 
 // List of viewer modules that you want to use in your game
 export const modules = [
@@ -16,7 +16,8 @@ export const modules = [
     CameraToggleModule,
     ToggleModule,
     FollowEntityModule,
-    DisplayOnHoverModule
+    InteractiveDisplayModule,
+
 
 ];
 export const playerColors = [
@@ -56,6 +57,5 @@ export const options = [
         },
         // Default value of your toggle
         default: false
-    })
+    }),
 ]
-

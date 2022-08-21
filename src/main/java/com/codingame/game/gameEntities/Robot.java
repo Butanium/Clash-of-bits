@@ -7,6 +7,8 @@ import view.entitiesSprites.RobotSprite;
 
 import java.util.*;
 
+import static com.codingame.game.Constants.*;
+
 
 public class Robot extends InGameEntity {
     /**
@@ -35,8 +37,7 @@ public class Robot extends InGameEntity {
     private Robot attackTarget = null;
     private int shotState = 0;
     private int shieldCooldownState = 0;
-    private Point currentSpeed;
-    private String lastAction = "IDLE";
+    private String lastAction = Idle;
     private Set<InGameEntity> lastTargets = new HashSet<>(Collections.singletonList(this));
     private Point nextPosition;
 
@@ -58,7 +59,6 @@ public class Robot extends InGameEntity {
         shieldRegenPerFrame = maxShieldHealth / shieldRegenDuration;
         health = maxHealth;
         shieldHealth = maxShieldHealth;
-        currentSpeed = new Point();
         setType(EntityType.ROBOT);
         robotType = type;
     }
@@ -77,11 +77,9 @@ public class Robot extends InGameEntity {
         damagePerBullet = type.getDamagePerBullet();
         shieldRegenCooldown = type.getShieldRegenCooldown();
         shieldRegenDuration = type.getShieldRegenDuration();
-
         shieldRegenPerFrame = maxShieldHealth / shieldRegenDuration;
         health = maxHealth;
         shieldHealth = maxShieldHealth;
-        currentSpeed = new Point();
         setType(EntityType.ROBOT);
         robotType = type;
 
@@ -103,14 +101,14 @@ public class Robot extends InGameEntity {
      * @param target : robot you shot at
      */
     public void ATTACK(Robot target) {
-        lastAction = "ATTACK";
+        lastAction = Attack;
         if (target != this.attackTarget || shotState == 0) {
             shotState = aimTime + shotTime;
         } else {
             if (shotState <= shotTime) {
                 for (int i = 0; i < bulletPerShot; i++) {
                     Bullet bullet = new Bullet(this, target,
-                            owner.getRNG().nextDouble() < shotRangeProb[getRange(target)], damagePerBullet);
+                            owner.getRNG().nextDouble() < shotRangeProb[getRange(target)], damagePerBullet, referee.getSeed());
                     Bullet.bulletSet.add(bullet);
                 }
             }
@@ -126,7 +124,7 @@ public class Robot extends InGameEntity {
      * @param entities : entities the bot has to flee from
      */
     public void FLEE(Set<InGameEntity> entities) {
-        lastAction = "FLEE";
+        lastAction = Flee;
         lastTargets = entities;
         Set<Point> points = new HashSet<>(entities);
         Point target = getAveragePoint(points);
@@ -141,7 +139,7 @@ public class Robot extends InGameEntity {
      * @param entities : entities the bot has to move to
      */
     public void MOVE(Set<InGameEntity> entities) {
-        lastAction = "MOVE";
+        lastAction = Move;
         lastTargets = entities;
         Set<Point> points = new HashSet<>(entities);
         shotState = aimTime + shotTime;
@@ -157,8 +155,7 @@ public class Robot extends InGameEntity {
 
     public void IDLE() {
         resetAttack();
-        currentSpeed = new Point();
-        lastAction = "IDLE";
+        lastAction = Idle;
         lastTargets.clear();
         lastTargets.add(this);
         nextPosition = this;
@@ -173,6 +170,7 @@ public class Robot extends InGameEntity {
     public void moveInDirection(Point direction, double amount) {
         setXY(clampToMap(add(direction.multiply(amount))));
     }
+
     public void moveInDirectionNextPos(Point direction, double amount) {
         nextPosition = clampToMap(add(direction.multiply(amount)));
     }

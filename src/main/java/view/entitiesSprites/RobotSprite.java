@@ -2,16 +2,19 @@ package view.entitiesSprites;
 
 import com.codingame.game.exceptions.ZeroDivisionException;
 import com.codingame.game.gameElements.Point;
+import com.codingame.game.gameEntities.InGameEntity;
 import com.codingame.game.gameEntities.Robot;
 import com.codingame.gameengine.module.entities.*;
 import view.UI.ProgressBar;
 import view.fx.Animation;
 import view.fx.AnimationType;
 import view.managers.ViewManager;
+import view.modules.InteractiveDisplayModule;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import static com.codingame.game.Constants.*;
 import static com.codingame.gameengine.module.entities.Curve.*;
@@ -31,6 +34,10 @@ public class RobotSprite extends ViewPart {
     private final Sprite moveSprite;
     private final Sprite idleSprite;
     private final Sprite fleeSprite;
+
+    private String lastAction = Idle;
+
+    private Set<InGameEntity> lastTargets = new HashSet<>();
 
     private final Text idText;
     private final TilingSprite targetSprite;
@@ -139,19 +146,20 @@ public class RobotSprite extends ViewPart {
         viewManager.followEntityModule.followEntity(idText, robotGroup);
         viewManager.addToArena(idText);
         viewManager.addDebug(idText);
+        double actionScale = 0.5;
         idleSprite = graphicEntityModule.createSprite().setImage("idle.png").setAnchor(0.5)
-                .setBaseWidth(spriteSize).setBaseHeight(spriteSize).setZIndex(Z_INDEX_SURFACE);
+                .setBaseWidth(spriteSize).setBaseHeight(spriteSize).setZIndex(Z_INDEX_SURFACE).setScale(actionScale);
         attackSprite = graphicEntityModule.createSprite().setImage("attack.png").setAnchor(0.5)
-                .setBaseWidth(spriteSize).setBaseHeight(spriteSize).setZIndex(Z_INDEX_SURFACE).setVisible(false);
+                .setBaseWidth(spriteSize).setBaseHeight(spriteSize).setZIndex(Z_INDEX_SURFACE).setVisible(false).setScale(actionScale);
         moveSprite = graphicEntityModule.createSprite().setImage("arrow.png").setAnchor(0.5).setBaseWidth(spriteSize)
-                .setBaseHeight(spriteSize).setZIndex(Z_INDEX_SURFACE).setVisible(false);
+                .setBaseHeight(spriteSize).setZIndex(Z_INDEX_SURFACE).setVisible(false).setScale(actionScale);
         fleeSprite = graphicEntityModule.createSprite().setImage("flee.png").setAnchor(0.5).setBaseWidth(spriteSize)
-                .setBaseHeight(spriteSize).setZIndex(Z_INDEX_SURFACE).setVisible(false);
+                .setBaseHeight(spriteSize).setZIndex(Z_INDEX_SURFACE).setVisible(false).setScale(actionScale);
         debugGroup.add(debug_circle, idleSprite, moveSprite, attackSprite, fleeSprite);
-        debugActionSpriteMap.put("IDLE", idleSprite);
-        debugActionSpriteMap.put("MOVE", moveSprite);
-        debugActionSpriteMap.put("ATTACK", attackSprite);
-        debugActionSpriteMap.put("FLEE", fleeSprite);
+        debugActionSpriteMap.put(Idle, idleSprite);
+        debugActionSpriteMap.put(Move, moveSprite);
+        debugActionSpriteMap.put(Attack, attackSprite);
+        debugActionSpriteMap.put(Flee, fleeSprite);
         robotGroup.add(debugGroup, mouseHitbox);
         viewManager.addDebug(debugGroup);
         viewManager.removeForDebug(robotSprite);
@@ -162,7 +170,9 @@ public class RobotSprite extends ViewPart {
                 .setTileScaleX(1. / scaleX * TARGET_TILE_SCALE).setVisible(false);
         viewManager.addToArena(targetSprite);
         viewManager.addDebug(targetSprite);
-        viewManager.displayOnHoverModule.setDisplayHover(mouseHitbox, new Entity[]{targetSprite, rangeGroup});
+        viewManager.interactiveDisplayModule.addResize(robotGroup, 2., InteractiveDisplayModule.HOVER_ONLY);
+        viewManager.interactiveDisplayModule.addDisplay(mouseHitbox, targetSprite);
+        viewManager.interactiveDisplayModule.addDisplay(mouseHitbox, rangeGroup, InteractiveDisplayModule.HOVER_ONLY);
     }
 
     private String getTooltip() {
@@ -177,7 +187,6 @@ public class RobotSprite extends ViewPart {
     @Override
     public void update() {
         Point target = model.getAveragePoint(new HashSet<>(model.getTargets()));
-
         robotGroup.setX(viewManager.coordToScreen(model.getX()), LINEAR);
         robotGroup.setY(viewManager.coordToScreen(model.getY()), LINEAR);
         shieldBar.setBar(Math.max(0, model.getShieldRatio()));
@@ -185,14 +194,13 @@ public class RobotSprite extends ViewPart {
         if (!Objects.equals(viewManager.tooltips.getTooltipText(robotGroup), getTooltip())) {
             viewManager.tooltips.setTooltipText(robotGroup, getTooltip());
         }
-        debugActionSpriteMap.forEach((action, sprite) -> {
-            sprite.setVisible(model.getLastAction().equals(action));
-        });
-
-        attackAnim.update(!model.getLastAction().equals("ATTACK"));
-        moveAnim.setActive(!model.getLastAction().equals("ATTACK") && !model.getLastAction().equals("IDLE"));
+        Set<InGameEntity> newTargets = model.getTargets();
+        String newAction = model.getLastAction();
+        debugActionSpriteMap.forEach((action, sprite) -> sprite.setVisible(newAction.equals(action)));
+        attackAnim.update(!newAction.equals(Attack));
+        moveAnim.setActive(!newAction.equals(Attack) && !newAction.equals(Idle));
         moveAnim.update();
-        Curve curve = IMMEDIATE;
+        Curve curve = lastTargets.equals(newTargets) ? LINEAR : IMMEDIATE;
         try {
             Point pos = target.add(model).divide(2);
             double rotation = Math.PI / 2 + model.getDirection(target).getRotation();
@@ -203,22 +211,22 @@ public class RobotSprite extends ViewPart {
                     .setScaleY(scale, curve)
                     .setTileScaleY(1. / scale * TARGET_TILE_SCALE, curve)
                     // .setScaleY(scale, curve).setTileScaleY(1. / scale)
-                    .setRotation(rotation, curve);
-            if (model.getLastAction().equals("MOVE")) {
+                    .setRotation(rotation, IMMEDIATE);
+            if (newAction.equals(Move)) {
                 targetSprite.setImage("arrowtile.png");
             }
-            if (model.getLastAction().equals("FLEE")) {
-                targetSprite.setRotation(rotation + Math.PI, curve);
+            if (newAction.equals(Flee)) {
+                targetSprite.setRotation(rotation + Math.PI, IMMEDIATE);
                 targetSprite.setImage("arrowtile.png");
             }
-            if (model.getLastAction().equals("ATTACK")) {
+            if (newAction.equals(Attack)) {
                 targetSprite.setImage(ATTACK_TARGET_SPRITE);
             }
         } catch (ZeroDivisionException ignored) {
-            targetSprite.setTileScaleY(0, curve);
+            targetSprite.setTileScaleY(0, IMMEDIATE);
         }
-        if (model.getLastAction().equals("IDLE")) {
-            targetSprite.setTileScaleY(0, curve);
+        if (newAction.equals(Idle)) {
+            targetSprite.setTileScaleY(0, IMMEDIATE);
         }
 
         if (damageTaken > 0) {
@@ -229,6 +237,8 @@ public class RobotSprite extends ViewPart {
         } else {
             hitMarker.setVisible(false);
         }
+        lastAction = newAction;
+        lastTargets = newTargets;
     }
 
     public void takeDamage(double amount, int color) {
@@ -253,7 +263,7 @@ public class RobotSprite extends ViewPart {
         healthBar.remove();
         hitMarker.setVisible(false);
         targetSprite.setVisible(false);
-        viewManager.displayOnHoverModule.untrack(mouseHitbox);
+        viewManager.interactiveDisplayModule.untrack(mouseHitbox);
         idText.setVisible(false);
     }
 
