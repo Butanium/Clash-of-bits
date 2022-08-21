@@ -85,7 +85,7 @@ function revertTransformation(entity, parameters) {
     const params = infos[2]
     switch (interaction) {
         case DISPLAY:
-            entity.container.visible = entity.currentStat.visible
+            entity.container.visible = entity.currentState.visible
             return
         case RESIZE:
             resetScale(entity)
