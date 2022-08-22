@@ -134,7 +134,7 @@ public class RobotSprite extends ViewPart {
         // Ranges
         for (double range : RANGES) {
             rangeGroup.add(graphicEntityModule.createCircle().setRadius(viewManager.sizeToScreen(range))
-                    .setFillColor(0x0000FF).setFillAlpha(0.1).setLineColor(0x00008D));
+                    .setFillColor(0x0000FF).setFillAlpha(0.1).setLineColor(0x00008D).setLineWidth(RANGE_LINE_WIDTH));
         }
         rangeGroup.setZIndex(Z_INDEX_RANGES).setVisible(false);
         viewManager.addToArena(rangeGroup);
