@@ -4,20 +4,21 @@ import com.codingame.game.gameElements.Bullet;
 import com.codingame.game.gameElements.Point;
 import view.entitiesSprites.BulletSprite;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 
 public class BulletManager {
-    private final Set<BulletSprite> availableBullets = new HashSet<>();
+    private final Map<Boolean,Set<BulletSprite>> availableBullets = new HashMap<>();
     private final Set<BulletSprite> usedBullets = new HashSet<>();
     private final ViewManager viewManager;
 
     public BulletManager(ViewManager viewManager) {
         this.viewManager = viewManager;
+        availableBullets.put(true, new HashSet<>());
+        availableBullets.put(false, new HashSet<>());
     }
 
     public void instantiateBullet(Bullet bullet, Point deviation) {
+        Set<BulletSprite> availableBullets = this.availableBullets.get(bullet.willHit());
         if (availableBullets.isEmpty()) {
             usedBullets.add(new BulletSprite(bullet,  viewManager, deviation));
         } else {
@@ -36,7 +37,7 @@ public class BulletManager {
             if (!bullet.isActive()) {
                 it.remove();
                 bullet.onRemove();
-                availableBullets.add(bullet);
+                availableBullets.get(bullet.isHit()).add(bullet);
             }
         }
     }

@@ -20,6 +20,8 @@ public class BulletSprite extends ViewPart {
     private Bullet model;
     private boolean active = true;
 
+    private final boolean isHit;
+
     public BulletSprite(Bullet bullet, ViewManager viewManager, Point deviation) {
         this.viewManager = viewManager;
         spriteSize = viewManager.sizeToScreen(BULLET_SIZE);
@@ -31,7 +33,7 @@ public class BulletSprite extends ViewPart {
                 setImages("b1.png", "b2.png", "b3.png").setDuration(BULLET_ANIMATION_DURATION)
                 .setTint(color).setAnchor(0.5).setScale(BULLET_SCALE);
         debugCircle = viewManager.graphicEntityModule.createCircle()
-                .setRadius(spriteSize)
+                .setRadius(spriteSize * 2)
                 .setFillColor(color);
         viewManager.addDebug(debugCircle);
         viewManager.removeForDebug(bulletSprite);
@@ -43,9 +45,8 @@ public class BulletSprite extends ViewPart {
         viewManager.addToArena(bulletGroup);
         if (!model.willHit()) {
             viewManager.removeForDebug(bulletGroup);
-        } else {
-            viewManager.addDebug(bulletGroup);
         }
+        isHit = model.willHit();
     }
 
     public void reset(Bullet bullet, Point deviation) {
@@ -59,15 +60,7 @@ public class BulletSprite extends ViewPart {
         bulletGroup.setX(coordToScreen(model.getX() + deviation.getX()), Curve.IMMEDIATE)
                 .setY(coordToScreen(model.getY() + deviation.getY()), Curve.IMMEDIATE).setAlpha(1)
                 .setRotation(model.getDirection().getRotation() + Math.PI / 2);
-
-        ;
-        //.setAlpha(0.2);
         updateVisibility();
-        if (!model.willHit()) {
-            viewManager.removeForDebug(bulletGroup);
-        } else {
-            viewManager.addDebug(bulletGroup);
-        }
     }
 
 
@@ -114,5 +107,9 @@ public class BulletSprite extends ViewPart {
 
     private int coordToScreen(double pos) {
         return viewManager.coordToScreen(pos);
+    }
+
+    public boolean isHit() {
+        return isHit;
     }
 }

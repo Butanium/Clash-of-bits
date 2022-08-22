@@ -65,6 +65,7 @@ public class Referee extends AbstractReferee {
         endScreenModule.setTitleRankingsSprite("endScreen.png");
         botCount = getBotCount();
         long seed = gameManager.getSeed();
+        Bullet.initiateRandom(seed);
         Spawner spawner = new Spawner(seed, botCount, gameManager.getPlayerCount());
         ArrayList<Point>[] spawns = spawner.getGridSpawnPositions(gameManager.getLeagueLevel());
         if (gameManager.getPlayerCount() != 2) {

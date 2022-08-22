@@ -71,6 +71,7 @@ public class Constants {
     public static final String HITMARKER_IMAGE = "hb.png";
     public static final double HITMARKER_SIZE = .1; // 0/1 for default
     public static final double HITMARKER_ANGLE = 0;
+    public static final double RANGE_LINE_WIDTH = 3;
 
     // Arena settings
     public static final String ARENA_TILE_IMAGE = "s.png";

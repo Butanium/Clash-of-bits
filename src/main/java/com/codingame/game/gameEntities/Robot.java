@@ -108,7 +108,7 @@ public class Robot extends InGameEntity {
             if (shotState <= shotTime) {
                 for (int i = 0; i < bulletPerShot; i++) {
                     Bullet bullet = new Bullet(this, target,
-                            owner.getRNG().nextDouble() < shotRangeProb[getRange(target)], damagePerBullet, referee.getSeed());
+                            owner.getRNG().nextDouble() < shotRangeProb[getRange(target)], damagePerBullet);
                     Bullet.bulletSet.add(bullet);
                 }
             }

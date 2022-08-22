@@ -15,7 +15,7 @@ import static com.codingame.game.Constants.MAP_SIZE;
  *
  */
 public class Bullet extends CircularHitBox {
-    private final Random random;
+    private static Random random;
     public static Set<Bullet> bulletSet = new HashSet<>();
     private final Player owner;
     private final Robot shooter;
@@ -25,33 +25,42 @@ public class Bullet extends CircularHitBox {
     private boolean isInstanced = false;
     private boolean willHit;
     private Point direction;
+    private Point deviation;
 
-    public Bullet(Robot shooter, Robot target, boolean willHit, double damage, long seed) {
-        super(shooter, 0, Constants.BULLET_SPEED);
+    public static void initiateRandom(long seed) {
         random = new Random(seed);
+    }
+
+    public Bullet(Robot shooter, Robot target, boolean willHit, double damage) {
+        super(shooter, 0, Constants.BULLET_SPEED);
         this.shooter = shooter;
         this.target = target;
-        direction = willHit ? shooter.getDirectionNoEx(target) : getDeviation(target);
+        deviation = getDeviation(target, willHit ? 0 : Math.max(1.5 * target.getSize(), Constants.MIN_BULLET_DEVIATION),
+                willHit ? target.getSize() * 0.75 : Constants.MAX_BULLET_DEVIATION);
+        direction = willHit ? shooter.getDirectionNoEx(target.add(deviation)) : getTargetWithDeviation(target, deviation);
         this.willHit = willHit;
         this.damage = damage;
         owner = shooter.getOwner();
 
     }
 
-    private Point getDeviation(CircularHitBox target) {
-        int sign = random.nextBoolean() ? 1 : -1;
-        double rnd = random.nextDouble();
+    private Point getTargetWithDeviation(CircularHitBox target, Point deviation) {
         if (getDist(target) == 0) {
             return new Point();
         }
-        Point newTarget = target.add(getDirection(target).orthogonal().normalize().multiply(
-                target.getSize() * sign * (Constants.MAX_BULLET_DEVIATION * rnd +
-                        (1 - rnd) * Constants.MIN_BULLET_DEVIATION)));
+        Point newTarget = target.add(deviation);
         return getDirection(newTarget);
     }
 
+    private Point getDeviation(CircularHitBox target, double minDeviation, double maxDeviation) {
+        int sign = random.nextBoolean() ? 1 : -1;
+        double rnd = random.nextDouble();
+        return getDirection(target).orthogonal().normalize().multiply(
+                target.getSize() * sign * (maxDeviation * rnd +
+                        (1 - rnd) * minDeviation));
+    }
+
     public boolean updatePos(ViewManager viewManager) {
-        //Referee.debug(String.format("bullet fired at %f, %f ",getX(),getY()));
         if (!isInstanced) {
             viewManager.instantiateBullet(this,
                     shooter.getDirectionNoEx(target).multiply(shooter.getRobotType().getCanon_size()));
@@ -61,15 +70,14 @@ public class Bullet extends CircularHitBox {
             this.willHit = false;
         }
         if (willHit) {
-            direction = getDirectionNoEx(target);
+            direction = getDirectionNoEx(target.add(deviation));
             if (getDist(target) < Constants.DELTA_TIME * Constants.BULLET_SPEED + target.getSize()) {
                 target.takeDamage(damage, owner);
                 hasExplode = true;
-                setXY(target);
+                setXY(target.add(deviation));
                 return true;
             } else {
-                move(direction.
-                        multiply(Constants.DELTA_TIME * Constants.BULLET_SPEED));
+                move(direction.multiply(Constants.DELTA_TIME * Constants.BULLET_SPEED));
             }
         } else {
             move(direction.multiply(Constants.DELTA_TIME * Constants.BULLET_SPEED));
