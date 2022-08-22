@@ -94,12 +94,12 @@ public class InteractiveDisplayModule implements Module {
     }
 
     /**
-     * Stop displaying/resizing associatedEntity when entity is clicked/Hovered
+     * Stop transforming associatedEntity when entity is clicked/Hovered
      *
      * @param entity           the interactive entity
-     * @param associatedEntity the entity that won't be displayed anymore
+     * @param associatedEntity the entity that won't be transformed anymore
      */
-    public void removeDisplay(Entity<?> entity, Entity<?> associatedEntity) {
+    public void removeTransformation(Entity<?> entity, Entity<?> associatedEntity) {
         Map<Integer, String> displays = registration.getOrDefault(entity.getId(), new HashMap<>());
         if (displays.remove(associatedEntity.getId()) != null) {
             newRegistration.put(entity.getId(), displays);
