@@ -269,7 +269,7 @@ public class Robot extends InGameEntity {
 
     @Override
     public String getSelfInfo(int league, ArrayList<Robot> enemies, int playerId) {
-        String healthRank, shieldRank, distEn, distEnRank, totalRank; //ok
+        String healthRank, shieldRank, distEn, distEnRank, totalRank;
         String borderDist, borderDistRank;
         healthRank = shieldRank = distEn = distEnRank = totalRank = "0";
         borderDist = borderDistRank = "0";
@@ -300,7 +300,7 @@ public class Robot extends InGameEntity {
         String shieldComp, healthComp, totComp;
         shieldComp = healthComp = totComp = "0";
         String id = getId() + "";
-        String type = "SELF";
+        String type = "ON_AIR";
         String distMe = "0";
         String distMeRank = "1";
         if (league > 1) {
@@ -329,7 +329,7 @@ public class Robot extends InGameEntity {
 
     public int getApproximateShield() {
         double sr = getShieldRatio();
-        if (sr < .01) {
+        if (sr == 0) {
             return 0;
         }
         if (sr < .25) {
@@ -409,7 +409,7 @@ public class Robot extends InGameEntity {
         for (InGameEntity InGameEntity : lastTargets) {
             targets.add(InGameEntity.getId() + "");
         }
-        return String.join(";", targets);
+        return String.join(",", targets);
     }
 
     public String getLastActionWithTarget() {
