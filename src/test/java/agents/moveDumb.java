@@ -8,7 +8,14 @@ import java.util.Scanner;
 @SuppressWarnings("InfiniteLoopStatement")
 public
 class moveDumb {
-
+    static class Empty {
+        public int x;
+        public int y;
+        public Empty(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+    }
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
         int botPerPlayer = in.nextInt(); // the amount of bot you control
@@ -16,23 +23,13 @@ class moveDumb {
         // game loop
         while (true) {
             StringBuilder result = new StringBuilder();
+            new Empty(1,2);
             int allyBotAlive = in.nextInt(); // the amount of your bot which are still alive
             int totalEntities = in.nextInt(); // the amount of entities in the arena
             System.err.printf("%d allybots, %d entities", allyBotAlive, totalEntities);
+            in.nextLine();
             for (int i = 0; i < totalEntities; i++) {
-                int entId = in.nextInt(); // the unique entity id, stay the same for the whole game
-                String entType = in.next(); // the entity type in a string. It can be ALLY | ENEMY
-                int health = in.nextInt(); // the approximate entity health. Can be 0 | 25 | 50 | 75 | 100, 25 meaning that your life is >= 25% and < 50% of your max life
-                int shield = in.nextInt(); // the approximate entity shield. Can be 0 | 1 | 25 | 50 | 75 | 100, 1 meaning that your shield is >= 1% and < 25% of your max shield and 0 that you have no more shield left
-                String action = in.next(); // action executed by the entity last turn
-                String targets = in.next(); // list of the targets id targeted by the robot last turn ("id1;id2;id3...") if the entity is a robot not idling, else -1
-                int distEn = in.nextInt();
-                int borderDist = in.nextInt(); // approximate distance between the entity and the closest border
-                int borderDistRank = in.nextInt(); // entity are sorted in ascending order based on their distance to the closest border
-                int distEnRank = in.nextInt(); // entities are sorted by ascending order based on their distance to the closest enemy
-                int healthRank = in.nextInt(); // entities are sorted in ascendant order based on their amount of health, this is the rank of the current entity in the sorted list
-                int shieldRank = in.nextInt(); // entities are sorted in ascendant order based on their amount of shield
-                int totalRank = in.nextInt(); // entities are sorted in ascendant order based on their amount of health + shield
+               in.nextLine();
             }
             for (int i = 0; i < allyBotAlive; i++) {
                 int accRank = totalEntities;
@@ -41,7 +38,7 @@ class moveDumb {
                 int selfId = 0;
                 for (int j = 0; j < totalEntities; j++) {
                     int entId = in.nextInt(); // the unique entity id
-                    String entType = in.next(); // the entity type in a string. It can be SELF | ALLY | ENEMY
+                    String entType = in.next(); // the entity type in a string. It can be ON_AIR | ALLY | ENEMY
                     int distMe = in.nextInt(); // approximate distance between the target and the current bot. Can be 0 to 3 for short, medium, long and out of range
                     int distMeRank = in.nextInt(); // entities are sorted by ascending order based on their distance to the current bot
                     int shieldComp = in.nextInt(); // -1 if the entity has more shield than the current bot, 0 if it's equal, 1 if your bot as more shield
@@ -52,7 +49,7 @@ class moveDumb {
                         accRank = distMeRank;
                         accDist = distMe;
                     }
-                    if (entType.equals("SELF")) {
+                    if (entType.equals("ON_AIR")) {
                         selfId = entId;
                     }
                 }

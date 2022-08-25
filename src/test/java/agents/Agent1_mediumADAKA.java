@@ -52,7 +52,7 @@ class Agent1_mediumADAKA {
                 int targetDist = 3;
                 for (int j = 0; j < totalEntities; j++) {
                     int entId = in.nextInt(); // the unique entity id
-                    String entType = in.next(); // the entity type in a string. It can be SELF | ALLY | ENEMY
+                    String entType = in.next(); // the entity type in a string. It can be ON_AIR | ALLY | ENEMY
                     int distMe = in.nextInt(); // approximate distance between the target and the current bot. Can be 0 to 3 for short, medium, long and out of range
                     int distMeRank = in.nextInt(); // entities are sorted by ascending order based on their distance to the current bot
                     int shieldComp = in.nextInt(); // -1 if the entity has more shield than the current bot, 0 if it's equal, 1 if your bot as more shield
@@ -68,7 +68,7 @@ class Agent1_mediumADAKA {
                         }
                     }
 
-                    if (entType.equals("SELF")) {
+                    if (entType.equals("ON_AIR")) {
                         selfId = entId;
                         targetId =  attackTargetMap.getOrDefault(selfId, -1);
                         System.err.printf("target ID : %d ", targetId);

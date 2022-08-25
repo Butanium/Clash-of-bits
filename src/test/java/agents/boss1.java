@@ -42,7 +42,7 @@ public class boss1 {
                 int selfId = 0;
                 for (int j = 0; j < totalEntities; j++) {
                     int entId = in.nextInt(); // the unique gameEntity id
-                    String entType = in.next(); // the gameEntity type in a string. It can be SELF | ALLY | ENEMY
+                    String entType = in.next(); // the gameEntity type in a string. It can be ON_AIR | ALLY | ENEMY
                     int distMe = in.nextInt(); // approximate distance between the target and the current bot. Can be 0 to 4 for short, medium, long and out of range
                     int distMeRank = in.nextInt(); // entities are sorted by ascending order based on their distance to the current bot
                     if (entType.equals("ENEMY") && distMeRank < accRank) {
@@ -50,7 +50,7 @@ public class boss1 {
                         accRank = distMeRank;
                         accDist = distMe;
                     }
-                    if (entType.equals("SELF")) {
+                    if (entType.equals("ON_AIR")) {
                         selfId = entId;
                     }
                     int shieldComp = in.nextInt(); // NOT USED IN THIS LEAGUE (a COMP so either  -1 | 0 | 1)

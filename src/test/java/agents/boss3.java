@@ -56,38 +56,42 @@ class boss3 {
                 int accShieldRank = totalEntities;
                 for (int j = 0; j < totalEntities; j++) {
                     int entId = in.nextInt(); // the unique entity id
-                    String entType = in.next(); // the entity type in a string. It can be SELF | ALLY | ENEMY
+                    String entType = in.next(); // the entity type in a string. It can be ON_AIR | ALLY | ENEMY
                     int distMe = in.nextInt(); // approximate distance between the target and the current bot. Can be 0 to 3 for short, medium, long and out of range
                     int distMeRank = in.nextInt(); // entities are sorted by ascending order based on their distance to the current bot
                     int shieldComp = in.nextInt(); // -1 if the entity has more shield than the current bot, 0 if it's equal, 1 if your bot as more shield
                     int healthComp = in.nextInt(); // same as shieldComp but for the health
                     int totComp = in.nextInt(); // same as shieldComp but based on the sum of health+shield
-                    if (entType.equals("ENEMY") && shieldRankings.get(entId) <= accShieldRank) {
-                        if (accDist >= distMe) {
+                    if (entType.equals("ENEMY") && (shieldRankings.get(entId) <= accShieldRank   || distMe < 3 && accDist == 3) && (distMe < 3 || accDist == 3)) {
+                        if (distMe <= accDist) {
                             accId = entId;
                             accShieldRank = shieldRankings.get(entId);
                             accDist = distMe;
                         }
-
                     }
                     if (accClosest >= distMe && entType.equals("ENEMY")) {
                         accClosestId = entId;
                         accClosest = distMe;
                     }
-                    if (entType.equals("SELF")) {
+                    if (entType.equals("ON_AIR")) {
                             selfId = entId;
                     }
                 }
-                if (shieldMap.get(selfId) <= 1 && accDist < 3 && attackersMap.getOrDefault(selfId, new HashSet<>()).size() > 0) {
+                int attackerAmount = attackersMap.getOrDefault(selfId, new HashSet<>()).size();
+                if ((shieldMap.get(selfId) <= 50 || attackerAmount > 2) && accDist < 3 && attackerAmount > 0) {
                     result.append(selfId).append(" FLEE ").append(String.join(",", attackersMap.get(selfId).stream()
                             .map(String::valueOf).collect(Collectors.toSet()))).append(";");
-                } else if (accDist < 2 || accDist < 3 &&
+                } else if (shieldMap.get(selfId) <= 50 && attackerAmount > 0){
+                    System.err.println("OOR Defense " + accDist);
+                    result.append(selfId).append(" ATTACK ").append(attackersMap.get(selfId).stream().findFirst().get()).append(";");
+                }
+                else if (accDist < 2 || accDist < 3 &&
                         (attackersMap.getOrDefault(selfId, new HashSet<>()).size() > 0 || shieldMap.get(selfId) <= 50)) {
                     result.append(selfId).append(" ATTACK ").append(accId).append(";");
                 } else if (accClosest <= 1) {
                     result.append(selfId).append(" ATTACK ").append(accClosestId).append(";");
                 } else {
-                    System.err.printf("moving, acc dist : %d\n", accClosest);
+//                    System.err.printf("moving, acc dist : %d\n", accClosest);
                     result.append(selfId).append(" MOVE ").append(accId).append(";");
                 }
             }
