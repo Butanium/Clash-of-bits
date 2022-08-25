@@ -75,7 +75,11 @@ public class Constants {
 
     // Arena settings
     public static final String ARENA_TILE_IMAGE = "s.png";
+    public static final String DEBUG_ARENA_TILE_IMAGE = "sd.png";
+
     public static final String BACKGROUND_TILE_IMAGE = "sb.png";
+    public static final String DEBUG_BACKGROUND_TILE_IMAGE = "sbd.png";
+
     public static final double ARENA_TILE_SCALE = 3.2 * .2;
     public static final double BACKGROUND_TILE_SCALE = 2 * .2;
     public static final double WALL_TILE_SCALE = 0.5;
@@ -85,8 +89,10 @@ public class Constants {
     public static final Point ARENA_SIZE = WALL_SIZE.add(ARENA_PADDING * 2);
 
     // Zindexs
-    public static final int Z_INDEX_BACKGROUND = 0;
-    public static final int Z_INDEX_ARENA_FLOOR = Z_INDEX_BACKGROUND + 1;
+    public static final int Z_INDEX_DEBUG_BACKGROUND = 0;
+    public static final int Z_INDEX_BACKGROUND = Z_INDEX_DEBUG_BACKGROUND + 1;
+    public static final int Z_INDEX_ARENA_DEBUG_FLOOR = Z_INDEX_BACKGROUND + 1;
+    public static final int Z_INDEX_ARENA_FLOOR = Z_INDEX_ARENA_DEBUG_FLOOR + 1;
     public static final int Z_INDEX_CRATER = Z_INDEX_ARENA_FLOOR + 1;
     public static final int Z_INDEX_WALL0 = Z_INDEX_CRATER + 1;
     public static final int Z_INDEX_WALLS = Z_INDEX_WALL0 + 1;

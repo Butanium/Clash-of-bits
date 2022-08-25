@@ -109,31 +109,40 @@ public class ViewManager {
                 .setY(Y0);
 
         double scaleX = 3 * 1920 / 100., scaleY = 3 * 1150 / 100.;
-        arena.add(graphicEntityModule.createTilingSprite().setImage(BACKGROUND_TILE_IMAGE)
+        Entity<?> background = graphicEntityModule.createTilingSprite().setImage(BACKGROUND_TILE_IMAGE)
                 .setScaleX(scaleX)
                 .setTileScaleX(1 / scaleX * BACKGROUND_TILE_SCALE)
                 .setScaleY(scaleY)
                 .setTileScaleY(1 / scaleY * BACKGROUND_TILE_SCALE)
                 .setZIndex(Z_INDEX_BACKGROUND)
                 .setAnchor(.5)
+                .setX(24);
+        arena.add(background);
+        removeForDebug(background);
+        arena.add(graphicEntityModule.createTilingSprite().setImage(DEBUG_BACKGROUND_TILE_IMAGE)
+                .setScaleX(scaleX)
+                .setTileScaleX(1 / scaleX * BACKGROUND_TILE_SCALE)
+                .setScaleY(scaleY)
+                .setTileScaleY(1 / scaleY * BACKGROUND_TILE_SCALE)
+                .setZIndex(Z_INDEX_DEBUG_BACKGROUND)
+                .setAnchor(.5)
                 .setX(24));
         new GraphicModuleAnimation(this, AnimationType.Tesla, -200, 400, Z_INDEX_ROBOTS, 1, 1);
         tesla2 = new GraphicModuleAnimation(this, AnimationType.Tesla, 1300, 730, Z_INDEX_CRATER, 1, 1);
         tesla2.getSprite().setPlaying(false);
-        arena.add(
+        Group propsGroup = graphicEntityModule.createGroup(
                 graphicEntityModule.createSprite().setImage("prop_1.png")
-                        .setX(-250).setY(320).setAnchor(.5).setZIndex(Z_INDEX_CRATER),
+                        .setX(-250).setY(320).setAnchor(.5),
                 graphicEntityModule.createSprite().setImage("prop_1.png")
-                        .setX(1230).setY(800).setAnchor(.5).setZIndex(Z_INDEX_ROBOTS),
+                        .setX(1230).setY(800).setAnchor(.5),
                 graphicEntityModule.createSprite().setImage("prop_2.png")
-                        .setAnchor(.5).setX(-200).setY(900).setZIndex(Z_INDEX_ROBOTS),
+                        .setAnchor(.5).setX(-200).setY(900),
                 graphicEntityModule.createSprite().setImage("prop_2.png")
-                        .setAnchor(.5).setX(1350).setY(180).setZIndex(Z_INDEX_ROBOTS),
+                        .setAnchor(.5).setX(1350).setY(180),
                 graphicEntityModule.createSprite().setImage("prop_3.png")
-                        .setAnchor(.5).setX(1190).setY(500).setZIndex(Z_INDEX_ROBOTS)
-
-
-        );
+                        .setAnchor(.5).setX(1190).setY(500)).setZIndex(Z_INDEX_CRATER);
+        arena.add(propsGroup);
+        removeForDebug(propsGroup);
         TilingSprite[] walls = new TilingSprite[4];
         scaleX = sizeRatio * WALL_SIZE.getX() / 100.;
         scaleY = sizeRatio * WALL_THICKNESS / 100.;
@@ -155,16 +164,22 @@ public class ViewManager {
         walls[3].setRotation(Math.PI / 2).setX(walls[3].getX() + sizeToScreen(WALL_SIZE.getX()));
         scaleX = sizeRatio * MAP_SIZE.add(WALL_THICKNESS * .5).getX() / 100.;
         scaleY = sizeRatio * MAP_SIZE.add(WALL_THICKNESS * .5).getY() / 100.;
-        TilingSprite background = graphicEntityModule.createTilingSprite().setImage(ARENA_TILE_IMAGE)
-                .setScaleX(scaleX) // .add(WALL_THICKNESS)
+        TilingSprite floor = graphicEntityModule.createTilingSprite().setImage(ARENA_TILE_IMAGE)
+                .setScaleX(scaleX)
                 .setTileScaleX(1 / scaleX * ARENA_TILE_SCALE)
                 // because of round issue (1 pixel left black)
                 .setScaleY(scaleY)
                 .setTileScaleY(1 / scaleY * ARENA_TILE_SCALE)
-                .setZIndex(Z_INDEX_ARENA_FLOOR);
-        arena.add(background);
-        background.setX(coordToScreen(0))
-                .setY(coordToScreen(0));
+                .setZIndex(Z_INDEX_ARENA_FLOOR).setX(coordToScreen(0)).setY(coordToScreen(0));
+        arena.add(graphicEntityModule.createTilingSprite().setImage(DEBUG_ARENA_TILE_IMAGE)
+                .setScaleX(scaleX)
+                .setTileScaleX(1 / scaleX * ARENA_TILE_SCALE)
+                // because of round issue (1 pixel left black)
+                .setScaleY(scaleY)
+                .setTileScaleY(1 / scaleY * ARENA_TILE_SCALE)
+                .setZIndex(Z_INDEX_ARENA_DEBUG_FLOOR).setX(coordToScreen(0)).setY(coordToScreen(0))); // Debug floor
+        arena.add(floor);
+        removeForDebug(floor);
     }
 
     public void addCrater(Point position, double size) {
