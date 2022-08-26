@@ -291,7 +291,7 @@ text-align: left;">
             Dans ce jeu, il y a beaucoup de fonctionnalités pour vous aider à comprendre ce qui se passe dans l'arène :
             <div class="statement-example-container">
                 <div class="statement-example">
-                    <img src="assets/statement/camera_fr.png">
+                    <img src="https://cdn-games.codingame.com/community/4099691-1619052595646/73304b9b2a7922e90a5afbd0c294f778e16b56d2d0892e375b34a7303deaf409.png">
                     <div class="legend">
                         <div class="description">
                             Vous pouvez activer le zoom dynamique de la caméra avec l'interrupteur <b>camera mode</b>.
@@ -299,7 +299,7 @@ text-align: left;">
                     </div>
                 </div>
                 <div class="statement-example">
-                    <img src="assets/statement/ranges.png">
+                    <img src="https://cdn-games.codingame.com/community/4099691-1619052595646/c290091469a911be12204aefc90c47d95ed7e05167111a8d74fed1e46d2577d3.png">
                     <div class="legend">
                         <div class="description">
                             Les différentes
@@ -313,7 +313,7 @@ text-align: left;">
                     </div>
                 </div>
                 <div class="statement-example">
-                    <img src="assets/statement/displayOnHover.png">
+                    <img src="https://cdn-games.codingame.com/community/4099691-1619052595646/35c51763ed79a37a817574006bef28dae3235dd230a284de2c6ffc19f7726c0f.png">
                     <div class="legend">
                         <div class="description">
                             Vous pouvez
@@ -325,7 +325,7 @@ text-align: left;">
                 </div>
 
                 <div class="statement-example">
-                    <img src="assets/statement/debug.png">
+                    <img src="https://cdn-games.codingame.com/community/4099691-1619052595646/51e96c95edb1532dd2f2b2e20d51ad52ff1cac8ef09e36d94763719937ec8acd.png">
                     <div class="legend">
                         <div class="description">
                             Vous pouvez activer l'overlay de débogage avec l'interrupteur <b>debug overlay</b>
@@ -335,7 +335,7 @@ text-align: left;">
                 </div>
 
                 <div class="statement-example">
-                    <img src="assets/statement/hitmarker.png">
+                    <img src="https://cdn-games.codingame.com/community/4099691-1619052595646/1710e57847d75cc01f517521d99b37b0e740bbedc080ec2969d5d7bc7ff1f969.png">
                     <div class="legend">
                         <div class="description">
                             Les marqueurs de dégâts sont affichés lorsqu'un bot est touché par une balle.
@@ -466,7 +466,7 @@ text-align: left;">
         <i>
             Je voudrais remercier <a href="https://www.codingame.com/profile/8374201b6f1d19eb99d61c80351465b65150051">eulerscheZahl</a>
             pour ses précieux conseils lorsque j'ai commencé ce projet, <a href="https://twitter.com/gfx47">GFX47</a> qui a
-            accepté que je copie beaucoup de ses idées et <a href="https://github.com/DamnSake">DamnSake</a> et Deniw
+            accepté que je copie beaucoup de ses idées et <a href="https://github.com/DamnSake">DamnSake</a> et <b>Deniw</b>
             qui m'ont aidé pour les graphismes.
         </i>
     </div>

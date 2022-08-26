@@ -288,7 +288,7 @@ text-align: left;">
             In this game, there are many features to help you understand what is happening in the arena:
             <div class="statement-example-container">
                 <div class="statement-example">
-                    <img src="assets/statement/camera.png">
+                    <img src="https://cdn-games.codingame.com/community/4099691-1619052595646/08b6271664d262bb1dbc113cd330bcc6fe89c8938cd3fadfbf1a3a3f41b02d91.png">
                     <div class="legend">
                         <div class="description">
                             You can activate the dynamic zoom of the camera with the camera mode toggle.
@@ -296,7 +296,7 @@ text-align: left;">
                     </div>
                 </div>
                 <div class="statement-example">
-                    <img src="assets/statement/ranges.png">
+                    <img src="https://cdn-games.codingame.com/community/4099691-1619052595646/c290091469a911be12204aefc90c47d95ed7e05167111a8d74fed1e46d2577d3.png">
                     <div class="legend">
                         <div class="description">
                             The different
@@ -311,7 +311,7 @@ text-align: left;">
                     </div>
                 </div>
                 <div class="statement-example">
-                    <img src="assets/statement/displayOnHover.png">
+                    <img src="https://cdn-games.codingame.com/community/4099691-1619052595646/35c51763ed79a37a817574006bef28dae3235dd230a284de2c6ffc19f7726c0f.png">
                     <div class="legend">
                         <div class="description">
                             You can
@@ -325,7 +325,7 @@ text-align: left;">
                 </div>
 
                 <div class="statement-example">
-                    <img src="assets/statement/debug.png">
+                    <img src="https://cdn-games.codingame.com/community/4099691-1619052595646/51e96c95edb1532dd2f2b2e20d51ad52ff1cac8ef09e36d94763719937ec8acd.png">
                     <div class="legend">
                         <div class="description">
                             You can enable the debug overlay with the debug toggle to see the bot's id and current
@@ -335,7 +335,7 @@ text-align: left;">
                 </div>
 
                 <div class="statement-example">
-                    <img src="assets/statement/hitmarker.png">
+                    <img src="https://cdn-games.codingame.com/community/4099691-1619052595646/1710e57847d75cc01f517521d99b37b0e740bbedc080ec2969d5d7bc7ff1f969.png">
                     <div class="legend">
                         <div class="description">
                             Hitmarkers are displayed when a bot is hit by a bullet.
@@ -459,7 +459,7 @@ text-align: left;">
     <div style="margin-top: 10px; margin-bottom: 10 px">
     <i>I would like to thank <a href="https://www.codingame.com/profile/8374201b6f1d19eb99d61c80351465b65150051">eulerscheZahl</a>
         for his precious advice when I started this project, <a href="https://twitter.com/gfx47">GFX47</a> who agreed
-        to let me copy many of his ideas and <a href="https://github.com/DamnSake">DamnSake</a> and Deniw
+        to let me copy many of his ideas and <a href="https://github.com/DamnSake">DamnSake</a> and <b>Deniw</b>
         who helped me with the graphics.</i>
     </div>
     <!-- PROTOCOL -->
