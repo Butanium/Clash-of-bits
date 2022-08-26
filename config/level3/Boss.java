@@ -243,23 +243,32 @@ class Player {
                 Optional<Bot> priorityBot = enemyBots.stream().filter(bot -> bot.viewedBy(allyBot).rangeFromBot < 3 &&
                         bot.shield < 25).min(Comparator.comparingInt(bot -> bot.viewedBy(allyBot).distBotRank));
                 int shield = allyBot.shield;
+                boolean isActive = true;
                 if (shield < 50 && (allyBot.isAttackedDangerously() || allyBot.health < 50 && allyBot.isAttackedInRange()) ||
                         allyBot.inRangeAttacks() > 2 || shield <= 75 && allyBot.isAttackedInRange(MEDIUM_RANGE) ||
                         allyBot.inRangeAttacks(MEDIUM_RANGE) > 1) {
                     allyBot.flee(allyBot.attackingMe.toArray(new Bot[0]));
-                } else if (shield <= 50 && allyBot.isAttacked()) {
-                    allyBot.attack(allyBot.attackingMe.stream().min(Comparator.comparingInt(bot -> bot.viewedBy(allyBot).distBotRank)).get());
-                } else if (priorityBot.isPresent()) {
-                    int rangeFromPriority = priorityBot.get().viewedBy(allyBot).rangeFromBot;
-                    if (rangeFromPriority < 2 || rangeFromPriority < 3 && (allyBot.isAttacked() || allyBot.shield <= 50)) {
-                        allyBot.attack(priorityBot.get());
+                } else if (allyBot.action.equals(ATTACK)) {
+                    Bot target = allyBot.targets.stream().findFirst().get();
+                    if (target.shield < 50 && target.viewedBy(allyBot).rangeFromBot < OOR) {
+                        allyBot.attack(target);
+                        isActive = false;
                     }
-                } else if (rangeFromClosest < 2) {
-                    allyBot.attack(closestEnemy);
-                } else {
-                    allyBot.move(priorityBot.orElse(closestEnemy));
                 }
-
+                if (isActive) {
+                    if (shield <= 50 && allyBot.isAttacked()) {
+                        allyBot.attack(allyBot.attackingMe.stream().min(Comparator.comparingInt(bot -> bot.viewedBy(allyBot).distBotRank)).get());
+                    } else if (priorityBot.isPresent()) {
+                        int rangeFromPriority = priorityBot.get().viewedBy(allyBot).rangeFromBot;
+                        if (rangeFromPriority < 2 || rangeFromPriority < 3 && (allyBot.isAttacked() || allyBot.shield <= 50)) {
+                            allyBot.attack(priorityBot.get());
+                        }
+                    } else if (rangeFromClosest < 2) {
+                        allyBot.attack(closestEnemy);
+                    } else {
+                        allyBot.move(priorityBot.orElse(closestEnemy));
+                    }
+                }
             }
 
             // Write an answer using System.out.println()
