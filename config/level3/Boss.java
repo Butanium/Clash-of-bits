@@ -248,9 +248,11 @@ class Player {
                         allyBot.inRangeAttacks() > 2 || shield <= 75 && allyBot.isAttackedInRange(MEDIUM_RANGE) ||
                         allyBot.inRangeAttacks(MEDIUM_RANGE) > 1) {
                     allyBot.flee(allyBot.attackingMe.toArray(new Bot[0]));
+                    isActive = false;
                 } else if (allyBot.action.equals(ATTACK)) {
                     Bot target = allyBot.targets.stream().findFirst().get();
-                    if (target.shield < 50 && target.viewedBy(allyBot).rangeFromBot < OOR) {
+                    if (!target.isDead() && (target.shield < 50 || target.viewedBy(allyBot).rangeFromBot <= MEDIUM_RANGE)
+                            && target.viewedBy(allyBot).rangeFromBot < OOR) {
                         allyBot.attack(target);
                         isActive = false;
                     }

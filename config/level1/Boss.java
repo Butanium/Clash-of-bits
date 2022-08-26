@@ -9,7 +9,7 @@ class Player {
     static String orders = "";
     static Set<Bot> enemyBots = new HashSet<>();
     static Set<Bot> allyBots = new HashSet<>();
-    static Map<Integer, Bot> bots
+    static Map<Integer, Bot> bots;
     static final String ALLY = "ALLY";
     static final String ENEMY = "ENEMY";
     static final String ATTACK = "ATTACK";
@@ -93,6 +93,10 @@ class Player {
 
         public void attack(int targetId) {
             orders += String.format("%d %s %d;", id, ATTACK, targetId);
+        }
+
+        public void attack(Bot target) {
+            attack(target.id);
         }
 
         private void movement(String action, int... targetIds) {
@@ -188,7 +192,7 @@ class Player {
                     enemyBots.add(bot);
                 }
             }
-            bots.values().forEach(bot -> bot.getTargets(bots));
+            bots.values().forEach(bot -> bot.getTargets());
             for (int i = 0; i < allyBotAlive; i++) {
                 in.nextLine(); // skip to the next line
                 int onAirId = Integer.parseInt(in.nextLine().split(" ")[0]); // the id of the ON AIR bot
@@ -208,11 +212,9 @@ class Player {
                 Bot closestEnemy = allyBot.getClosestEnemy();
                 if (allyBot.shield <= 1) {
                     allyBot.flee(closestEnemy);
-                }
-                else if (closestEnemy.viewedBy(allyBot).rangeFromBot < 3) {
+                } else if (closestEnemy.viewedBy(allyBot).rangeFromBot < 3) {
                     allyBot.attack(closestEnemy);
-                }
-                else {
+                } else {
                     allyBot.move(closestEnemy);
                 }
             }
