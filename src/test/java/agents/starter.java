@@ -1,4 +1,5 @@
 package agents;
+
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -11,12 +12,17 @@ class starter {
     static String orders = "";
     static Set<Bot> enemyBots = new HashSet<>();
     static Set<Bot> allyBots = new HashSet<>();
+    static Map<Integer, Bot> bots = new HashMap<>();
     static final String ALLY = "ALLY";
     static final String ENEMY = "ENEMY";
     static final String ATTACK = "ATTACK";
     static final String MOVE = "MOVE";
     static final String IDLE = "IDLE";
     static final String FLEE = "FLEE";
+    static final int SHORT_RANGE = 0;
+    static final int MEDIUM_RANGE = 1;
+    static final int LONG_RANGE = 2;
+    static final int OUT_OF_RANGE = 3;
 
     private static class BotInfo {
         int rangeFromBot;
@@ -72,7 +78,7 @@ class starter {
             this.borderDistRank = borderDistRank;
         }
 
-        public void getTargets(Map<Integer, Bot> bots) {
+        public void getTargets() {
             // If one of the target is dead, we add a deadBot to the targets
             this.targets = this.targetIds.mapToObj(id -> bots.getOrDefault(id, deadBot(id))).collect(Collectors.toSet());
             this.targets.forEach(bot -> bot.addTargetingMe(this));
@@ -80,6 +86,10 @@ class starter {
 
         public void attack(int targetId) {
             orders += String.format("%d %s %d;", id, ATTACK, targetId);
+        }
+
+        public void attack(Bot target) {
+            attack(target.id);
         }
 
         private void movement(String action, int... targetIds) {
@@ -136,6 +146,7 @@ class starter {
         }
 
         public BotInfo viewedBy(Bot bot) {
+            assert bot.team.equals(ALLY) : "You can only view info from an ally bot perspective";
             return bot.infoFromMyPerspective.get(this.id);
         }
 
@@ -163,7 +174,7 @@ class starter {
             orders = "";
             int allyBotAlive = in.nextInt(); // the amount of your bot which are still alive
             int botCount = in.nextInt(); // the amount of bots in the arena
-            Map<Integer, Bot> bots = new HashMap<>();
+            bots = new HashMap<>();
             allyBots = new HashSet<>();
             enemyBots = new HashSet<>();
             for (int i = 0; i < botCount; i++) {
@@ -189,7 +200,7 @@ class starter {
                     enemyBots.add(bot);
                 }
             }
-            bots.values().forEach(bot -> bot.getTargets(bots));
+            bots.values().forEach(Bot::getTargets);
             for (int i = 0; i < allyBotAlive; i++) {
                 in.nextLine(); // skip to the next line
                 int onAirId = Integer.parseInt(in.nextLine().split(" ")[0]); // the id of the ON AIR bot

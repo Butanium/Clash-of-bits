@@ -9,13 +9,17 @@ class Player {
     static String orders = "";
     static Set<Bot> enemyBots = new HashSet<>();
     static Set<Bot> allyBots = new HashSet<>();
-    static Map<Integer, Bot> bots;
+    static Map<Integer, Bot> bots = new HashMap<>();
     static final String ALLY = "ALLY";
     static final String ENEMY = "ENEMY";
     static final String ATTACK = "ATTACK";
     static final String MOVE = "MOVE";
     static final String IDLE = "IDLE";
     static final String FLEE = "FLEE";
+    static final int SHORT_RANGE = 0;
+    static final int MEDIUM_RANGE = 1;
+    static final int LONG_RANGE = 2;
+    static final int OUT_OF_RANGE = 3;
 
     static class BotInfo {
         int rangeFromBot;
@@ -139,6 +143,7 @@ class Player {
         }
 
         public BotInfo viewedBy(Bot bot) {
+            assert bot.team.equals(ALLY) : "You can only view info from an ally bot perspective";
             return bot.infoFromMyPerspective.get(this.id);
         }
 
@@ -209,17 +214,7 @@ class Player {
             }
             // All bots move to the closest enemy
             for (Bot allyBot : allyBots) {
-                Bot closestEnemy = allyBot.getClosestEnemy();
-                Optional<Bot> priorityBot = enemyBots.stream().filter(bot -> bot.viewedBy(allyBot).rangeFromBot < 3 && bot.shield < 25).min(Comparator.comparingInt(bot -> bot.viewedBy(allyBot).distBotRank));
-                if (allyBot.shield <= 25 && !allyBot.attackingMe.isEmpty()) {
-                    allyBot.flee(closestEnemy);
-                }
-                else if (closestEnemy.viewedBy(allyBot).rangeFromBot < 2 || allyBot.shield <= 50 || priorityBot.isPresent()) {
-                    allyBot.attack(priorityBot.orElse(closestEnemy));
-                }
-                else {
-                    allyBot.move(closestEnemy);
-                }
+                allyBot.move(allyBot.getClosestEnemy());
             }
 
             // Write an answer using System.out.println()
