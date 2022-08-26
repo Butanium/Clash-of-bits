@@ -1,20 +1,54 @@
 <!--suppress ALL, HtmlUnknownTarget -->
 <!-- LEAGUES level1 level2 level3 -->
-<div id="statement_back" class="statement_back" style="display:nun"></div>
-<div class="statement-body">
 
-    <!-- BEGIN level1 level2 -->
+<div id="statement_back" class="statement_back" style="display:none"></div>
+<div class="statement-body">
+    <div style="color: #7cc576;
+background-color: rgba(124, 197, 118,.1);
+padding: 20px;
+margin-right: 15px;
+margin-left: 15px;
+margin-bottom: 10px;
+text-align: left;">
+        <div style="text-align: center; margin-bottom: 6px">
+            <img src="//cdn.codingame.com/smash-the-code/statement/league_wood_04.png"/>
+        </div>
+
+        <!-- BEGIN level1 -->
+        <p style="text-align: center; font-weight: 700; margin-bottom: 6px;">
+            Ce challenge se déroule en <b>ligues</b>.
+        </p>
+        <!-- END -->
+        <!-- BEGIN level2 level3 level4 -->
+
+        <!-- END -->
+
+        <div class="statement-league-alert-content">
+            <!-- BEGIN level1 -->
+            Pour ce challenge, plusieurs ligues pour le même jeu seront disponibles. Quand vous aurez prouvé votre valeur
+            contre le premier Boss, vous accéderez à la ligue supérieure et débloquerez de nouveaux adversaires.            <br><br>
+            <!-- END -->
+            <p style="text-align: center; font-weight: 700; margin-bottom: 6px;">
+                <b>Kit de démarrage</b>
+            </p>
+            Des IAs de base sont disponibles dans le <a target="_blank"
+                                                        href="https://github.com/Butanium/Clash-of-bits/starterAIs">kit de démarrage</a>. Elles peuvent
+            vous aider à appréhender votre propre IA.
+            <br><br>
+        </div>
+
+    </div>
+    <!-- BEGIN level1 -->
     <div>
         <div style="text-align: left;padding-left: 15px">
-
-            Bienvenue dans <b>clash of bots</b> ! <br>
-            Si après avoir lu la présentation, tu es un peu perdu et que tu ne sais pas trop que faire de toutes les
-            données qui te sont fournies, essaie de jeter un coup d'oeil à ce
-            <a href="https://tech.io/playgrounds/57689/how-to-extract-values-from-the-game-loop-in-clash-of-bots">
+            Bienvenue dans <b>Clash of Bits</b> ! <br>
+            Si après avoir lu la présentation, tu es un peu perdu et que tu ne sais pas trop comment faire
+            une IA basique, essaie de jeter un coup d'oeil à ce
+            <a href="https://tech.io/playgrounds/e3215408eac2f4587826d3335d3c402597548/building-a-basic-ai-for-clash-of-bits">
                 playground </a> : cela t'aidera à commencer !
         </div>
-        <br>
     </div>
+    <br>
     <!-- END -->
     <!-- GOAL -->
     <div class="statement-section statement-goal">
@@ -24,15 +58,8 @@
             <span>But du jeu</span>
         </h1>
         <div class="statement-goal-content">
-            Dans ce jeu, le but est de détruire l'équipe ennemie tout en gardant au moins l'un de ses robots en vie.
-            <br>
-            Malheureusement, vos robots ne sont pas très malins et ne peuvent pas vous fournir des informations
-            aussi précises que les coordonnées cartésiennes des robots ennemies ou leur nombre de point de vie exacte.
-            Vous allez donc devoir exploiter le peu d'informations qu'ils pourront vous donner...
-            <br>
-            Mais ne vous inquiétez pas, vos robots deviendront plus intelligents et pourront vous donner plus
-            d'informations dans les ligues suivantes.
-            <br>
+            Dans ce jeu, le but est de détruire l'équipe ennemie tout en gardant au moins l'un de ses bots en vie. Si
+            Si le temps est écoulé, l'équipe qui a détruit le plus de bots gagne.
         </div>
     </div>
     <!-- RULES -->
@@ -43,68 +70,74 @@
         </h1>
         <div>
             <div class="statement-rules-content">
-                Vous commencez la partie avec un certain nombre de robots
+                Vos bots combattent dans une arène carrée dont ils ne peuvent s'échapper.
+                Malheureusement, vos bots ne sont pas très malins et ne peuvent pas vous fournir des informations
+                aussi précises que les coordonnées cartésiennes des bots ennemies ou leur nombre de point de vie exact.
+                Vous allez donc devoir exploiter le peu d'informations qu'ils pourront vous donner...
+                <!-- BEGIN level1 level2 -->
                 <br>
-                Beaucoup d'informations sont des distances entre plusieurs entités.
-                Le jeu utilise 4 différentes <b>portées</b> :
+                Mais ne vous inquiétez pas, vos bots deviendront plus intelligents et pourront vous donner plus
+                d'informations dans les ligues suivantes !
+                <br><br>
+                <!-- BEGIN level2 level3 -->
+                <div class="statement-new-league-rule"><p>
+                    Dans cette ligue, vos bots ont réalisé qu'ils pouvaient calculer et vous donner 5
+                    informations supplémentaires. Plus de détails dans la section <a href="#game_input">entrées du jeu</a>.
+                </div>
+                <!-- END -->
+                Beaucoup d'informations sont des distances entre 2 bots.
+                Vos bots utilisent 4 <b>portées</b> différentes pour décrire ces distances :
                 <ul>
-                    <li>0 : Courte portée (dist <=
+                    <li><b>0</b> : Courte portée (dist ≤
                         <const>3 m</const>
                         )
                     </li>
                 </ul>
                 <ul>
-                    <li>1 : Moyenne portée (
+                    <li><b>1</b> : Moyenne portée (
                         <const>3 m</const>
-                        < dist <=
+                        < dist ≤
                         <const>8 m</const>
                         )
                     </li>
                 </ul>
                 <ul>
-                    <li>2 : Longue portée (
+                    <li><b>2</b> : Longue portée (
                         <const>8 m</const>
-                        < dist <=
+                        < dist ≤
                         <const>15 m</const>
                         )
                     </li>
                 </ul>
                 <ul>
-                    <li>3 : Hors de portée (dist >
+                    <li><b>3</b> : Hors de portée (dist >
                         <const>15 m</const>
                         )
                     </li>
                 </ul>
 
                 <br>
-                L'arène est un carré dont les robots ne peuvent sortir
-                <ul>
-                    <li>Les objets présents sur la carte sont appelés <b>entités</b>. Pour l'instant il n'y a que les
-                        robots.
-                    </li>
-                </ul>
                 <br>
-                Vos robots ont 2 barres de vie :
+                Vos bots ont 2 barres de vie :
                 <ul>
                     <li>
-                        Une bleue pour leur bouclier. Si un robot ne prend pas de dégâts pendant 12 tours de jeu, son
+                        Une bleue pour leur bouclier. Si un bot ne prend pas de dégâts pendant 12 tours de jeu, son
                         bouclier commence à se régénérer. Un bouclier complètement vide met 12 tours sans dégâts pour
                         se recharger.
                     </li>
                 </ul>
                 <ul>
                     <li>
-                        Un violet pour leurs points de vie. Les points de vie ne se régènerent pas mais ne baissent
+                        Une violette pour leurs points de vie. Les points de vie ne se régènerent pas mais ne baissent
                         que si le bouclier est vide.
                     </li>
                 </ul>
                 <br>
                 Vos bots ne sont pas assez intelligents pour vous donner des valeurs exactes pour
-                les bouclier et le nombre de points de vie des robots sur la carte.
+                les bouclier et le nombre de points de vie des bots sur la carte.
                 Ils utilisent donc des approximations :
                 <ul>
-                    <li>
-                        Pour les points de vie ils donnent
+                    <li>Pour les points de vie ils donnent
                         <const>0</const>
                         |
                         <const>25</const>
@@ -117,9 +150,9 @@
                         ,
                         <const>25</const>
                         correspondant à une santé
-                        <const>>= 25%</const>
+                        <const>≥ 25%</const>
                         mais
-                        <const>< 50%</const>
+                        <const>< 50%</const>
                         du nombre maximal de point de vie
                     </li>
                     <li>
@@ -138,93 +171,189 @@
                         ,
                         <const>1</const>
                         quand le bouclier est
-                        <const> >= 1%</const>
-                        mais
-                        <const>< 25%</const>
+                        <const> > 0%</const>
+                        et
+                        <const>< 25%</const>
                         du bouclier maximal et
                         <const>0</const>
                         que le bouclier est vide
                     </li>
 
                 </ul>
-                Vos robots peuvent faire 3 actions différentes :
+                Vos bots peuvent faire 3 actions différentes :
                 <ul>
                     <li>
-                        <b>ATTACK</b> pour attaquer un robot ennemi. Les dégâts infligés dépendent de la <b>portée</b>
+                        <b>ATTACK</b> pour attaquer un bot ennemi. Les dégâts infligés dépendent de la <b>portée</b>
                         à laquelle vous tirez (courte, moyenne ou longue). Les dégâts étant maximum à courte portée.
                         Notez qu'attaquer un ennemi hors de portée n'inflige aucun dégât. Pour plus de détails,
                         consulter les règles experts.
                     </li>
 
                     <li>
-                        <b>MOVE</b> pour se déplacer vers un groupe d'entités. Votre robot se déplacera
-                        vers la position moyenne du groupe. Si un groupe n'est composé que d'une seule entité,
-                        le robot se déplacera donc dans la direction de ladite entité.
+                        <b>MOVE</b> pour se déplacer vers un groupe de bots. Votre bot se déplacera
+                        vers la position moyenne du groupe. Si un groupe n'est composé que d'une seule cible,
+                        le bot se déplacera donc dans la direction dudit bot.
                     </li>
 
                     <li>
-                        <b>FLEE </b> pour fuire un groupe d'entités. Le robot s'éloigne de la position moyenne du
+                        <b>FLEE </b> pour fuire un groupe de bots. Le bot s'éloigne de la position moyenne du
                         groupe.
                     </li>
                     <li>
-                        <b>IDLE </b> Le robot attend tout en réfléchissant au sens de sa vie.
+                        <b>IDLE </b> Le bot attend tout en réfléchissant au sens de sa vie.
                         <br><i>
-                        "Un robot doit obéir
-                        aux ordres donnés par les êtres humains, sauf si de tels ordres entrent en contradiction avec
-                        la première loi".
+                        "Un bot doit obéir aux ordres donnés par les êtres humains, sauf si de tels ordres entrent en
+                        contradiction avec la première loi."
                     </i><br>
-                        C'est l'action par défaut qu'exécutera le robot si vous ne lui donnez pas d'ordres.
+                        C'est l'action par défaut qu'exécutera le bot si vous ne lui donnez pas d'ordres.
                     </li>
                 </ul>
                 <br>
-                Vous <strong>perdez</strong> si :
-                <ul>
-                    <li>Tous vos robots sont détruits</li>
-                    <li>Votre ennemi a détruit plus de robots que vous à la fin de la partie</li>
-                    <li>
-                        Vous envoyez des ordres invalides à vos robots, faisant ainsi exploser le cerveau positronique.
-                        <br>
-                        Heureusement ils sont assez intelligents pour vous dire pourquoi ils ont explosé, pensez à
-                        passer votre souris sur la petite pastille dans le replay.
-                    </li>
-                </ul>
+                <!-- Victory conditions -->
+                <div class="statement-victory-conditions">
+                    <div class="icon victory"></div>
+                    <div class="blk">
+                        <div class="title">Conditions de Victoire</div>
+                        <div class="text">
+                            <ul style="padding-top:0; padding-bottom: 0;">
+                                <li>Vous avez détruit tous les robots de votre adversaire</li>
+                                <li>Vous avez plus de robot en vie que votre adversaire après <strong>
+                                    <const>300</const> tours.
+                                </strong>
+                                </li>
+                                <!-- BEGIN level2 level3 level4 -->
+                                <li>En cas d'égalité, vous avez acquéri plus de <strong>wild mana</strong>: mana obtenu à l'extérieur du
+                                    rayon de votre
+                                    <strong>base</strong>.
+                                </li>
+                                <!-- END -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- Lose conditions -->
+                <div class="statement-lose-conditions">
+                    <div class="icon lose"></div>
+                    <div class="blk">
+                        <div class="title">Conditions de Défaite</div>
+                        <div class="text">
+                            <ul style="padding-top:0; padding-bottom: 0;">
+                                <li>Tous vos bots sont détruits</li>
+                                <li>
+                                    Vous envoyez des ordres invalides à vos bots, faisant ainsi exploser leur cerveau positronique.
+                                    <br>
+                                    <i>Heureusement ils sont assez intelligents pour vous dire pourquoi ils ont explosé, pensez à
+                                    passer votre souris sur la petite pastille dans le replay.</i>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
                 <!-- BEGIN level3 -->
-                <br>
-                <strong>
-                    Maintenant vos robots commencent à des emplacements aléatoire dans l'arène
-                </strong>
-                <br>
-                <br>
-                Les emplacements des deux équipes sont <strong>symétriques</strong>
-                <br>
-                La symétrie peut être :
-                <ul>
-                    <li>
-                        <strong>centrale</strong> (par rapport au centre de l'arène)
-                    </li>
-                    <li>
-                        <strong>horizontale</strong> (par rapport à la ligne horizontale passant par le centre de
-                        l'arène).
-                    </li>
-                </ul>
-                Il y a 2 règles que ces emplacements de départ respecteront toujours :
-                <ul>
-                    <li>
-                        La distance entre 2 robots doit être d'au moins <strong>2 mètres</strong>
-                    </li>
-                    <li>
-                        La distance entre 2 robots d'équipes différentes doit être d'au moins <strong>8.1 mètres</strong>
-                    </li>
-                </ul>
+                <div class="statement-new-league-rule">
+                    <br>
+                    <strong>
+                        Maintenant vos bots commencent à des emplacements aléatoire dans l'arène
+                    </strong>
+                    <br>
+                    <br>
+                    Les emplacements des deux équipes sont <strong>symétriques</strong>
+                    <br>
+                    La symétrie peut être :
+                    <ul>
+                        <li>
+                            <strong>centrale</strong> (par rapport au centre de l'arène)
+                        </li>
+                        <li>
+                            <strong>horizontale</strong> (par rapport à la ligne horizontale passant par le centre de
+                            l'arène).
+                        </li>
+                    </ul>
+                    Il y a 2 règles que ces emplacements de départ respecteront toujours :
+                    <ul>
+                        <li>
+                            La distance entre 2 bots doit être d'au moins <strong>2 mètres</strong>
+                        </li>
+                        <li>
+                            La distance entre 2 bots d'équipes différentes doit être d'au moins <strong>8.1 mètres</strong>
+                        </li>
+                    </ul>
+                </div>
                 <!-- END -->
             </div>
         </div>
     </div>
+    <div class="statement-section statement-rules">
+        <h1>
+            🐞 Conseils de débogage
+        </h1>
+        <div class="statement-warning-content">
+            Dans ce jeu, il y a beaucoup de fonctionnalités pour vous aider à comprendre ce qui se passe dans l'arène :
+            <div class="statement-example-container">
+                <div class="statement-example">
+                    <img src="assets/statement/camera_fr.png">
+                    <div class="legend">
+                        <div class="description">
+                            Vous pouvez activer le zoom dynamique de la caméra avec l'interrupteur <b>camera mode</b>.
+                        </div>
+                    </div>
+                </div>
+                <div class="statement-example">
+                    <img src="assets/statement/ranges.png">
+                    <div class="legend">
+                        <div class="description">
+                            Les différentes
+                            <const>portées</const>
+                            sont affichées lorsque vous passez la souris sur un bot. <br>
+                            Vous pouvez aussi voir la
+                            <const>cible</const>
+                            du bot, son
+                            <const>action</const> actuelle. Le tooltip donne plus d'informations sur le bot.
+                        </div>
+                    </div>
+                </div>
+                <div class="statement-example">
+                    <img src="assets/statement/displayOnHover.png">
+                    <div class="legend">
+                        <div class="description">
+                            Vous pouvez
+                            <const>CLIC GAUCHE</const>
+                            sur un bot pour faire apparaître la cible de manière permanente et
+                            <const>ALT + CLIC GAUCHE</const> n'importe où sur le lecteur pour supprimer toutes les cibles.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="statement-example">
+                    <img src="assets/statement/debug.png">
+                    <div class="legend">
+                        <div class="description">
+                            Vous pouvez activer l'overlay de débogage avec l'interrupteur <b>debug overlay</b>
+                            pour voir l'ID du bot et son action actuelle.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="statement-example">
+                    <img src="assets/statement/hitmarker.png">
+                    <div class="legend">
+                        <div class="description">
+                            Les marqueurs de dégâts sont affichés lorsqu'un bot est touché par une balle.
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+    </div>
+
     <!-- EXPERT RULES -->
     <div class="statement-section statement-expertrules">
         <h1>
             <span class="icon icon-expertrules">&nbsp;</span>
-            <span>Règles experts</span>
+            <span>Détails techniques</span>
         </h1>
         <div class="statement-expert-rules-content">
             Le temps entre chaque tours de jeu est 250 ms
@@ -232,7 +361,7 @@
             En ce qui conrcerne l'<strong>attaque</strong> :
             <ul>
                 <li>
-                    Pour tirer des balles sur un ennemi, un robot doit attaquer <b>la même cible</b> pendant
+                    Pour tirer des balles sur un ennemi, un bot doit attaquer <b>la même cible</b> pendant
                     <b>temps de visée</b> tours. Ensuite il tirera <b>balles par tir</b> balles chaque tour pendant
                     <b>temps de tir</b> tours.
                 </li>
@@ -244,15 +373,16 @@
                 </li>
                 <li>
                     Le jeu est "déterministe", même s'il y a de l'aléatoire dans les tirs, les deux équipes ont la
-                    même "seed" de random pour savoir si les tirs vont toucher. A chaque fois qu'un robot tire, il 
-					prend la prochaine valeur de la seed de son équipe pour savoir s'il touche.
-					<br>
-					Un match entre 2 équipe identique sera donc <b>toujours</b> un match nul - sauf si vous ou votre adversaire utilisez l'ID des robots dans vos décisions.
+                    même "seed" de random pour savoir si les tirs vont toucher. A chaque fois qu'un bot tire, il
+                    prend la prochaine valeur de la seed de son équipe pour savoir s'il touche.
+                    <br>
+                    Un match entre 2 équipes identiques sera donc <b>toujours</b> un match nul - 
+                    sauf si l'IA utilise le fait que les IDs des bots commencent à 0 pour une équipe et 7 pour l'autre dans ses décisions.
                 </li>
 
 
             </ul>
-            Voici les caractéristiques des différentes classes de robots.
+            Voici les caractéristiques des différentes classes de bots.
 
             <style type="text/css" ;>
                 table.tableizer-table {
@@ -280,14 +410,12 @@
                 >
                     <thead>
                     <tr class="tableizer-firstrow" ;>
-                        <th>Classe de robot</th>
+                        <th>Classe de bot</th>
                         <th>Dommages par balle</th>
                         <th>Balles par tirs</th>
                         <th>Temps de visée (tour)</th>
                         <th>Temps de tir (tour)</th>
-                        <th>Precision à courte portée</th>
-                        <th>Precision à moyenne portée</th>
-                        <th>Precision à longue portée</th>
+                        <th>Précision à <br>courte / moyenne / longue portée</th>
                         <th>Vitesse</th>
                         <th>Point de vie max</th>
                         <th>Bouclier max</th>
@@ -300,9 +428,7 @@
                         <td>3</td>
                         <td>4</td>
                         <td>2</td>
-                        <td>95%</td>
-                        <td>55%</td>
-                        <td>15%</td>
+                        <td>95% / 55% / 15%</td>
                         <td>1.2</td>
                         <td>5000</td>
                         <td>3000</td>
@@ -312,23 +438,10 @@
             </div>
             <br>
             Vous pouvez consulter le code source du jeu sur mon <a href="https://github.com/Butanium/Clash-of-bits">dépôt
-            github</a>
+            GitHub</a>.
         </div>
     </div>
 
-    <!-- WARNING -->
-    <div class="statement-section statement-warning">
-        <h1>
-            <span class="icon icon-warning">&nbsp;</span>
-            <span>Note</span>
-        </h1>
-        <div class="statement-warning-content">
-            Vous pouvez changer le mode de la caméra entre dynamique et statique dans le bouton "camera mode"
-            des paramètres.
-        </div>
-
-
-    </div>
     <!-- STORY -->
     <div class="statement-story-background">
         <div class="statement-story-cover"
@@ -349,11 +462,19 @@
             </div>
         </div>
     </div>
+    <div style="margin-top: 10px; margin-bottom: 10 px">
+        <i>
+            Je voudrais remercier <a href="https://www.codingame.com/profile/8374201b6f1d19eb99d61c80351465b65150051">eulerscheZahl</a>
+            pour ses précieux conseils lorsque j'ai commencé ce projet, <a href="https://twitter.com/gfx47">GFX47</a> qui a
+            accepté que je copie beaucoup de ses idées et <a href="https://github.com/DamnSake">DamnSake</a> et Deniw
+            qui m'ont aidé pour les graphismes.
+        </i>
+    </div>
     <!-- PROTOCOL -->
     <div class="statement-section statement-protocol">
         <h1>
             <span class="icon icon-protocol">&nbsp;</span>
-            <span>Entrées du jeu</span>
+            <a id="game_input"><span>Entrées du jeu</span></a>
         </h1>
         <!-- Protocol block -->
         <div class="blk">
@@ -373,17 +494,16 @@
         <div class="blk">
             <div class="title">Entrée dans un tour de jeu</div>
             <div class="text">
-                <span class="statement-ligneno">Première ligne: </span>un nombre entier <var>allyBotAlive</var>,
+                <span class="statement-ligneno">Première ligne : </span>un nombre entier <var>allyBotAlive</var>,
                 le nombre de vos bots qui sont encore en vie.
                 <br>
-                <span class="statement-ligneno">Ligne suivante</span>: un nombre entier <var>totalEntities</var>,
-                le nombre d'entités dans l'arène
+                <span class="statement-ligneno">Ligne suivante</span> : un nombre entier <var>botCount</var>,
+                le nombre de bots dans l'arène
                 <br>
                 <br>
-                <br> Pour chaque entité, vos robots vous envoient
-
+                <br> Pour chaque bot, vos bots vous envoient
                 <!-- BEGIN level1 -->
-                <const> 6</const>
+                <const>6</const>
                 <!-- END -->
                 <!-- BEGIN level2 -->
                 <const> 8</const>
@@ -391,10 +511,10 @@
                 <!-- BEGIN level3 -->
                 <const> 13</const>
                 <!-- END -->
-                informations : <var>entId</var>, <var>entType</var>, <var>health</var>, <var>shield</var>,
+                informations : <var>botId</var>, <var>botType</var>, <var>health</var>, <var>shield</var>,
                 <var>action</var>, <var>targets</var>
                 <!-- BEGIN level2 level3 -->
-                , <var>distEn</var>,
+                , <var>enemyRange</var>,
                 <var>borderDist</var>
                 <!-- END -->
                 <!-- BEGIN level3 -->
@@ -402,66 +522,87 @@
                 <var>borderDistRank</var>, <var>shieldRank</var>, <var>healthRank</var>, <var>totalRank</var>
                 <!-- END -->
                 .
-
                 <!-- BEGIN level1 level2 -->
                 Les autres sont juste 0 et ne seront utilisées que dans les prochaines ligues.
                 <!-- END -->
+                Les portées sont données par un entier comme suit :
+                <const>0</const>
+                pour
+                <const>COURTE PORTÉE</const>
+                ,
+                <const>1</const>
+                pour
+                <const>MOYENNE PORTÉE</const>
+                ,
+                <const>2</const>
+                pour
+                <const>LONGUE PORTÉE</const>
+                et
+                <const>3</const>
+                pour
+                <const>HORS DE PORTÉE</const>.
                 <br>
-                <br><var>entId</var> est l'id unique de l'entité, il sera le même pendant toute la partie.
+                <br><var>botId</var> est l'id unique du bot, il sera le même pendant toute la partie.
                 <br><br>
-                <var>entType</var> indique le type d'entité. Cela peut être :
+                <var>botType</var> indique le type du bot. Cela peut être :
                 <ul style="padding-bottom: 0;">
                     <li>
                         <const>"ALLY"</const>
-                        pour l'un de vos robots
+                        pour l'un de vos bots
                     </li>
                     <li>
                         <const>"ENEMY"</const>
-                        pour un robot ennemi
+                        pour un bot ennemi
                     </li>
 
                 </ul>
-                <var>health</var>, <var>shield</var> pour la santé et le bouclier approximatif de l'entité
-                si c'est un robot, 0 sinon.
+                <var>health</var>, <var>shield</var> pour la santé et le bouclier approximatif du bot
+                si c'est un bot, 0 sinon.
                 <br>
                 <br>
-                <var>action</var> indique l'action réalisée par le robot au tour précédent (
-                <const>NONE</const>
-                si l'entité n'est pas un robot). Les différentes valeurs possibles sont :
+                <var>action</var> indique l'action réalisée par le bot au tour précédent.
+                Les différentes valeurs possibles sont :
                 <const>"ATTACK"</const>
                 ,
                 <const>"MOVE"</const>
                 ,
                 <const>"FLEE"</const>
                 ,
-                <const>"IDLE"</const>
+                <const>"IDLE"</const>.
                 <br>
                 <br>
-                <var>targets</var> est la liste des ids des entités visées par la dernière action du robot au dernier
+                <var>targets</var> est la liste des ids des bots visées par la dernière action du bot au dernier
                 tour. Les ids sont séparés par des
-                <const>";"</const>
+                <const>","</const>
                 :
-                <const>"id1;id2;id3..."</const>
-                si l'entité est un robot (la cible de IDLE étant le robot lui même). Sinon
+                <const>"id1,id2,id3..."</const>
+                <!-- si l'entité est un bot --> (la cible de IDLE étant le bot lui même). <!--Sinon
                 <const>-1</const>
-                .
+                .-->
                 <!-- BEGIN level2 level3 -->
                 <br> <br>
-                <var>distEn</var> : la portée à laquelle est le plus proche ennemi. Si l'entité est un robot ennemi,
-                alors c'est la portée du plus proche allié qui est donnée.
+                <!-- BEGIN level2 -->
+                <div class="statement-new-league-rule">
+                    <!-- END -->
+                <var>enemyRange</var> : la portée à laquelle est le plus proche ennemi. Si le bot est dans l'équipe ennemi,
+                c'est la portée du plus proche allié qui est donnée.
                 <br><br>
                 <var>borderDist</var> : la portée à laquelle est le plus proche côté de l'arène (entre gauche,
                 droit, haut, bas)
+                    <!-- BEGIN level2 -->
+                </div>
+                <!-- END -->
                 <!-- END -->
                 <!-- BEGIN level3 -->
                 <br>
                 <br>
-                Les données suivantes sont des <strong>rangs</strong> : les entités sont triées selon les différents
+                <div class="statement-new-league-rule">
+                Les données suivantes sont des <strong>rangs</strong> : les bots sont triées selon les différents
                 attributs par <strong>ordre croissant</strong> :
                 <ul>
                     <li>
-                        <var>distEnRank</var> : L'attribut considéré est leur distance au robot ennemi
-                        le plus proche. Si l'entité est un robot ennemi, la distance considérée est celle à son plus
+                        <var>distEnRank</var> : L'attribut considéré est leur distance au bot ennemi
+                        le plus proche. Si le bot est dans l'équipe ennemi, la distance considérée est celle à son plus
                         proche allié.
                     </li>
                     <li>
@@ -475,27 +616,25 @@
                     </li>
                     <li>
                         <var>totalRank</var> : l'attribut est la somme du nombre exact de point de vie et de bouclier
-
                     </li>
-
                 </ul>
-                A noter que pour ces 3 derniers attributs les entités qui ne sont pas des robots ont le rang
-                <const>-1</const>
+                </div>
+                <!-- END -->
+                <!-- A noter que pour ces 3 derniers attributs les entités qui ne sont pas des bots ont le rang
+                <const>-1</const> -->
                 <!-- END -->
 
                 <br><br><br>
-                Ensuite, vos robots deviennent chacun leur tour <strong>actifs</strong>.
-                Un robot <strong>actif</strong> donne pour chaque entité dans l'arène
+                Ensuite, vos bots deviennent chacun leur tour <strong>actifs</strong>.
+                Un bot <strong>actif</strong> donne pour chaque bot dans l'arène
                 <!-- BEGIN level1 -->
                 <const> 4</const>
                 <!-- END -->
                 <!-- BEGIN level2 level3 -->
                 <const> 7</const>
                 <!-- END -->
-
-                données calculées selon <strong><u>sa perspective :</u></strong> <var>entId</var>, <var>entType</var>,
-                <var>distMe</var>,
-                <var>distMeRank</var>
+                données calculées selon <strong><u>sa perspective :</u></strong> <var>botId</var>, <var>botType</var>,
+                <var>range</var>, <var>distMeRank</var>
                 <!-- BEGIN level2 level3 -->
                 , <var>shieldComp</var>, <var>healthComp</var>, <var>totComp</var>
                 <!-- END -->
@@ -503,73 +642,64 @@
                 <!-- BEGIN level1 -->
                 Les autres sont juste 0 et seront utilisés dans les ligues suivantes.
                 <!-- END -->
-                Lors de la première itération, le robot envoie les données le concernant.
+                Lors de la première itération, le bot envoie les données le concernant.
                 Donc <var>entType</var> est
-                <const> "SELF"</const>
-                <i>comme ça vous pouvez facilment récupérer l'id du robot<strong> actif</strong></i>.
-                Ensuite le robot vous envoie les informations sur chaque entité.
+                <const> "ON_AIR"</const>
+                <i>comme ça vous pouvez facilment récupérer l'id du bot<strong> actif</strong></i>.
+                Ensuite le bot vous envoie les informations sur chaque bot.
                 <br>
-                <br><var>entId</var> est l'id unique de l'entité.
-                <br><br> <var>entType</var>
-                indique le type de l'entité. Cela peut être : 
+                <br><var>botId</var> est l'id unique du bot.
+                <br><br> <var>botType</var>
+                indique le type du bot. Cela peut être :
                 <ul style="padding-bottom: 0;">
                     <li>
                         <const>"ALLY"</const>
-                        pour un robot allié
+                        pour un bot allié
                     </li>
                     <li>
                         <const>"ENEMY"</const>
-                        pour un robot ennemi
+                        pour un bot ennemi
                     </li>
                     <li>
-                        <const> "SELF"</const>
-                        pour le robot<strong> actif</strong></li>
+                        <const> "ON_AIR"</const>
+                        pour le bot<strong> actif</strong></li>
 
                 </ul>
-                <var>distMe</var> la portée à laquelle se trouve l'entité par rapport au robot
+                <var>range</var> la portée à laquelle se trouve le bot par rapport au bot
                 <strong> actif </strong>
-                <const>0</const>
-                pour
-                <const>courte portée</const>
-                ,
-                <const>1</const>
-                pour
-                <const>moyenne portée</const>
-                ,
-                <const>2</const>
-                pour
-                <const>longue portée</const>
-                ,
-                <const>3</const>
-                pour
-                <const>hors de portée</const>
                 <br><br>
-                <var>distMeRank</var> le rang de l'entité dans un classement du plus proche au plus loin du robot
+                <var>distMeRank</var> le rang du bot dans un classement du plus proche au plus loin du bot
                 <strong>actif </strong> basé sur la distance exacte les séparant.
                 <br>
                 <!-- BEGIN level2 level3 -->
                 <br>
+                <!-- BEGIN level2 -->
+                <div class="statement-new-league-rule">
+                    <!-- END -->
                 <var>shieldComp</var>, <var>healthComp</var>, <var>totComp</var>
-                comparent un attribut entre le robot <strong>actif</strong> et un autre robot.
-                <br><var>shieldComp</var> compare la valeur exacte des <strong>bouclier</strong> des 2 robots,
-                <var>healthComp</var> compare la santé exacte des 2 robots,
-                <var>totComp</var> compare la somme de la santé et du bouclier des 2 robots.
+                comparent un attribut entre le bot <strong>actif</strong> et un autre bot.
+                <br><var>shieldComp</var> compare la valeur exacte des <strong>bouclier</strong> des 2 bots,
+                <var>healthComp</var> compare la santé exacte des 2 bots,
+                <var>totComp</var> compare la somme de la santé et du bouclier des 2 bots.
                 <br>
                 Ces variables peuvent prendre les valeurs :
                 <ul style="padding-bottom: 0;">
                     <li>
                         <const>-1</const>
-                        si l'autre robot possède plus d'attributs que le robot <strong>actif</strong>
+                        si l'autre bot possède plus d'attributs que le bot <strong>actif</strong>
                     </li>
                     <li>
                         <const>0</const>
-                        si l'autre robot possède autant d'attributs que le robot <strong>actif</strong>
+                        si l'autre bot possède autant d'attributs que le bot <strong>actif</strong>
                     </li>
                     <li>
                         <const>1</const>
-                        si l'autre robot possède moins d'attributs que le robot <strong>actif</strong>
+                        si l'autre bot possède moins d'attributs que le bot <strong>actif</strong>
                     </li>
                 </ul>
+                    <!-- BEGIN level2 -->
+                </div>
+                <!-- END -->
                 <!-- END -->
                 <br>
 
@@ -578,68 +708,78 @@
             <!-- Protocol block -->
             <div class="blk">
                 <div class="title">Sortie pour un tour de jeu</div>
-                <div class="text"> Une ligne contenant tous les ordres donnés à vos robots séparés par
-                    <const>";"</const>
-                    comme ceci
-                    <const> "ordre1;ordre2;ordre3;..."</const>
-                    <br> Un ordre doit respecter la synthaxe suivante :
-                    <action>idDuRobot [ACTION] [CIBLES]</action>
-                    <br>
-                    <action>ACTION</action>
-                    doit être une action valide parmis :
-                    <action>ATTACK</action>
-                    ,
-                    <action>MOVE</action>
-                    ,
-                    <action>FLEE</action>
-                    ,
-                    <action>IDLE</action>
-
-                    <action> CIBLES</action>
-                    doit respecter la synthaxe suivante :
-                    <action>cibleID1,cibleID2,cibleID3</action>
-                    <br>
-                    Vous devez aussi respecter certaines règles en fonction de l'action que vous souhaitez réaliser.
+                <div class="text">
+                    <div style="margin-bottom: 7px"><span class="statement-lineno">1 ligne</span> contenant tous les
+                        ordres donnés à vos bots séparés par
+                    <const>";"</const> :
+                    <const> "ordre1;ordre2;ordre3;..."</const>.
+                    </div>
+                    Un ordre doit respecter la synthaxe suivante
+                    <action>idDeVotreBot [ACTION] [CIBLES]</action>
                     <ul>
-                        <li>Si l'action est
-                            <action>ATTACK</action>
-                            ,
-                            <action>CIBLES</action>
-                            doit contenir
-                            <const>1</const>
-                            id de <strong> robot ennemi</strong>, ni plus, ni moins. Un robot ne peu ni s'attaquer lui
-                            même ni attaquer ses alliés.
-                            <br>
-                            <i>
-                                "Un robot doit protéger son existence dans la mesure où cette protection n'entre
-                                pas en contradiction avec la première ou la deuxième loi."
-                            </i>
+                        <li>
+                        <action>ACTION</action>
+                        doit être une action valide parmis :
+                        <action>ATTACK</action>
+                        ,
+                        <action>MOVE</action>
+                        ,
+                        <action>FLEE</action>
+                        ou
+                        <action>IDLE</action>.
                         </li>
                         <li>
-                            Si l'action est
-                            <action> MOVE</action>
-                            ou
-                            <action> FLEE</action>
-                            ,
-                            <action>CIBLES</action>
-                            doit contenir au moins un id d'entité.
+                        <action> CIBLES</action>
+                        doit respecter la synthaxe suivante :
+                        <action>cibleID1,cibleID2,cibleID3</action>
+                        <br>
+                        Vous devez aussi respecter certaines règles en fonction de l'action que vous souhaitez réaliser.
+                        <ul>
+                            <li>Si l'action est
+                                <action>ATTACK</action>
+                                ,
+                                <action>CIBLES</action>
+                                doit contenir
+                                <const>1</const>
+                                 <strong>id de bot ennemi</strong>, ni plus, ni moins. Un bot ne peu ni s'attaquer lui
+                                même<sup>1</sup> ni attaquer ses alliés.
+                                <br>
+                                1.
+                                <i>
+                                    "Un bot doit protéger son existence dans la mesure où cette protection n'entre
+                                    pas en contradiction avec la première ou la deuxième loi."
+                                </i>
+                            </li>
+                            <li>
+                                Si l'action est
+                                <action> MOVE</action>
+                                ou
+                                <action> FLEE</action>
+                                ,
+                                <action>CIBLES</action>
+                                doit contenir au moins un id de bot.
+                            </li>
+                            <li>Si l'action est
+                                <action>IDLE</action>
+                                ,
+                                <action>CIBLES</action>
+                                peut contenir tout et n'importe quoi (ou rien du tout), dans tous les cas cela sera ignoré.
+                                <del> Cela vous permet de faire réfléchir vos bots au sens de la vie</del>
+                            </li>
+                        </ul>
+                        <li>
+                        Si vous envoyez 2 ordres différents s'adressant au même bot, vous perdrez la partie car
+                        votre bot subira le même sort que
+                        <a href = "https://asimov.fandom.com/wiki/R._Jander_Panell">R. Jander Panell </a>,
+                        entraînant dans sa chute toute votre équipe.
                         </li>
-                        <li>Si l'action est
-                            <action>IDLE</action>
-                            ,
-                            <action>CIBLES</action>
-                            peut contenir tout et n'importe quoi (ou rien du tout), dans tous les cas cela sera ignoré.
-                            <del> Cela vous permet de faire réfléchir vos robots au sens de la vie</del>
+                        <li>
+                        Si vous n'envoyez pas de sortie, tous vos bots feront l'action
+                        <action>IDLE</action>.
+                        Si vous n'envoyez pas d'ordre à un ou plusieurs bots, ils effectueront
+                        <action>IDLE</action>.
                         </li>
                     </ul>
-                    Si vous envoyez 2 ordres différents s'adressant au même robot, vous perdrez la partie car 
-					votre robot subira le même sort que <a href = "https://asimov.fandom.com/wiki/R._Jander_Panell">R. Jander Panell </a>, 
-					entraînant dans sa chute toute votre équipe.
-                    <br> Si vous n'envoyez pas de sortie, tous vos bots feront l'action
-                    <action>IDLE</action>
-                    . Si vous n'envoyez pas d'ordre à un ou plusieurs robots, ils effectueront
-                    <action>IDLE</action>
-
                 </div>
                 <br>
                 <!-- Protocol block -->
@@ -664,3 +804,4 @@
         </div>
     </div>
 </div>
+<!-- SHOW_SAVE_PDF_BUTTON -->
