@@ -26,14 +26,15 @@ text-align: left;">
         <div class="statement-league-alert-content">
             <!-- BEGIN level1 -->
             Pour ce challenge, plusieurs ligues pour le même jeu seront disponibles. Quand vous aurez prouvé votre valeur
-            contre le premier Boss, vous accéderez à la ligue supérieure et débloquerez de nouveaux adversaires.            <br><br>
+            contre le premier Boss, vous accéderez à la ligue supérieure et débloquerez de nouveaux adversaires.
+            <br><br>
             <!-- END -->
             <p style="text-align: center; font-weight: 700; margin-bottom: 6px;">
                 <b>Kit de démarrage</b>
             </p>
-            Des IAs de base sont disponibles dans le <a target="_blank"
-                                                        href="https://github.com/Butanium/Clash-of-bits/starterAIs">kit de démarrage</a>. Elles peuvent
-            vous aider à appréhender votre propre IA.
+            Des IAs de base sont disponibles dans le
+            <a target="_blank" href="https://github.com/Butanium/Clash-of-bits/starterAIs">kit de démarrage</a>.
+            Elles peuvent vous aider à appréhender votre propre IA.
             <br><br>
         </div>
 
@@ -43,9 +44,9 @@ text-align: left;">
         <div style="text-align: left;padding-left: 15px">
             Bienvenue dans <b>Clash of Bits</b> ! <br>
             Si après avoir lu la présentation, tu es un peu perdu et que tu ne sais pas trop comment faire
-            une IA basique, essaie de jeter un coup d'oeil à ce
+            une IA basique, essaie de jeter un coup d' œil à ce
             <a href="https://tech.io/playgrounds/e3215408eac2f4587826d3335d3c402597548/building-a-basic-ai-for-clash-of-bits">
-                playground </a> : cela t'aidera à commencer !
+                playground</a> : cela t'aidera à commencer !
         </div>
     </div>
     <br>
@@ -58,7 +59,7 @@ text-align: left;">
             <span>But du jeu</span>
         </h1>
         <div class="statement-goal-content">
-            Dans ce jeu, le but est de détruire l'équipe ennemie tout en gardant au moins l'un de ses bots en vie. Si
+            Dans ce jeu, le but est de détruire l'équipe ennemie tout en gardant au moins l'un de ses bots en vie.
             Si le temps est écoulé, l'équipe qui a détruit le plus de bots gagne.
         </div>
     </div>
@@ -71,13 +72,14 @@ text-align: left;">
         <div>
             <div class="statement-rules-content">
                 Vos bots combattent dans une arène carrée dont ils ne peuvent s'échapper.
-                Malheureusement, vos bots ne sont pas très malins et ne peuvent pas vous fournir des informations
-                aussi précises que les coordonnées cartésiennes des bots ennemies ou leur nombre de point de vie exact.
+                Malheureusement, ils ne sont pas très malins et ne peuvent pas vous fournir des informations
+                aussi précises que les coordonnées cartésiennes des bots ennemies ou leur nombre de points de vie exact.
                 Vous allez donc devoir exploiter le peu d'informations qu'ils pourront vous donner...
                 <!-- BEGIN level1 level2 -->
                 <br>
                 Mais ne vous inquiétez pas, vos bots deviendront plus intelligents et pourront vous donner plus
                 d'informations dans les ligues suivantes !
+                <!-- END -->
                 <br><br>
                 <!-- BEGIN level2 level3 -->
                 <div class="statement-new-league-rule"><p>
@@ -88,31 +90,23 @@ text-align: left;">
                 Beaucoup d'informations sont des distances entre 2 bots.
                 Vos bots utilisent 4 <b>portées</b> différentes pour décrire ces distances :
                 <ul>
-                    <li><b>0</b> : Courte portée (dist ≤
-                        <const>3 m</const>
-                        )
+                    <li>
+                        <b>0</b> : Courte portée (dist ≤ <const>3 m</const>)
                     </li>
                 </ul>
                 <ul>
-                    <li><b>1</b> : Moyenne portée (
-                        <const>3 m</const>
-                        < dist ≤
-                        <const>8 m</const>
-                        )
+                    <li>
+                        <b>1</b> : Moyenne portée (<const>3 m</const> < dist ≤ <const>8 m</const>)
                     </li>
                 </ul>
                 <ul>
-                    <li><b>2</b> : Longue portée (
-                        <const>8 m</const>
-                        < dist ≤
-                        <const>15 m</const>
-                        )
+                    <li>
+                        <b>2</b> : Longue portée (<const>8 m</const> < dist ≤ <const>15 m</const>)
                     </li>
                 </ul>
                 <ul>
-                    <li><b>3</b> : Hors de portée (dist >
-                        <const>15 m</const>
-                        )
+                    <li>
+                        <b>3</b> : Hors de portée (dist > <const>15 m</const>)
                     </li>
                 </ul>
 
@@ -128,16 +122,17 @@ text-align: left;">
                 </ul>
                 <ul>
                     <li>
-                        Une violette pour leurs points de vie. Les points de vie ne se régènerent pas mais ne baissent
+                        Une violette pour leurs points de vie. Les points de vie ne se régénèrent pas, mais ne baissent
                         que si le bouclier est vide.
                     </li>
                 </ul>
                 <br>
                 Vos bots ne sont pas assez intelligents pour vous donner des valeurs exactes pour
-                les bouclier et le nombre de points de vie des bots sur la carte.
+                les boucliers et le nombre de points de vie des bots sur la carte.
                 Ils utilisent donc des approximations :
                 <ul>
-                    <li>Pour les points de vie ils donnent
+                    <li>
+                        Pour les points de vie, ils donnent
                         <const>0</const>
                         |
                         <const>25</const>
@@ -146,17 +141,16 @@ text-align: left;">
                         |
                         <const>75</const>
                         |
-                        <const>100</const>
-                        ,
+                        <const>100</const> ,
                         <const>25</const>
                         correspondant à une santé
                         <const>≥ 25%</const>
                         mais
                         <const>< 50%</const>
-                        du nombre maximal de point de vie
+                        du nombre maximal de points de vie
                     </li>
                     <li>
-                        Pour les boucliers ils donnent :
+                        Pour les boucliers, ils donnent :
                         <const>0</const>
                         |
                         <const>1</const>
@@ -171,7 +165,7 @@ text-align: left;">
                         ,
                         <const>1</const>
                         quand le bouclier est
-                        <const> > 0%</const>
+                        <const> > 0%</const>
                         et
                         <const>< 25%</const>
                         du bouclier maximal et
@@ -184,9 +178,9 @@ text-align: left;">
                 <ul>
                     <li>
                         <b>ATTACK</b> pour attaquer un bot ennemi. Les dégâts infligés dépendent de la <b>portée</b>
-                        à laquelle vous tirez (courte, moyenne ou longue). Les dégâts étant maximum à courte portée.
+                        à laquelle vous tirez (courte, moyenne ou longue). Les dégâts étant maximaux à courte portée.
                         Notez qu'attaquer un ennemi hors de portée n'inflige aucun dégât. Pour plus de détails,
-                        consulter les règles experts.
+                        consulter les <a href="#expert-rules">détails techniques</a>.
                     </li>
 
                     <li>
@@ -208,58 +202,20 @@ text-align: left;">
                         C'est l'action par défaut qu'exécutera le bot si vous ne lui donnez pas d'ordres.
                     </li>
                 </ul>
+                <!-- BEGIN level2 level3 -->
                 <br>
-                <!-- Victory conditions -->
-                <div class="statement-victory-conditions">
-                    <div class="icon victory"></div>
-                    <div class="blk">
-                        <div class="title">Conditions de Victoire</div>
-                        <div class="text">
-                            <ul style="padding-top:0; padding-bottom: 0;">
-                                <li>Vous avez détruit tous les robots de votre adversaire</li>
-                                <li>Vous avez plus de robot en vie que votre adversaire après <strong>
-                                    <const>300</const> tours.
-                                </strong>
-                                </li>
-                                <!-- BEGIN level2 level3 level4 -->
-                                <li>En cas d'égalité, vous avez acquéri plus de <strong>wild mana</strong>: mana obtenu à l'extérieur du
-                                    rayon de votre
-                                    <strong>base</strong>.
-                                </li>
-                                <!-- END -->
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <!-- Lose conditions -->
-                <div class="statement-lose-conditions">
-                    <div class="icon lose"></div>
-                    <div class="blk">
-                        <div class="title">Conditions de Défaite</div>
-                        <div class="text">
-                            <ul style="padding-top:0; padding-bottom: 0;">
-                                <li>Tous vos bots sont détruits</li>
-                                <li>
-                                    Vous envoyez des ordres invalides à vos bots, faisant ainsi exploser leur cerveau positronique.
-                                    <br>
-                                    <i>Heureusement ils sont assez intelligents pour vous dire pourquoi ils ont explosé, pensez à
-                                    passer votre souris sur la petite pastille dans le replay.</i>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <!-- BEGIN level3 -->
+                <!-- BEGIN level2 -->
                 <div class="statement-new-league-rule">
-                    <br>
                     <strong>
-                        Maintenant vos bots commencent à des emplacements aléatoire dans l'arène
+                        Maintenant vos bots commencent à des emplacements aléatoires dans l'arène.
                     </strong>
                     <br>
                     <br>
-                    Les emplacements des deux équipes sont <strong>symétriques</strong>
-                    <br>
-                    La symétrie peut être :
+                    <!-- END -->
+                    <!-- BEGIN level3 -->
+                    Les bots sont placés aléatoirement dans l'arène.
+                    <!-- END -->
+                    Les emplacements des deux équipes sont <strong>symétriques</strong>. La symétrie peut être :
                     <ul>
                         <li>
                             <strong>centrale</strong> (par rapport au centre de l'arène)
@@ -278,8 +234,49 @@ text-align: left;">
                             La distance entre 2 bots d'équipes différentes doit être d'au moins <strong>8.1 mètres</strong>
                         </li>
                     </ul>
+                <!-- BEGIN level2 -->
                 </div>
                 <!-- END -->
+                <!-- END -->
+                <br>
+                <!-- Victory conditions -->
+                <div class="statement-victory-conditions">
+                    <div class="icon victory"></div>
+                    <div class="blk">
+                        <div class="title">Conditions de Victoire</div>
+                        <div class="text">
+                            <ul style="padding-top:0; padding-bottom: 0;">
+                                <li>
+                                    Vous avez détruit tous les robots de votre adversaire
+                                </li>
+                                <li>
+                                    Vous avez plus de robot en vie que votre adversaire après
+                                    <strong>
+                                        <const>300</const>
+                                        tours.
+                                    </strong>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- Lose conditions -->
+                <div class="statement-lose-conditions">
+                    <div class="icon lose"></div>
+                    <div class="blk">
+                        <div class="title">Conditions de Défaite</div>
+                        <div class="text">
+                            <ul style="padding-top:0; padding-bottom: 0;">
+                                <li>Tous vos bots sont détruits</li>
+                                <li>
+                                    Vous envoyez des ordres invalides à vos bots, faisant ainsi exploser leur cerveau positronique.
+                                    <br>
+                                    <i>Heureusement, ils sont assez intelligents pour vous dire pourquoi ils ont explosé, pensez à passer votre souris sur la petite pastille dans le replay.</i>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -329,7 +326,7 @@ text-align: left;">
                     <div class="legend">
                         <div class="description">
                             Vous pouvez activer l'overlay de débogage avec l'interrupteur <b>debug overlay</b>
-                            pour voir l'ID du bot et son action actuelle.
+                            pour voir l'id du bot et son action actuelle.
                         </div>
                     </div>
                 </div>
@@ -352,32 +349,31 @@ text-align: left;">
     <!-- EXPERT RULES -->
     <div class="statement-section statement-expertrules">
         <h1>
-            <span class="icon icon-expertrules">&nbsp;</span>
-            <span>Détails techniques</span>
+            <span class="icon icon-expertrules">&nbsp;</span> <span><a id="expert-rules">Détails techniques </a></span>
         </h1>
         <div class="statement-expert-rules-content">
-            Le temps entre chaque tours de jeu est 250 ms
+            Le temps entre chaque tour de jeu est 250 ms
             <br>
-            En ce qui conrcerne l'<strong>attaque</strong> :
+            En ce qui concerne l'<strong>attaque</strong> :
             <ul>
                 <li>
                     Pour tirer des balles sur un ennemi, un bot doit attaquer <b>la même cible</b> pendant
-                    <b>temps de visée</b> tours. Ensuite il tirera <b>balles par tir</b> balles chaque tour pendant
+                    <b>temps de visée</b> tours. Ensuite, il tirera <b>balles par tir</b> balles chaque tour pendant
                     <b>temps de tir</b> tours.
                 </li>
                 <li>
-                    A l'instant où une balle est tirée, le moteur de jeu détermine si elle va toucher sa cible ou non en
+                    À l'instant où une balle est tirée, le moteur de jeu détermine si elle va toucher sa cible ou non en
                     fonction
                     de sa portée <b>actuelle</b> avec une probabilité de <b>précision [portée de la cible]</b>.
                     N'oubliez pas qu'attaquer une cible hors de portée ne peut pas toucher.
                 </li>
                 <li>
                     Le jeu est "déterministe", même s'il y a de l'aléatoire dans les tirs, les deux équipes ont la
-                    même "seed" de random pour savoir si les tirs vont toucher. A chaque fois qu'un bot tire, il
+                    même "seed" de random pour savoir si les tirs vont toucher. À chaque fois qu'un bot tire, il
                     prend la prochaine valeur de la seed de son équipe pour savoir s'il touche.
                     <br>
-                    Un match entre 2 équipes identiques sera donc <b>toujours</b> un match nul - 
-                    sauf si l'IA utilise le fait que les IDs des bots commencent à 0 pour une équipe et 7 pour l'autre dans ses décisions.
+                    Un match entre 2 équipes identiques sera donc <b>toujours</b> un match nul -
+                    sauf si l'IA utilise le fait que les ids des bots commencent à 0 pour une équipe et 7 pour l'autre dans ses décisions.
                 </li>
 
 
@@ -417,7 +413,7 @@ text-align: left;">
                         <th>Temps de tir (tour)</th>
                         <th>Précision à <br>courte / moyenne / longue portée</th>
                         <th>Vitesse</th>
-                        <th>Point de vie max</th>
+                        <th>points de vie max</th>
                         <th>Bouclier max</th>
                     </tr>
                     </thead>
@@ -447,22 +443,22 @@ text-align: left;">
         <div class="statement-story-cover"
              style="background-size: cover; background-color: grey">
             <div class="statement-story">
-                <h1>D'où est ce que vient cette idée ?</h1>
+                <h1>D'où est-ce que vient cette idée ?</h1>
                 <div class="story-text">
                     <strong>
                         Ce challenge est très fortement inspiré du jeu "GLADIABOTS".
                         <br>
                         On se rapproche en réalité plus de la copie que de l'inspiration, c'est pour cela que j'ai
                         demandé la permission de son développeur indépendant GFX47. Si le jeu vous intrigue où que vous
-                        cherchez de nouvelles stratégie à expérimenter, n'hésitez pas à y
-                        <a href="https://gladiabots.com/">jeter un coup d'oeil</a> !
+                        cherchez de nouvelles stratégies à expérimenter, n'hésitez pas à y
+                        <a href="https://gladiabots.com/">jeter un coup d'œil</a> !
                     </strong>
                     <br> <br>
                 </div>
             </div>
         </div>
     </div>
-    <div style="margin-top: 10px; margin-bottom: 10 px">
+    <div style="margin-top: 10px; margin-bottom: 10 px; margin-left: 20px; margin-right:20px">
         <i>
             Je voudrais remercier <a href="https://www.codingame.com/profile/8374201b6f1d19eb99d61c80351465b65150051">eulerscheZahl</a>
             pour ses précieux conseils lorsque j'ai commencé ce projet, <a href="https://twitter.com/gfx47">GFX47</a> qui a
@@ -474,16 +470,16 @@ text-align: left;">
     <div class="statement-section statement-protocol">
         <h1>
             <span class="icon icon-protocol">&nbsp;</span>
-            <a id="game_input"><span>Entrées du jeu</span></a>
+            <span><a id="game_input">Entrées du jeu</a></span>
         </h1>
         <!-- Protocol block -->
         <div class="blk">
             <div class="title">Entrées d'initialisation</div>
             <div class="text">
-                <span class="statement-ligneno"> Ligne 1: </span> un nombre entier <var>botPerPlayer</var>,
+                <span class="statement-lineno"> Ligne 1 : </span> un nombre entier <var>botPerPlayer</var>,
                 le nombre de bots contrôlés par joueur au début de la partie
                 <br>
-                <span class="statement-ligneno"> Ligne 2: </span> un nombre entier <var>mapSize</var>,
+                <span class="statement-lineno"> Ligne 2 : </span> un nombre entier <var>mapSize</var>,
                 la taille de la carte en mètre. C'est ici au cas où la taille de la carte vienne à changer
                 durant le challenge.
                 <br>
@@ -494,10 +490,10 @@ text-align: left;">
         <div class="blk">
             <div class="title">Entrée dans un tour de jeu</div>
             <div class="text">
-                <span class="statement-ligneno">Première ligne : </span>un nombre entier <var>allyBotAlive</var>,
+                <span class="statement-lineno">Première ligne : </span>un nombre entier <var>allyBotAlive</var>,
                 le nombre de vos bots qui sont encore en vie.
                 <br>
-                <span class="statement-ligneno">Ligne suivante</span> : un nombre entier <var>botCount</var>,
+                <span class="statement-lineno">Ligne suivante</span> : un nombre entier <var>botCount</var>,
                 le nombre de bots dans l'arène
                 <br>
                 <br>
@@ -571,12 +567,11 @@ text-align: left;">
                 <const>"IDLE"</const>.
                 <br>
                 <br>
-                <var>targets</var> est la liste des ids des bots visées par la dernière action du bot au dernier
+                <var>targets</var> est la liste des ids des bots visés par la dernière action du bot au dernier
                 tour. Les ids sont séparés par des
-                <const>","</const>
-                :
+                <const>","</const> :
                 <const>"id1,id2,id3..."</const>
-                <!-- si l'entité est un bot --> (la cible de IDLE étant le bot lui même). <!--Sinon
+                <!-- si l'entité est un bot --> (la cible de IDLE étant le bot lui-même). <!--Sinon
                 <const>-1</const>
                 .-->
                 <!-- BEGIN level2 level3 -->
@@ -584,11 +579,11 @@ text-align: left;">
                 <!-- BEGIN level2 -->
                 <div class="statement-new-league-rule">
                     <!-- END -->
-                <var>enemyRange</var> : la portée à laquelle est le plus proche ennemi. Si le bot est dans l'équipe ennemi,
-                c'est la portée du plus proche allié qui est donnée.
-                <br><br>
-                <var>borderDist</var> : la portée à laquelle est le plus proche côté de l'arène (entre gauche,
-                droit, haut, bas)
+                    <var>enemyRange</var> : la portée à laquelle est le plus proche ennemi. Si le bot est dans l'équipe ennemie,
+                    c'est la portée du plus proche allié qui est donnée.
+                    <br><br>
+                    <var>borderDist</var> : la portée à laquelle est le plus proche côté de l'arène (entre gauche,
+                    droit, haut, bas).
                     <!-- BEGIN level2 -->
                 </div>
                 <!-- END -->
@@ -597,32 +592,30 @@ text-align: left;">
                 <br>
                 <br>
                 <div class="statement-new-league-rule">
-                Les données suivantes sont des <strong>rangs</strong> : les bots sont triées selon les différents
-                attributs par <strong>ordre croissant</strong> :
-                <ul>
-                    <li>
-                        <var>distEnRank</var> : L'attribut considéré est leur distance au bot ennemi
-                        le plus proche. Si le bot est dans l'équipe ennemi, la distance considérée est celle à son plus
-                        proche allié.
-                    </li>
-                    <li>
-                        <var>borderDistRank</var> : l'attribut est la distance au plus proche côté.
-                    </li>
-                    <li>
-                        <var>shieldRank</var> : l'attribut est la valeur exacte du bouclier.
-                    </li>
-                    <li>
-                        <var>healthRank</var> : l'attribut est le nombre exact des points de vie.
-                    </li>
-                    <li>
-                        <var>totalRank</var> : l'attribut est la somme du nombre exact de point de vie et de bouclier
-                    </li>
-                </ul>
+                    Les données suivantes sont des <strong>rangs</strong> : les bots sont triés selon les différents attributs par <strong>ordre croissant</strong> :
+                    <ul>
+                        <li>
+                            <var>distEnRank</var> : L'attribut considéré est leur distance au bot ennemi
+                            le plus proche. Si le bot est dans l'équipe ennemie, la distance considérée est celle à son plus
+                            proche allié.
+                        </li>
+                        <li>
+                            <var>borderDistRank</var> : l'attribut est la distance au plus proche côté.
+                        </li>
+                        <li>
+                            <var>shieldRank</var> : l'attribut est la valeur exacte du bouclier.
+                        </li>
+                        <li>
+                            <var>healthRank</var> : l'attribut est le nombre exact des points de vie.
+                        </li>
+                        <li>
+                            <var>totalRank</var> : l'attribut est la somme du nombre exact de points de vie et de bouclier
+                        </li>
+                    </ul>
                 </div>
                 <!-- END -->
                 <!-- A noter que pour ces 3 derniers attributs les entités qui ne sont pas des bots ont le rang
                 <const>-1</const> -->
-                <!-- END -->
 
                 <br><br><br>
                 Ensuite, vos bots deviennent chacun leur tour <strong>actifs</strong>.
@@ -645,8 +638,8 @@ text-align: left;">
                 Lors de la première itération, le bot envoie les données le concernant.
                 Donc <var>entType</var> est
                 <const> "ON_AIR"</const>
-                <i>comme ça vous pouvez facilment récupérer l'id du bot<strong> actif</strong></i>.
-                Ensuite le bot vous envoie les informations sur chaque bot.
+                <i>vous pouvez ainsi récupérer l'id du bot <strong>actif</strong></i>.
+                Ensuite, le bot vous envoie les informations sur chaque bot.
                 <br>
                 <br><var>botId</var> est l'id unique du bot.
                 <br><br> <var>botType</var>
@@ -662,8 +655,8 @@ text-align: left;">
                     </li>
                     <li>
                         <const> "ON_AIR"</const>
-                        pour le bot<strong> actif</strong></li>
-
+                        pour le bot<strong> actif</strong>
+                    </li>
                 </ul>
                 <var>range</var> la portée à laquelle se trouve le bot par rapport au bot
                 <strong> actif </strong>
@@ -676,27 +669,27 @@ text-align: left;">
                 <!-- BEGIN level2 -->
                 <div class="statement-new-league-rule">
                     <!-- END -->
-                <var>shieldComp</var>, <var>healthComp</var>, <var>totComp</var>
-                comparent un attribut entre le bot <strong>actif</strong> et un autre bot.
-                <br><var>shieldComp</var> compare la valeur exacte des <strong>bouclier</strong> des 2 bots,
-                <var>healthComp</var> compare la santé exacte des 2 bots,
-                <var>totComp</var> compare la somme de la santé et du bouclier des 2 bots.
-                <br>
-                Ces variables peuvent prendre les valeurs :
-                <ul style="padding-bottom: 0;">
-                    <li>
-                        <const>-1</const>
-                        si l'autre bot possède plus d'attributs que le bot <strong>actif</strong>
-                    </li>
-                    <li>
-                        <const>0</const>
-                        si l'autre bot possède autant d'attributs que le bot <strong>actif</strong>
-                    </li>
-                    <li>
-                        <const>1</const>
-                        si l'autre bot possède moins d'attributs que le bot <strong>actif</strong>
-                    </li>
-                </ul>
+                    <var>shieldComp</var>, <var>healthComp</var>, <var>totComp</var>
+                    comparent un attribut entre le bot <strong>actif</strong> et un autre bot.
+                    <br><var>shieldComp</var> compare la valeur exacte des <strong>bouclier</strong> des 2 bots,
+                    <var>healthComp</var> compare la santé exacte des 2 bots,
+                    <var>totComp</var> compare la somme de la santé et du bouclier des 2 bots.
+                    <br>
+                    Ces variables peuvent prendre les valeurs :
+                    <ul style="padding-bottom: 0;">
+                        <li>
+                            <const>-1</const>
+                            si l'autre bot possède plus d'attributs que le bot <strong>actif</strong>
+                        </li>
+                        <li>
+                            <const>0</const>
+                            si l'autre bot possède autant d'attributs que le bot <strong>actif</strong>
+                        </li>
+                        <li>
+                            <const>1</const>
+                            si l'autre bot possède moins d'attributs que le bot <strong>actif</strong>
+                        </li>
+                    </ul>
                     <!-- BEGIN level2 -->
                 </div>
                 <!-- END -->
@@ -711,73 +704,70 @@ text-align: left;">
                 <div class="text">
                     <div style="margin-bottom: 7px"><span class="statement-lineno">1 ligne</span> contenant tous les
                         ordres donnés à vos bots séparés par
-                    <const>";"</const> :
-                    <const> "ordre1;ordre2;ordre3;..."</const>.
+                        <const>";"</const> :
+                        <const> "ordre1;ordre2;ordre3;..."</const>.
                     </div>
-                    Un ordre doit respecter la synthaxe suivante
+                    Un ordre doit respecter le format suivant
                     <action>idDeVotreBot [ACTION] [CIBLES]</action>
                     <ul>
                         <li>
-                        <action>ACTION</action>
-                        doit être une action valide parmis :
-                        <action>ATTACK</action>
-                        ,
-                        <action>MOVE</action>
-                        ,
-                        <action>FLEE</action>
-                        ou
-                        <action>IDLE</action>.
+                            <action>ACTION</action>
+                            doit être une action valide parmi :
+                            <action>ATTACK</action>
+                            ,
+                            <action>MOVE</action>
+                            ,
+                            <action>FLEE</action>
+                            ou
+                            <action>IDLE</action>.
                         </li>
                         <li>
-                        <action> CIBLES</action>
-                        doit respecter la synthaxe suivante :
-                        <action>cibleID1,cibleID2,cibleID3</action>
-                        <br>
-                        Vous devez aussi respecter certaines règles en fonction de l'action que vous souhaitez réaliser.
-                        <ul>
-                            <li>Si l'action est
-                                <action>ATTACK</action>
-                                ,
-                                <action>CIBLES</action>
-                                doit contenir
-                                <const>1</const>
-                                 <strong>id de bot ennemi</strong>, ni plus, ni moins. Un bot ne peu ni s'attaquer lui
-                                même<sup>1</sup> ni attaquer ses alliés.
-                                <br>
-                                1.
-                                <i>
-                                    "Un bot doit protéger son existence dans la mesure où cette protection n'entre
-                                    pas en contradiction avec la première ou la deuxième loi."
-                                </i>
-                            </li>
-                            <li>
-                                Si l'action est
-                                <action> MOVE</action>
-                                ou
-                                <action> FLEE</action>
-                                ,
-                                <action>CIBLES</action>
-                                doit contenir au moins un id de bot.
-                            </li>
-                            <li>Si l'action est
-                                <action>IDLE</action>
-                                ,
-                                <action>CIBLES</action>
-                                peut contenir tout et n'importe quoi (ou rien du tout), dans tous les cas cela sera ignoré.
-                                <del> Cela vous permet de faire réfléchir vos bots au sens de la vie</del>
-                            </li>
-                        </ul>
+                            <action> CIBLES</action>
+                            doit respecter le format suivant :
+                            <action>cibleID1,cibleID2,cibleID3</action>
+                            <br>
+                            Vous devez aussi respecter certaines règles en fonction de l'action que vous souhaitez réaliser.
+                            <ul>
+                                <li>Si l'action est
+                                    <action>ATTACK</action>,
+                                    <action>CIBLES</action>
+                                    doit contenir
+                                    <const>1</const>
+                                    <strong>id de bot ennemi</strong>, ni plus, ni moins. Un bot ne peut ni s'attaquer lui
+                                    même<sup>1</sup> ni attaquer ses alliés.
+                                    <br>
+                                    1.
+                                    <i>
+                                        "Un bot doit protéger son existence dans la mesure où cette protection n'entre
+                                        pas en contradiction avec la première ou la deuxième loi."
+                                    </i>
+                                </li>
+                                <li>
+                                    Si l'action est
+                                    <action> MOVE</action>
+                                    ou
+                                    <action> FLEE</action>,
+                                    <action>CIBLES</action>
+                                    doit contenir au moins un id de bot.
+                                </li>
+                                <li>Si l'action est
+                                    <action>IDLE</action>,
+                                    <action>CIBLES</action>
+                                    peut contenir tout et n'importe quoi (ou rien du tout), dans tous les cas, cela sera ignoré.
+                                    <del> Cela vous permet de faire réfléchir vos bots au sens de la vie</del>
+                                </li>
+                            </ul>
                         <li>
-                        Si vous envoyez 2 ordres différents s'adressant au même bot, vous perdrez la partie car
-                        votre bot subira le même sort que
-                        <a href = "https://asimov.fandom.com/wiki/R._Jander_Panell">R. Jander Panell </a>,
-                        entraînant dans sa chute toute votre équipe.
+                            Si vous envoyez 2 ordres différents s'adressant au même bot, vous perdrez la partie, car
+                            votre bot subira le même sort que
+                            <a href = "https://asimov.fandom.com/wiki/R._Jander_Panell">R. Jander Panell </a>,
+                            entraînant dans sa chute toute votre équipe.
                         </li>
                         <li>
-                        Si vous n'envoyez pas de sortie, tous vos bots feront l'action
-                        <action>IDLE</action>.
-                        Si vous n'envoyez pas d'ordre à un ou plusieurs bots, ils effectueront
-                        <action>IDLE</action>.
+                            Si vous n'envoyez pas de sortie, tous vos bots feront l'action
+                            <action>IDLE</action>.
+                            Si vous n'envoyez pas d'ordre à un ou plusieurs bots, ils effectueront
+                            <action>IDLE</action>.
                         </li>
                     </ul>
                 </div>
@@ -790,8 +780,8 @@ text-align: left;">
                         et
                         <const>60</const>
                         mètres (pour le moment c'est toujours
-                        <const>40</const>
-                        )<br>
+                        <const>40</const>)
+                        <br>
                         <br>Temps de réponse max par tour :
                         <const>50</const>
                         ms.

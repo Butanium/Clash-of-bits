@@ -43,7 +43,7 @@ text-align: left;">
     <!-- BEGIN level1 -->
     <div>
         <div style="text-align: left;padding-left: 15px">
-            Welcome to Clash of Bits ! <br>
+            Welcome to Clash of Bits! <br>
             If after reading the statement, you are still lost and can't think on how to make a basic AI, make sure to
             check
             <a href="https://tech.io/playgrounds/e3215408eac2f4587826d3335d3c402597548/building-a-basic-ai-for-clash-of-bits">
@@ -73,7 +73,7 @@ text-align: left;">
         </h1>
         <div>
             <div class="statement-rules-content">
-                Your bots fight in a square arena from which they cannot escape.
+                Your bots fight in a square arena, from which they cannot escape.
                 Unfortunately, your bots aren't very smart and cannot provide you that much information as X, Y
                 coordinates or their exact health. You will have to exploit the little information given to you.
                 <!-- BEGIN level1 level2 -->
@@ -92,30 +92,24 @@ text-align: left;">
                 describe those distances :
                 <ul>
                     <li><b>0</b> : Short range (dist ≤
-                        <const>3 m</const>
-                        )
+                        <const>3 m</const>)
                     </li>
                 </ul>
                 <ul>
-                    <li><b>1</b> : Medium range (
-                        <const>3 m</const>
+                    <li><b>1</b> : Medium range (<const>3 m</const>
                         < dist ≤
-                        <const>8 m</const>
-                        )
+                        <const>8 m</const>)
                     </li>
                 </ul>
                 <ul>
-                    <li><b>2</b> : Long range (
-                        <const>8 m</const>
+                    <li><b>2</b> : Long range (<const>8 m</const>
                         < dist ≤
-                        <const>15 m</const>
-                        )
+                        <const>15 m</const>)
                     </li>
                 </ul>
                 <ul>
                     <li><b>3</b> : Out of range (dist >
-                        <const>15 m</const>
-                        )
+                        <const>15 m</const>)
                     </li>
                 </ul>
 
@@ -136,10 +130,11 @@ text-align: left;">
                     </li>
                 </ul>
                 <br>
-                Your bots are not smart enough to give you the exact shield and health value of bots in the arena,
-                so they use an approximation :
+                Your bots are not smart enough to give you the exact shield and health value of bots in the arena.
+                So, they use an approximation :
                 <ul>
-                    <li>For the health they give you either
+                    <li>
+                        For the health they give you either
                         <const>0</const>
                         |
                         <const>25</const>
@@ -157,7 +152,7 @@ text-align: left;">
                         <const>< 50%</const>
                         of your max life
                     </li>
-                    <li>For the shield they give you either
+                    <li>For the shield, they give you either
                         <const>0</const>
                         |
                         <const>1</const>
@@ -186,18 +181,17 @@ text-align: left;">
                     <li>
                         <b>ATTACK</b> one enemy bot. The damages are done depending on the <b>range</b> your enemy is at
                         (short, medium, long or out of range). The closer it is, the more damage you'll do. If your bot
-                        is attacking an enemy out of range, it won't deal any damage. For more details, see expert
-                        rules.
+                        is attacking an enemy out of range, it won't deal any damage. For more details, see <a href="#expert-rules">technical details</a>.
                     </li>
 
                     <li>
-                        <b>MOVE </b>to a group of bots, which makes you moving toward the average position of
+                        <b>MOVE </b>to a group of bots, which makes the bot moving toward the average position of
                         the group. If the group is an only target, the bot will move toward it.
                     </li>
 
                     <li>
-                        <b>FLEE </b> from a group of bots, which makes you moving backward from the average position
-                        of the group
+                        <b>FLEE </b> from a group of bots, which makes the bot moving backward from the average position
+                        of the group.
                     </li>
                     <li>
                         <b>IDLE </b> The bot wait for this turn and start thinking about the meaning of life.
@@ -208,6 +202,41 @@ text-align: left;">
                         It's the default action if you don't send an order for a bot.
                     </li>
                 </ul>
+                <!-- BEGIN level2 level3 -->
+                <br>
+                <!-- BEGIN level2 -->
+                <div class="statement-new-league-rule">
+                    <strong>
+                        Now your bots spawn randomly on the map.
+                    </strong>
+                    <br>
+                    <br>
+                    <!-- END -->
+                    <!-- BEGIN level3 -->
+                    The bots spawn randomly on the map.
+                    <!-- END -->
+                    The bot spawns of both teams are <strong>symmetric</strong>. The symmetry can be:
+                    <ul>
+                        <li>
+                            <strong>central</strong> (across the center of the arena)
+                        </li>
+                        <li>
+                            <strong>horizontal</strong> (across the horizontal line through the center of the arena).
+                        </li>
+                    </ul>
+                    There are 2 rules that those spawn will always respect :
+                    <ul>
+                        <li>
+                            The distance between 2 bots has to be at least <strong>2 meters</strong>
+                        </li>
+                        <li>
+                            The distance between 2 bots of different team has to be at least <strong>8.1 meters</strong>
+                        </li>
+                    </ul>
+                <!-- BEGIN level2 -->
+                </div>
+                <!-- END -->
+                <!-- END -->
                 <br>
                 <!-- Victory conditions -->
                 <div class="statement-victory-conditions">
@@ -219,7 +248,8 @@ text-align: left;">
                                 <li>
                                     You destroyed all enemy bots.
                                 </li>
-                                <li>You have more bots alive than your opponent after
+                                <li>
+                                    You have more bots alive than your opponent after
                                     <strong>
                                         <const>300</const>
                                         turns.
@@ -238,45 +268,15 @@ text-align: left;">
                             <ul>
                                 <li>All your bots got destroyed.</li>
                                 <li>
-                                    You send an invalid orders to your bots, making their positronic brain explode.
+                                    You send invalid orders to your bots, making their positronic brain explode.
                                     <br>
                                     <i>They are smart enough to tell you why you made them crash,
-                                    so be sure to check the little dot in the replay.</i>
+                                        so be sure to check the little dot in the replay.</i>
                                 </li>
                             </ul>
                         </div>
                     </div>
                 </div>
-                <!-- BEGIN level3 -->
-                <div class="statement-new-league-rule">
-                    <br>
-                    <strong>
-                        Now your bots spawn randomly on the map.
-                    </strong>
-                    <br>
-                    <br>
-                    The bot spawns of both teams are <strong>symmetric</strong>.
-                    <br>
-                    The symmetry can be :
-                    <ul>
-                        <li>
-                            <strong>central</strong> (across the center of the arena)
-                        </li>
-                        <li>
-                            <strong>horizontal</strong> (across the horizontal line through the center of the arena).
-                        </li>
-                    </ul>
-                    There are 2 rules that those spawn will always respect :
-                    <ul>
-                        <li>
-                            The distance between 2 bots has to be at least <strong>2 meters</strong>
-                        </li>
-                        <li>
-                            The distance between 2 bots of different team has to be at least <strong>8.1 meters</strong>
-                        </li>
-                    </ul>
-                </div>
-                <!-- END -->
             </div>
         </div>
     </div>
@@ -305,8 +305,7 @@ text-align: left;">
                             You can also see the
                             <const>target</const>
                             of the bot and it's current
-                            <const>action</const>
-                            . The tooltip gives you more information about the bot.
+                            <const>action</const>. The tooltip gives you more information about the bot.
                         </div>
                     </div>
                 </div>
@@ -353,7 +352,7 @@ text-align: left;">
     <div class="statement-section statement-expertrules">
         <h1>
             <span class="icon icon-expertrules">&nbsp;</span>
-            <span>Technical Details</span>
+            <span><a id="expert-rules">Technical Details</a></span>
         </h1>
         <div class="statement-expert-rules-content">
             A turn duration for the simulation is 250 ms
@@ -371,9 +370,10 @@ text-align: left;">
                     0%
                     precision.
                 </li>
-                <li> The game is deterministic, even if there is some RNG in shots, the 2 teams have the same random
+                <li>
+                    The game is deterministic, even if there is some RNG in shots, the 2 teams have the same random
                     seed
-                    to determine if their shot will hit. Therefore a game between 2 identical AIs will <b>always</b>
+                    to determine if their shot will hit. Therefore, a game between 2 identical AIs will <b>always</b>
                     result in a draw...
                     Unless the AI use the fact that the bot's IDs start at 0 for on team and 7 for the other to make
                     its decisions.
@@ -447,26 +447,32 @@ text-align: left;">
              style="background-size: cover; background-color: grey">
             <div class="statement-story">
                 <h1>Where does this idea come from?</h1>
-                <div class="story-text"><strong> This challenge is highly inspired by the game "GLADIABOTS".<br> It's
-                    almost a copy actually, but I made it with the GFX47 (the gladiabots dev) permission. So if you
-                    enjoy this challenge or need some inspiration, don't hesitate to <a href="https://gladiabots.com/">give
-                        it a look</a>!</strong>
+                <div class="story-text">
+                    <strong>
+                        This challenge is highly inspired by the game "GLADIABOTS".
+                        <br>
+                        It's almost a copy, but I made it with the GFX47 (the gladiabots dev) permission. So if you
+                        enjoy this challenge or need some inspiration, don't hesitate to <a href="https://gladiabots.com/">give
+                        it a look</a>!
+                    </strong>
                     <br>
                 </div>
             </div>
         </div>
     </div>
-    <div style="margin-top: 10px; margin-bottom: 10 px">
-    <i>I would like to thank <a href="https://www.codingame.com/profile/8374201b6f1d19eb99d61c80351465b65150051">eulerscheZahl</a>
-        for his precious advice when I started this project, <a href="https://twitter.com/gfx47">GFX47</a> who agreed
-        to let me copy many of his ideas and <a href="https://github.com/DamnSake">DamnSake</a> and <b>Deniw</b>
-        who helped me with the graphics.</i>
+    <div style="margin-top: 10px; margin-bottom: 10 px; margin-left: 20px; margin-right:20px">
+        <i>
+            I would like to thank <a href="https://www.codingame.com/profile/8374201b6f1d19eb99d61c80351465b65150051">eulerscheZahl</a>
+            for his precious advice when I started this project, <a href="https://twitter.com/gfx47">GFX47</a> who agreed
+            to let me copy many of his ideas and <a href="https://github.com/DamnSake">DamnSake</a> and <b>Deniw</b>
+            who helped me with the graphics.
+        </i>
     </div>
     <!-- PROTOCOL -->
     <div class="statement-section statement-protocol">
         <h1>
             <span class="icon icon-protocol">&nbsp;</span>
-            <a id="game_input"><span>Game Input</span></a>
+            <span><a id="game_input">Game Input</a></span>
         </h1>
         <!-- Protocol block -->
         <div class="blk">
@@ -531,8 +537,7 @@ text-align: left;">
                 and
                 <const>3</const>
                 for
-                <const>OUT OF RANGE</const>
-                .
+                <const>OUT OF RANGE</const>.
                 <br>
                 <br><var>botId</var> is the unique bot id, stay the same for the whole game.
                 <br><br>
@@ -558,23 +563,21 @@ text-align: left;">
                 ,
                 <const>"FLEE"</const>
                 ,
-                <const>"IDLE"</const>
-                .
+                <const>"IDLE"</const>.
                 <br>
                 <br>
                 <var>targets</var> is the list of the targets ids targeted by the bot last turn. They are separated with
-                <const>","</const>
-                :
+                <const>","</const>:
                 <const>"id1,id2,id3..."</const>
-                <!-- if the entity is a bot --> (the target for IDLE is the bot itself). <!-- Else 
-                <const>-1</const>
-                .-->
+                <!-- if the entity is a bot --> (the target for IDLE is the bot itself). <!-- Else
+            <const>-1</const>
+            .-->
                 <!-- BEGIN level2 level3 -->
                 <br> <br>
                 <!-- BEGIN level2 -->
                 <div class="statement-new-league-rule">
                     <!-- END -->
-                    <var>enemyRange</var> : the range from the closest enemy. If the bot is from the enemy team it
+                    <var>enemyRange</var> : the range from the closest enemy. If the bot is from the enemy team, it
                     returns the range to its closest ally.
 
                     <br><br>
@@ -593,7 +596,7 @@ text-align: left;">
                     <ul>
                         <li>
                             <var>distEnRank</var> : the attribute is the exact distance between the bot and the closest
-                            enemy. If the bot is from the enemy team the distance is the distance to its closest ally.
+                            enemy. If the bot is from the enemy team, the distance is the distance to its closest ally.
                         </li>
                         <li>
                             <var>borderDistRank</var> : the attribute is the exact distance between the bot and the
@@ -634,7 +637,7 @@ text-align: left;">
                 <const> "ON_AIR"</const>
                 <i>so that you can get the <strong> ON AIR</strong> ally bot id</i>. Then it sends information about
                 other
-                allies then enemies.
+                allies, then enemies.
                 <br>
                 <br><var>botId</var> is the unique bot id.
                 <br><br> <var>botType</var>
@@ -699,10 +702,8 @@ text-align: left;">
                 <div class="text">
                     <div style="margin-bottom: 7px"><span class="statement-lineno">1 line</span> containing all your
                         orders separated by
-                        <const>";"</const>
-                        :
-                        <const> "order1;order2;order3;..."</const>
-                        .
+                        <const>";"</const>:
+                        <const> "order1;order2;order3;..."</const>.
                     </div>
                     An order has to respect the following synthax
                     <action>yourBotID [ACTION] [TARGETS]</action>
@@ -717,8 +718,7 @@ text-align: left;">
                             ,
                             <action>FLEE</action>
                             or
-                            <action>IDLE</action>
-                            .
+                            <action>IDLE</action>.
                         </li>
                         <li>
                             <action> TARGETS</action>
@@ -728,10 +728,9 @@ text-align: left;">
                             It musts also follow specifics rules depending on which action you try to perform:
                             <ul>
                                 <li>If the action is
-                                    <action>ATTACK</action>
-                                    ,
+                                    <action>ATTACK</action>,
                                     <action>TARGETS</action>
-                                    has to contains
+                                    has to contain
                                     <const>1</const>
                                     <strong> enemy bot id</strong>, not more, not less. Don't try to attack
                                     yourself<sup>1</sup> or
@@ -747,35 +746,30 @@ text-align: left;">
                                     If the action is
                                     <action> MOVE</action>
                                     or
-                                    <action> FLEE</action>
-                                    ,
+                                    <action> FLEE</action>,
                                     <action>TARGETS</action>
                                     has to contain at least 1 bot id
                                 </li>
                                 <li>If the action is
-                                    <action>IDLE</action>
-                                    ,
+                                    <action>IDLE</action>,
                                     <action>TARGETS</action>
                                     can contain <strong> anything </strong> or just <strong> nothing</strong>, in any
                                     case it'll
                                     be ignored.
-                                    <del> it allows you to REALLY make your bots thinking about the meaning of life
-                                    </del>
+                                    <del> it allows you to REALLY make your bots thinking about the meaning of life</del>
                                 </li>
                             </ul>
                         <li>
-                            If you send 2 differents orders concerning the same bot you'll loose the game because your
+                            If you send 2 different orders concerning the same bot, you'll lose the game because your
                             bot will suffer the same fate as
                             <a href="https://asimov.fandom.com/wiki/R._Jander_Panell">R. Jander Panell </a>
                             dragging your entire team down with it.
                         </li>
                         <li>
                             If you don't send any output, all your bots will
-                            <action>IDLE</action>
-                            .
+                            <action>IDLE</action>.
                             If you don't send any order concerning one or more of your bot, they will
-                            <action>IDLE</action>
-                            .
+                            <action>IDLE</action>.
                         </li>
                     </ul>
                 </div>
@@ -783,13 +777,12 @@ text-align: left;">
                 <!-- Protocol block -->
                 <div class="blk">
                     <div class="title">Constraints</div>
-                    <div class="text">The arena is a square of size between
+                    <div class="text">The arena is a square with a size between
                         <const>20</const>
                         and
                         <const>60</const>
-                        meters (for now it's
-                        <const>40</const>
-                        )<br>
+                        meters (for now, it's
+                        <const>40</const>)<br>
                         <br>Allotted response time to output
                         is ≤
                         <const>50</const>
