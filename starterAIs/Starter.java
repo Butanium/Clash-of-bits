@@ -144,7 +144,10 @@ class Player {
 
         public BotInfo viewedBy(Bot bot) {
             assert bot.team.equals(ALLY) : "You can only view info from an ally bot perspective";
-            return bot.infoFromMyPerspective.get(this.id);
+            BotInfo result = bot.infoFromMyPerspective.get(this.id);
+            assert result != null : "The bot you want to have info died after last turn," +
+                    " he was alive and targeted last turn which is why it appears in your code";
+            return result;
         }
 
         public Bot getClosestEnemy() {
