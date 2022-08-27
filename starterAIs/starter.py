@@ -109,10 +109,15 @@ class Bot:
         self.info_from_my_perspective[bot_id] = info
 
     def viewed_by(self, bot):
-        return bot.info_from_my_perspective[self.bot_id]
+        assert bot.team == ALLY, "You can only view info from an ally bot perspective"
+        try:
+            return bot.info_from_my_perspective[self.bot_id]
+        except KeyError:
+            raise ValueError("The bot on which you want info died after last turn (so no info available)," +
+                    " he was alive and targeted last turn which is why it appears in your code")
 
     def get_closest_enemy(self):
-        assert self.team == ALLY
+        assert self.team == ALLY, "You can only call closestEnemy function on an ally bot"
         return min(enemyBots, key=lambda bot: bot.viewed_by(self).dist_bot_rank)
 
     def is_dead(self):
