@@ -33,7 +33,7 @@ text-align: left;">
                 <b>Kit de démarrage</b>
             </p>
             Des IAs de base sont disponibles dans le
-            <a target="_blank" href="https://github.com/Butanium/Clash-of-bits/starterAIs">kit de démarrage</a>.
+            <a target="_blank" href="https://github.com/Butanium/Clash-of-bits/tree/master/starterAIs">kit de démarrage</a>.
             Elles peuvent vous aider à appréhender votre propre IA.
             <br><br>
         </div>

@@ -33,7 +33,7 @@ text-align: left;">
                 <b>Starter Kit</b>
             </p>
             Starter AIs are available in the
-            <a target="_blank" href="https://github.com/Butanium/Clash-of-bits/starterAIs">Starter Kit</a>.
+            <a target="_blank" href="https://github.com/Butanium/Clash-of-bits/tree/master/starterAIs">Starter Kit</a>.
             They can help you get started with your own AI. Do not hesitate to contribute if your language doesn't have
             one!
             <br><br>
