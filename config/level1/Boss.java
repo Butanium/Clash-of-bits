@@ -207,7 +207,6 @@ class Player {
                     bots.get(onAirId).addInfoFromMyPerspective(botId, new BotInfo(rangeFromOnAirBot, distMeRank, shieldComp, healthComp, totComp));
                 }
             }
-            // All bots move to the closest enemy
             for (Bot allyBot : allyBots) {
                 Bot closestEnemy = allyBot.getClosestEnemy();
                 if (allyBot.shield <= 1) {
@@ -218,9 +217,6 @@ class Player {
                     allyBot.move(closestEnemy);
                 }
             }
-
-            // Write an answer using System.out.println()
-            // To debug: System.err.println("Debug messages...");
 
             System.out.println(orders);
         }
