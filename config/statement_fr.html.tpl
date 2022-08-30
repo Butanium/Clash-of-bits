@@ -352,7 +352,7 @@ text-align: left;">
             <span class="icon icon-expertrules">&nbsp;</span> <span><a id="expert-rules">Détails techniques </a></span>
         </h1>
         <div class="statement-expert-rules-content">
-            Le temps entre chaque tour de jeu est 250 ms
+            À chaque tour de jeu, vos bots exécutent leur action pendant <const>250</const> ms.
             <br>
             En ce qui concerne l'<strong>attaque</strong> :
             <ul>

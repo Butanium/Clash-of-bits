@@ -355,7 +355,7 @@ text-align: left;">
             <span><a id="expert-rules">Technical Details</a></span>
         </h1>
         <div class="statement-expert-rules-content">
-            A turn duration for the simulation is 250 ms
+            After each turn, your bot execute their action during <const>250</const> ms.
             <br>
             Concerning <strong>attack</strong> :
             <ul>
