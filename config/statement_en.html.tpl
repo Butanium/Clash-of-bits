@@ -288,7 +288,7 @@ text-align: left;">
             In this game, there are many features to help you understand what is happening in the arena:
             <div class="statement-example-container">
                 <div class="statement-example">
-                    <img src="https://cdn-games.codingame.com/community/4099691-1619052595646/a0e9d26736d930a39ead03fe7acc1e6e38e2871fe3ca57f96f098e23ca0e663f.png">
+                    <img src="https://cdn-games.codingame.com/community/4099691-1619052595646/1c5dbaa03e8bc4a007937958f10f464c6859b30f4d098f7dae4c3cf51a278cae.png">
                     <div style="height:auto;" class="legend">
                         <div class="description">
                         You can activate the <const>dynamic zoom</const> of the camera with the <b>CAMERA MODE</b> toggle.
