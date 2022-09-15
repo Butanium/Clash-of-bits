@@ -288,16 +288,16 @@ text-align: left;">
             Dans ce jeu, il y a beaucoup de fonctionnalités pour vous aider à comprendre ce qui se passe dans l'arène :
             <div class="statement-example-container">
                 <div class="statement-example">
-                    <img src="https://cdn-games.codingame.com/community/4099691-1619052595646/73304b9b2a7922e90a5afbd0c294f778e16b56d2d0892e375b34a7303deaf409.png">
-                    <div class="legend">
+                    <img src="https://cdn-games.codingame.com/community/4099691-1619052595646/a0e9d26736d930a39ead03fe7acc1e6e38e2871fe3ca57f96f098e23ca0e663f.png">
+                    <div style="height:auto;" class="legend">
                         <div class="description">
-                            Vous pouvez activer le zoom dynamique de la caméra avec l'interrupteur <b>camera mode</b>.
+                            Vous pouvez activer le <const>zoom dynamique</const> de la caméra avec l'interrupteur <b>CAMERA MODE</b>.
                         </div>
                     </div>
                 </div>
                 <div class="statement-example">
-                    <img src="https://cdn-games.codingame.com/community/4099691-1619052595646/c290091469a911be12204aefc90c47d95ed7e05167111a8d74fed1e46d2577d3.png">
-                    <div class="legend">
+                    <img src="https://cdn-games.codingame.com/community/4099691-1619052595646/7522dbeb496f83ba472f1acc0b7e2dc923d9bb74ad118e1fba575d5864170941.png">
+                    <div style="height:auto;" class="legend">
                         <div class="description">
                             Les différentes
                             <const>portées</const>
@@ -310,8 +310,8 @@ text-align: left;">
                     </div>
                 </div>
                 <div class="statement-example">
-                    <img src="https://cdn-games.codingame.com/community/4099691-1619052595646/35c51763ed79a37a817574006bef28dae3235dd230a284de2c6ffc19f7726c0f.png">
-                    <div class="legend">
+                    <img src="https://cdn-games.codingame.com/community/4099691-1619052595646/757d7b6987dbdeced4ce390e9e82d85c9ebccd5d5d2ce7c27bdbedc07a9f39b4.png">
+                    <div style="height:auto;" class="legend">
                         <div class="description">
                             Vous pouvez
                             <const>CLIC GAUCHE</const>
@@ -322,20 +322,20 @@ text-align: left;">
                 </div>
 
                 <div class="statement-example">
-                    <img src="https://cdn-games.codingame.com/community/4099691-1619052595646/51e96c95edb1532dd2f2b2e20d51ad52ff1cac8ef09e36d94763719937ec8acd.png">
-                    <div class="legend">
+                    <img src="https://cdn-games.codingame.com/community/4099691-1619052595646/fc40b6e00f903a88d538f23a563234f4da38a108fd44d4a1ebe1b417eeb7cfbc.png">
+                    <div style="height:auto;" class="legend">
                         <div class="description">
-                            Vous pouvez activer l'overlay de débogage avec l'interrupteur <b>debug overlay</b>
+                            Vous pouvez activer l'<const>overlay de débogage</const> avec l'interrupteur <b>DEBUG OVERLAY</b>
                             pour voir l'id du bot et son action actuelle.
                         </div>
                     </div>
                 </div>
 
                 <div class="statement-example">
-                    <img src="https://cdn-games.codingame.com/community/4099691-1619052595646/1710e57847d75cc01f517521d99b37b0e740bbedc080ec2969d5d7bc7ff1f969.png">
-                    <div class="legend">
+                    <img src="https://cdn-games.codingame.com/community/4099691-1619052595646/9bc9be3f398788a7c0b68afad1aaf9a7a833ebaffc1601c38587d7e67af80b06.png">
+                    <div style="height:auto;" class="legend">
                         <div class="description">
-                            Les marqueurs de dégâts sont affichés lorsqu'un bot est touché par une balle.
+                            Un <const>marqueur de dégât</const> est affiché lorsqu'un bot est touché par une balle.
                         </div>
                     </div>
                 </div>

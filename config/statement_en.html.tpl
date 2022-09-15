@@ -43,7 +43,7 @@ text-align: left;">
     <!-- BEGIN level1 -->
     <div>
         <div style="text-align: left;padding-left: 15px">
-            Welcome to Clash of Bits! <br>
+            Welcome to <b>Clash of Bits</b>! <br>
             If after reading the statement, you are still lost and can't think on how to make a basic AI, make sure to
             check
             <a href="https://tech.io/playgrounds/e3215408eac2f4587826d3335d3c402597548/building-a-basic-ai-for-clash-of-bits">
@@ -288,16 +288,16 @@ text-align: left;">
             In this game, there are many features to help you understand what is happening in the arena:
             <div class="statement-example-container">
                 <div class="statement-example">
-                    <img src="https://cdn-games.codingame.com/community/4099691-1619052595646/08b6271664d262bb1dbc113cd330bcc6fe89c8938cd3fadfbf1a3a3f41b02d91.png">
-                    <div class="legend">
+                    <img src="https://cdn-games.codingame.com/community/4099691-1619052595646/a0e9d26736d930a39ead03fe7acc1e6e38e2871fe3ca57f96f098e23ca0e663f.png">
+                    <div style="height:auto;" class="legend">
                         <div class="description">
-                            You can activate the dynamic zoom of the camera with the camera mode toggle.
+                        You can activate the <const>dynamic zoom</const> of the camera with the <b>CAMERA MODE</b> toggle.
                         </div>
                     </div>
                 </div>
                 <div class="statement-example">
-                    <img src="https://cdn-games.codingame.com/community/4099691-1619052595646/c290091469a911be12204aefc90c47d95ed7e05167111a8d74fed1e46d2577d3.png">
-                    <div class="legend">
+                    <img src="https://cdn-games.codingame.com/community/4099691-1619052595646/7522dbeb496f83ba472f1acc0b7e2dc923d9bb74ad118e1fba575d5864170941.png">
+                    <div style="height:auto;" class="legend">
                         <div class="description">
                             The different
                             <const>ranges</const>
@@ -310,10 +310,10 @@ text-align: left;">
                     </div>
                 </div>
                 <div class="statement-example">
-                    <img src="https://cdn-games.codingame.com/community/4099691-1619052595646/35c51763ed79a37a817574006bef28dae3235dd230a284de2c6ffc19f7726c0f.png">
-                    <div class="legend">
+                    <img src="https://cdn-games.codingame.com/community/4099691-1619052595646/757d7b6987dbdeced4ce390e9e82d85c9ebccd5d5d2ce7c27bdbedc07a9f39b4.png">
+                    <div style="height:auto;" class="legend">
                         <div class="description">
-                            You can
+                        You can
                             <const>LEFT CLICK</const>
                             on a bot to make the target display permanent and
                             <const>ALT + LEFT CLICK</const>
@@ -324,20 +324,20 @@ text-align: left;">
                 </div>
 
                 <div class="statement-example">
-                    <img src="https://cdn-games.codingame.com/community/4099691-1619052595646/51e96c95edb1532dd2f2b2e20d51ad52ff1cac8ef09e36d94763719937ec8acd.png">
-                    <div class="legend">
+                    <img src="https://cdn-games.codingame.com/community/4099691-1619052595646/fc40b6e00f903a88d538f23a563234f4da38a108fd44d4a1ebe1b417eeb7cfbc.png">
+                    <div style="height:auto;" class="legend">
                         <div class="description">
-                            You can enable the debug overlay with the debug toggle to see the bot's id and current
+                        You can enable the <const>debug overlay</const> with the <b>DEBUG OVERLAY</b> toggle to see the bot's id and current
                             action.
                         </div>
                     </div>
                 </div>
 
                 <div class="statement-example">
-                    <img src="https://cdn-games.codingame.com/community/4099691-1619052595646/1710e57847d75cc01f517521d99b37b0e740bbedc080ec2969d5d7bc7ff1f969.png">
-                    <div class="legend">
+                    <img src="https://cdn-games.codingame.com/community/4099691-1619052595646/9bc9be3f398788a7c0b68afad1aaf9a7a833ebaffc1601c38587d7e67af80b06.png">
+                    <div style="height:auto;" class="legend">
                         <div class="description">
-                            Hitmarkers are displayed when a bot is hit by a bullet.
+                        <const>Hitmarkers</const> are displayed when a bot is hit by a bullet.
                         </div>
                     </div>
                 </div>
