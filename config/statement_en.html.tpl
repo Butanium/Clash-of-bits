@@ -367,8 +367,7 @@ text-align: left;">
                 <li>The moment a bullet is fired, the game engine determine if it will hit the targeted bot
                     based on the <b>current</b> range of the
                     target with a probability of <b>precision [target range]</b>. Note that attacking out of range has a
-                    0%
-                    precision.
+                    0% precision.
                 </li>
                 <li>
                     The game is deterministic, even if there is some RNG in shots, the 2 teams have the same random
@@ -381,6 +380,7 @@ text-align: left;">
 
 
             </ul>
+            The bullet speed is 20 m/s.
             You can see all bot properties per class in this table:
 
             <style type="text/css" ;>
@@ -415,7 +415,7 @@ text-align: left;">
                         <th>Aim duration (turn)</th>
                         <th>Shot duration (turn)</th>
                         <th>Precision at <br>short / mid / long range</th>
-                        <th>Speed</th>
+                        <th>Speed (m/s)</th>
                         <th>Health</th>
                         <th>Shield</th>
                     </tr>

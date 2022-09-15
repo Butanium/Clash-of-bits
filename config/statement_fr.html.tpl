@@ -358,13 +358,13 @@ text-align: left;">
             <ul>
                 <li>
                     Pour tirer des balles sur un ennemi, un bot doit attaquer <b>la même cible</b> pendant
-                    <b>temps de visée</b> tours. Ensuite, il tirera <b>balles par tir</b> balles chaque tour pendant
-                    <b>temps de tir</b> tours.
+                    <const>temps de visée</const> tours. Ensuite, il tirera <const>balles par tir</const> balles chaque tour pendant
+                    <const>temps de tir</const> tours.
                 </li>
                 <li>
                     À l'instant où une balle est tirée, le moteur de jeu détermine si elle va toucher sa cible ou non en
                     fonction
-                    de sa portée <b>actuelle</b> avec une probabilité de <b>précision [portée de la cible]</b>.
+                    de sa portée <b>actuelle</b> avec une probabilité de <const>précision [portée de la cible]</const>.
                     N'oubliez pas qu'attaquer une cible hors de portée ne peut pas toucher.
                 </li>
                 <li>
@@ -375,9 +375,8 @@ text-align: left;">
                     Un match entre 2 équipes identiques sera donc <b>toujours</b> un match nul -
                     sauf si l'IA utilise le fait que les ids des bots commencent à 0 pour une équipe et 7 pour l'autre dans ses décisions.
                 </li>
-
-
             </ul>
+            La vitesse des balles est de 20 m/s.
             Voici les caractéristiques des différentes classes de bots.
 
             <style type="text/css" ;>
@@ -401,19 +400,17 @@ text-align: left;">
                 }
             </style>
             <div style="overflow-x:auto;">
-
-                <table class="tableizer-table" ;
-                >
+                <table class="tableizer-table" ;>
                     <thead>
                     <tr class="tableizer-firstrow" ;>
                         <th>Classe de bot</th>
                         <th>Dommages par balle</th>
-                        <th>Balles par tirs</th>
+                        <th>Balles par tir</th>
                         <th>Temps de visée (tour)</th>
                         <th>Temps de tir (tour)</th>
                         <th>Précision à <br>courte / moyenne / longue portée</th>
-                        <th>Vitesse</th>
-                        <th>points de vie max</th>
+                        <th>Vitesse (m/s)</th>
+                        <th>Points de vie max</th>
                         <th>Bouclier max</th>
                     </tr>
                     </thead>
