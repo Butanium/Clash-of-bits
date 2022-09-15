@@ -1,5 +1,5 @@
 /bin/
 /target/
-/.project
-/.classpath
+/.*
+/config/level*/statement*
 /src/main/resources/view/assets2/
