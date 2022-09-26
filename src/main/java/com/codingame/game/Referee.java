@@ -130,8 +130,9 @@ public class Referee extends AbstractReferee {
                 action.performAction();
             } else {
                 Player player = action.getExecutor().getPlayer();
-                player.deactivate(String.format("$%d tried to perform 2 action in the same turn for robot %d",
+                player.deactivate(String.format("$%d tried to perform several actions in the same turn for robot %d",
                         player.getIndex(), action.getExecutor().getId()));
+                player.setScore(-1);
             }
         }
         for (Robot robot : robotSet) {
