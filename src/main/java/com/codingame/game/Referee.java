@@ -24,11 +24,10 @@ import java.util.*;
 public class Referee extends AbstractReferee {
     private final Set<InGameEntity> gameEntitySet = new HashSet<>();
     private final Set<Robot> robotSet = new HashSet<>();
-    private final Set<Bullet> bullets = new HashSet<>();
     private final Map<Integer, ArrayList<Robot>> playersTeam = new HashMap<>();
 
-    public Set<forcefield> forceFields = new HashSet<>();
-    public Set<healthPack> healthPacks = new HashSet<>();
+//    public Set<forcefield> forceFields = new HashSet<>();
+//    public Set<healthPack> healthPacks = new HashSet<>();
     @Inject
     TooltipModule tooltips;
     @Inject
