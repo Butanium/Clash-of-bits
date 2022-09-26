@@ -127,7 +127,7 @@ public class Referee extends AbstractReferee {
         for (Action action : actionList) {
             if (updatedBots.add(action.getExecutor())) {
                 action.performAction();
-            } else {
+            } else if (action.getExecutor().getPlayer().isActive()){
                 Player player = action.getExecutor().getPlayer();
                 player.deactivate(String.format("$%d tried to perform several actions in the same turn for robot %d",
                         player.getIndex(), action.getExecutor().getId()));
