@@ -3,3 +3,4 @@
 /.*
 /config/level*/statement*
 /src/main/resources/view/assets2/
+/src/test/java/agents/
