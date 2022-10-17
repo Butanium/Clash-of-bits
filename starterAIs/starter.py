@@ -34,19 +34,19 @@ class BotInfo:
             self.range_from_bot, self.dist_bot_rank, self.shield_comp, self.health_comp, self.total_comp)
 
 
-# Decorator to handle Bot and id for function argument
-def bot_or_id(f):
-    def wrapper(*args):
-        return f([arg.bot_id if isinstance(arg, Bot) else arg for arg in args])
-
-    return wrapper
-
-
 def dead_bot(bot_id):
     return Bot(bot_id, "", -1, -1, "", "", -1, -1, -1, -1, -1, -1, -1)
 
 
 class Bot:
+    # Decorator to handle Bot and id for function argument, ignore the warnings of the IDE
+    def __bot_or_id(f):
+        # noinspection PyCallingNonCallable
+        def wrapper(self, *args):
+            return f(self, *[arg.bot_id if isinstance(arg, Bot) else arg for arg in args])
+
+        return wrapper
+
     def __init__(self, bot_id, team, shield, health, action, targets, enemy_range, dist_en_rank, health_rank,
                  shield_rank, total_rank, border_range, border_dist_rank):
         self.bot_id = bot_id
@@ -85,7 +85,7 @@ class Bot:
         elif targeting_me.action == MOVE:
             self.approaching_me.add(targeting_me)
 
-    @bot_or_id  # now attack is a function that takes a bot or an id as argument
+    @__bot_or_id  # now attack is a function that takes a bot or an id as argument
     def attack(self, target):
         global orders
         orders += f"{self.bot_id} {ATTACK} {target};"
@@ -114,7 +114,7 @@ class Bot:
             return bot.info_from_my_perspective[self.bot_id]
         except KeyError:
             raise ValueError("The bot on which you want info died after last turn (so no info available)," +
-                    " he was alive and targeted last turn which is why it appears in your code")
+                             " he was alive and targeted last turn which is why it appears in your code")
 
     def get_closest_enemy(self):
         assert self.team == ALLY, "You can only call closestEnemy function on an ally bot"
