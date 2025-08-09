@@ -2,7 +2,7 @@ A codingame multiplayer game project inspired by [gladiabots](https://store.stea
 
 Due to the fact that someone else got a contribution called "clash of **bots**" approved before me, the name of the game on the codingame website is "clash of **bits** : explode another day"
 
-You can try play online [here](https://www.codingame.com/contribute/view/6587dcc2e3a07bd4696c16a3e63238b4a184), definitly the best way to play it.
+You can try play online (make sure to login to CodinGame) [here](https://www.codingame.com/contribute/view/6587dcc2e3a07bd4696c16a3e63238b4a184), definitly the best way to play it.
 
 If you want to run it on your local machine,
  - Download on of the release (the latest is the best)
