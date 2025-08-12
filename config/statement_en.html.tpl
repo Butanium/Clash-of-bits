@@ -179,18 +179,18 @@ text-align: left;">
                 Your bots can perform 3 different actions :
                 <ul>
                     <li>
-                        <b>ATTACK</b> one enemy bot. The damages are done depending on the <b>range</b> your enemy is at
+                        <b>ATTACK</b> one enemy bot. The damage is done depending on the <b>range</b> your enemy is at
                         (short, medium, long or out of range). The closer it is, the more damage you'll do. If your bot
                         is attacking an enemy out of range, it won't deal any damage. For more details, see <a href="#expert-rules">technical details</a>.
                     </li>
 
                     <li>
-                        <b>MOVE </b>to a group of bots, which makes the bot moving toward the average position of
+                        <b>MOVE </b>to a group of bots, which makes the bot move toward the average position of
                         the group. If the group is an only target, the bot will move toward it.
                     </li>
 
                     <li>
-                        <b>FLEE </b> from a group of bots, which makes the bot moving backward from the average position
+                        <b>FLEE </b> from a group of bots, which makes the bot move backward from the average position
                         of the group.
                     </li>
                     <li>
@@ -304,7 +304,7 @@ text-align: left;">
                             are displayed when you hover over a bot with your mouse. <br>
                             You can also see the
                             <const>target</const>
-                            of the bot and it's current
+                            of the bot and its current
                             <const>action</const>. The tooltip gives you more information about the bot.
                         </div>
                     </div>
@@ -364,7 +364,7 @@ text-align: left;">
                     duration</b>
                     turns. Then it'll fire <b>bullets per shot</b> bullets each turn for <b>shot duration</b> turns.
                 </li>
-                <li>The moment a bullet is fired, the game engine determine if it will hit the targeted bot
+                <li>The moment a bullet is fired, the game engine determines if it will hit the targeted bot
                     based on the <b>current</b> range of the
                     target with a probability of <b>precision [target range]</b>. Note that attacking out of range has a
                     0% precision.
@@ -374,7 +374,7 @@ text-align: left;">
                     seed
                     to determine if their shot will hit. Therefore, a game between 2 identical AIs will <b>always</b>
                     result in a draw...
-                    Unless the AI use the fact that the bot's IDs start at 0 for on team and 7 for the other to make
+                    Unless the AI use the fact that the bot's IDs start at 0 for one team and 7 for the other to make
                     its decisions.
                 </li>
 
@@ -539,7 +539,7 @@ text-align: left;">
                 for
                 <const>OUT OF RANGE</const>.
                 <br>
-                <br><var>botId</var> is the unique bot id, stay the same for the whole game.
+                <br><var>botId</var> is the unique bot id, stays the same for the whole game.
                 <br><br>
                 <var>botType</var> indicates the type of bot. The value can be :
                 <ul style="padding-bottom: 0;">
@@ -624,7 +624,7 @@ text-align: left;">
                 <!-- BEGIN level2 level3 -->
                 <const> 7</const>
                 <!-- END -->
-                information from <strong><u>its perspective :</u></strong> <var>botId</var>, <var>botType</var>, <var>range</var>,
+                pieces of information from <strong><u>its perspective :</u></strong> <var>botId</var>, <var>botType</var>, <var>range</var>,
                 <var>distMeRank</var>
                 <!-- BEGIN level2 level3 -->
                 , <var>shieldComp</var>, <var>healthComp</var>, <var>totComp</var>
@@ -705,7 +705,7 @@ text-align: left;">
                         <const>";"</const>:
                         <const> "order1;order2;order3;..."</const>.
                     </div>
-                    An order has to respect the following synthax
+                    An order has to respect the following syntax
                     <action>yourBotID [ACTION] [TARGETS]</action>
                     and the following rules :
                     <ul>
@@ -722,10 +722,10 @@ text-align: left;">
                         </li>
                         <li>
                             <action> TARGETS</action>
-                            has to use this synthax :
+                            has to use this syntax :
                             <action>targetID1,targetID2,targetID3</action>
                             <br>
-                            It musts also follow specifics rules depending on which action you try to perform:
+                            It must also follow specifics rules depending on which action you try to perform:
                             <ul>
                                 <li>If the action is
                                     <action>ATTACK</action>,
@@ -756,7 +756,7 @@ text-align: left;">
                                     can contain <strong> anything </strong> or just <strong> nothing</strong>, in any
                                     case it'll
                                     be ignored.
-                                    <del> it allows you to REALLY make your bots thinking about the meaning of life</del>
+                                    <del> it allows you to REALLY make your bots think about the meaning of life</del>
                                 </li>
                             </ul>
                         <li>
@@ -777,12 +777,9 @@ text-align: left;">
                 <!-- Protocol block -->
                 <div class="blk">
                     <div class="title">Constraints</div>
-                    <div class="text">The arena is a square with a size between
-                        <const>20</const>
-                        and
-                        <const>60</const>
-                        meters (for now, it's
-                        <const>40</const>)<br>
+                    <div class="text">The arena is a square with a size of
+                        <const>40</const>
+                        meters<br>
                         <br>Allotted response time to output
                         is ≤
                         <const>50</const>
